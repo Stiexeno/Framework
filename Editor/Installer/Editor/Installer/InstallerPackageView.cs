@@ -20,7 +20,7 @@ namespace Framework.Installer
         private readonly IEnumerable<string> categories;
 
         private const float TOP_PADDING = 20f;
-        private const string PACKAGES_PATH = "Assets/Framework/Editor/Installer/Packages/";
+        private const string PACKAGES_PATH = "Packages/com.framework.dependency-injection/Editor/Installer/Packages";
         
         public InstallerPackageView(InstallerWindow window)
         {
