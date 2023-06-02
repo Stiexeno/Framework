@@ -1,5 +1,4 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-
 # Framework
 
 Framework is a lightweight and flexible framework for Unity, designed to simplify development and promote modularity through dependency injection.
