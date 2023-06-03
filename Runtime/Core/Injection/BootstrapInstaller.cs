@@ -1,8 +1,8 @@
 namespace Framework.Core
 {
-    public class BootstrapInstaller : IBindingInstaller
+    public class BootstrapInstaller : AbstractInstaller
     {
-        public void InstallBindings(DiContainer diContainer)
+        public override void InstallBindings(DiContainer diContainer)
         {
             // Core
             

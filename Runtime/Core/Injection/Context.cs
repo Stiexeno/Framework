@@ -7,6 +7,8 @@ namespace Framework.Core
 	{
 		public static DiContainer DiContainer { get; private set; }
 
+		public static float TimeTookToInstall { get; set; }
+
 		public static event Action OnPreInstall;
 		public static event Action OnPostInstall;
 		
@@ -24,7 +26,7 @@ namespace Framework.Core
 		{
 			DiContainer.BindConfigs();
 			
-			var bootstrapInstaller = new BootstrapInstaller();
+			var bootstrapInstaller = ScriptableObject.CreateInstance<BootstrapInstaller>();
 			bootstrapInstaller.InstallBindings(DiContainer);
 		}
 	}	

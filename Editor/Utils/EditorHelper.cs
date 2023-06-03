@@ -76,5 +76,24 @@ namespace Framework.Editor
             
             EditorGUI.DrawRect(rect, new Color(0.14f, 0.14f, 0.14f));
         }
+        
+        public static void DrawVerticalLine(Color color, int thickness = 1, int padding = 10, int length = 100)
+        {
+            Rect r = EditorGUILayout.GetControlRect(GUILayout.Width(padding+thickness),GUILayout.Height(length));
+            r.width = thickness;
+            r.x+=padding/2;
+            r.height -= 10;
+            EditorGUI.DrawRect(r, color);
+        }
+        
+        public static void DrawHorizontalLine(Color color, int thickness = 1, int padding = 10)
+        {
+            Rect r = EditorGUILayout.GetControlRect(GUILayout.Height(padding+thickness));
+            r.height = thickness;
+            r.y+=padding/2;
+            r.x-=2;
+            r.width +=6;
+            EditorGUI.DrawRect(r, color);
+        }
     }
 }

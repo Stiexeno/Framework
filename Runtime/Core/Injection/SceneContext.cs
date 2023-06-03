@@ -10,7 +10,7 @@ namespace Framework.Core
         //Serialized fields
 
         [SF] private bool autoRun;
-        [SF] private InstallerInfo[] installers;
+        [SF] private AbstractInstaller[] installers;
 
         //Private fields
         
@@ -34,8 +34,7 @@ namespace Framework.Core
 
             foreach (var installer in installers)
             {
-                var installerInstance = Activator.CreateInstance(installer.TypeValue) as IBindingInstaller;
-                installerInstance.InstallBindings(diContainer);
+                installer.InstallBindings(diContainer);
             }
 
             foreach (var binding in diContainer.Container)
@@ -60,6 +59,8 @@ namespace Framework.Core
             }
             
             this.diContainer.InjectToSceneGameObjects();
+            
+            Context.TimeTookToInstall = Time.realtimeSinceStartup;
         }
 
         // MonoBehaviour
@@ -96,29 +97,6 @@ namespace Framework.Core
             {
                 fp.FixedProcess(Time.fixedDeltaTime);
             }
-        }
-    }
-    
-    [Serializable]
-    public struct InstallerInfo
-    {
-        public string name;
-        public string path;
-        public string typeName;
-        public string assembly;
-
-        public Type TypeValue
-        {
-            get => !string.IsNullOrEmpty(typeName) ? Type.GetType($"{typeName}, {assembly}") : null;
-            set => typeName = value != null ? value.AssemblyQualifiedName : string.Empty;
-        }
-            
-        public InstallerInfo(string name, string typeName, string path, string assembly)
-        {
-            this.name = name;
-            this.typeName = typeName;
-            this.path = path;
-            this.assembly = assembly;
         }
     }
 }

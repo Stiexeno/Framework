@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityRandom = UnityEngine.Random;
 
-namespace DosinisSDK.Utils
+namespace Framework.Utils
 {
     public static class Extensions
     {
@@ -47,6 +47,11 @@ namespace DosinisSDK.Utils
             }
 
             return path;
+        }
+        
+        public static string SetColor(this string text, Color color)
+        {
+            return "<color=#" + ColorUtility.ToHtmlStringRGBA(color) + ">" + text + "</color>";
         }
 
         // Long
