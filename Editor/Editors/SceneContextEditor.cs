@@ -17,7 +17,8 @@ namespace Framework.ContextEditor
 		
 		private SceneContext sceneContext;
 		private ConfigProvider configProvider;
-		
+		private AssetSettings assetsSettings;
+
 		private Tab tab;
 
 		private const string INSTALLERS_PATH = "Configs/Installers/";
@@ -26,6 +27,8 @@ namespace Framework.ContextEditor
 		{
 			typeof(BootstrapInstaller)
 		};
+
+		private MonoScript assetsScript;
 
 		public override void OnInspectorGUI()
 		{
@@ -45,11 +48,12 @@ namespace Framework.ContextEditor
 			}
 			else
 			{
-				EditorGUILayout.LabelField("Not implemented yet");
+				DrawAssets();
 			}
 
 			if (Application.isPlaying)
 				GUI.enabled = true;
+			
 			DrawFooter();
 		}
 
@@ -57,6 +61,36 @@ namespace Framework.ContextEditor
 		{
 			var editor = CreateEditor(configProvider);
 			editor.OnInspectorGUI();
+		}
+
+		private void DrawAssets()
+		{
+			if (assetsSettings == null)
+			{
+				assetsSettings = AssetSettings.Settings;
+			}
+			
+			var editor = CreateEditor(assetsSettings);
+			editor.OnInspectorGUI();
+
+			if (assetsScript != null)
+			{
+				GUILayout.Space(5f);
+				GUI.enabled = false;
+				EditorGUILayout.ObjectField(assetsScript, typeof(MonoScript), false);
+				GUI.enabled = true;
+				
+				EditorGUILayout.HelpBox("Marked Assets will be generated to script as constants", MessageType.Info);
+			}
+
+			if (GUILayout.Button("Refresh"))
+			{
+				AssetSettings.GenerateAssetsScript(() =>
+				{
+					string outputPath = "Assets/Scripts/Generated/AssetsPath.cs";
+					assetsScript = AssetDatabase.LoadAssetAtPath<MonoScript>(outputPath);
+				});
+			}
 		}
 
 		private void DrawRefreshButton()
@@ -143,7 +177,7 @@ namespace Framework.ContextEditor
 			}
 			
 			tapRect.x += tapRect.width;
-			if (GUI.Button(tapRect, "Other", tab == Tab.Other ? activeButtonStyle : EditorStyles.toolbarButton))
+			if (GUI.Button(tapRect, EditorHelper.Icon("Assets", "PreviewPackageInUse@2x"), tab == Tab.Other ? activeButtonStyle : EditorStyles.toolbarButton))
 			{
 				tab = Tab.Other;
 			}
@@ -215,8 +249,12 @@ namespace Framework.ContextEditor
 			comp.hideFlags = HideFlags.HideInInspector;
 
 			CollectConfig();
-			
-			
+
+			if (assetsSettings == null)
+				assetsSettings = AssetSettings.Settings;
+
+			string outputPath = "Assets/Scripts/Generated/AssetsPath.cs";
+			assetsScript = AssetDatabase.LoadAssetAtPath<MonoScript>(outputPath);
 		}
 	}
 }

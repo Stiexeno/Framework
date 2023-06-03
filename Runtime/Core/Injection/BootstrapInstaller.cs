@@ -15,6 +15,7 @@ namespace Framework.Core
             diContainer.Bind<Timer>();
             diContainer.Bind<LocalClock>().Instantiate();
             diContainer.Bind<UIManager>().FindInScene<UIManager>();
+            diContainer.Bind<Assets>();
             
             // Services
             

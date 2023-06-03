@@ -20,7 +20,7 @@ namespace Framework.Core
 					return (T)config;
 				}
 			}
-			
+
 			return null;
 		}
 
@@ -35,19 +35,19 @@ namespace Framework.Core
 					{
 						if (configs.Contains(x => x.GetType() == tp))
 							continue;
-					
+
 						var path = "Assets/Configs/" + tp.Name + ".asset";
 						var targetConfig = AssetDatabase.LoadAssetAtPath<AbstractConfig>(path);
-					
+
 						if (targetConfig == null)
 						{
 							var instance = CreateInstance(tp);
 							AssetDatabase.CreateAsset(instance, path);
 							targetConfig = AssetDatabase.LoadAssetAtPath<AbstractConfig>(path);
 						}
-					
+
 						configs.Add(targetConfig);
-					
+
 						AssetDatabase.Refresh();
 					}
 				}

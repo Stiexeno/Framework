@@ -43,15 +43,22 @@ namespace Framework
 			
 			for (int i = 0; i < args.Length; i++)
 			{
-				var resolvedArg = resolver.Resolve(args[i].ParameterType);
-				
-				if (resolvedArg != null)
+				try
 				{
-					argsToInject[i] = resolvedArg;
-					continue;
-				}
+					var resolvedArg = resolver.Resolve(args[i].ParameterType);
 				
-				argsToInject[i] = constructorArgs[i];
+					if (resolvedArg != null)
+					{
+						argsToInject[i] = resolvedArg;
+						continue;
+					}
+				
+					argsToInject[i] = constructorArgs[i];
+				}
+				catch (Exception e)
+				{
+					Debug.LogError($"{objectType} => {args[i].ParameterType} => {constructorArgs[i]} => {e}");
+				}
 			}
 			
 			return Activator.CreateInstance(objectType, argsToInject);
