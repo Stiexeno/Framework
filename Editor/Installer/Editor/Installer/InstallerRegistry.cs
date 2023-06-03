@@ -68,7 +68,6 @@ namespace Framework.Installer
             }
 
             var filePath = Path.Combine(PACKAGE_REGISTRY, "PackageRegsitry" + ".json");
-            string dataKey = nameof(PackageRegistry);
 
             string json;
 

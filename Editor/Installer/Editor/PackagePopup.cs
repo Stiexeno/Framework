@@ -13,8 +13,6 @@ namespace Framework
 
         private Action<string> onResult;
 
-        private bool shouldClose;
-
         public static void Show(string title, string inputText, string okButton = "OK", Action<string> result = null)
         {
             var window = CreateInstance<PackagePopup>();
@@ -35,7 +33,7 @@ namespace Framework
                 {
                     // Escape pressed
                     case KeyCode.Escape:
-                        shouldClose = true;
+                        Close();
                         break;
 
                     // Enter pressed
