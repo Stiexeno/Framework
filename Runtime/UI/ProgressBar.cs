@@ -1,4 +1,3 @@
-using System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,137 +6,59 @@ using SF = UnityEngine.SerializeField;
 namespace Framework.Utils
 {
 	[ExecuteInEditMode]
-	public sealed class ProgressBar : MonoBehaviour
+	public class Progressbar : MonoBehaviour
 	{
 		// Serialized fields
-		
+
+		[SF] private Image fill;
 		[SF] private float fillDuration;
-		[SF] private AnimationCurve ease;
-		[SF] private float delay = 0.3f;
-		[SF] private bool reverse;
+		[SF] private AnimationCurve ease = AnimationCurve.Linear(0f, 0f, 1f, 1f);
+		[SF] private float delay = 0f;
 
-		private bool initialValueChange;
-		private Image image;
-
-		[HideInInspector] [SF] private RectTransform fill;
-		
-		// Private
+		// Private fields
 		
 		private float value;
-		
-		public float FillDuration { get => fillDuration; set => fillDuration = value;}
-		
-		public Image Image
-		{
-			get
-			{
-				if (image == null)
-				{
-					image = fill.GetComponent<Image>();
-				}
-
-				return image;
-			}
-		}
-
-		// Events
-		
-		public event Action<float, bool> OnProgressChange;
-		public event Action<float> OnAnchorChange;
+		private float progress;
 
 		// Properties
-		
+
 		public float Value
 		{
 			get => value;
 
 			set
 			{
-				if (Math.Abs(this.value - value) > 0.001f || !initialValueChange)
-				{
-					initialValueChange = true;
-					this.value = Mathf.Clamp01(value);
-
-					if (Application.isPlaying == false)
-					{
-						if (reverse)
-						{
-							fill.anchorMin = new Vector2(1 - this.value, fill.anchorMin.y);	
-							OnAnchorChange?.Invoke(1 - this.value);
-						}
-						else
-						{
-							fill.anchorMax = new Vector2(this.value, fill.anchorMax.y);		
-							OnAnchorChange?.Invoke(this.value);
-						}
-					}
-					else
-						Evaluate(this.value);
-
-					OnProgressChange?.Invoke(this.value, false);
-				}
+				this.value = Mathf.Clamp01(value);
+				Evaluate(this.value);
 			}
 		}
-
+		
 		public float DirectValue
 		{
+			get => value;
+
 			set
 			{
-				if (Math.Abs(this.value - value) > 0.001f || !initialValueChange)
+				this.value = Mathf.Clamp01(value);
+				progress = value;
+
+				if (fill != null)
 				{
-					initialValueChange = true;
-					
-					this.value = Mathf.Clamp01(value);
-					fill.DOKill();
-					fill.anchorMax = new Vector2(this.value, fill.anchorMax.y);
-					
-					OnProgressChange?.Invoke(this.value, true);
+					fill.fillAmount = progress;	
 				}
 			}
 		}
-
-		// ProgressBar
-
-		private void Init()
-		{
-			
-		}
+		
+		// FillProgressBar
 		
 		private void Evaluate(float normalizedValue)
 		{
 			fill.DOKill();
 
-			if (reverse)
+			DOTween.To(x => progress = x, fill.fillAmount, normalizedValue, fillDuration).OnUpdate(() =>
 			{
-				fill.DOAnchorMin(new Vector2(1 - normalizedValue, fill.anchorMin.y), FillDuration)
-					.SetEase(ease).SetDelay(delay).OnUpdate(() =>
-					{
-						OnAnchorChange?.Invoke(1 - normalizedValue);
-					});
-			}
-			else
-			{
-				fill.DOAnchorMax(new Vector2(normalizedValue, fill.anchorMax.y), FillDuration)
-					.SetEase(ease).SetDelay(delay).OnUpdate(() =>
-					{
-						OnAnchorChange?.Invoke(normalizedValue);
-					});
-			}
+				fill.fillAmount = progress;
+			}).SetEase(ease).SetDelay(delay);
 		}
-
-		private void Awake()
-		{
-			Init();
-		}
-
-#if UNITY_EDITOR
-		public void Setup()
-		{
-			fill = (RectTransform)transform.GetChild(1).GetComponentInChildren<Image>().transform;
-			ease = AnimationCurve.Linear(0, 0, 1, 1);
-
-			OnProgressChange?.Invoke(Value, false);
-		}
-#endif
-	}
+	}	
 }

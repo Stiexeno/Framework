@@ -134,7 +134,7 @@ namespace Framework.Installer
 
         private static void SetupGitIgnore()
         {
-            var srcGitIgnorePath = Path.GetFullPath($"Packages/com.framework.dependency-injection/Editor/Installer/GitIgnore.txt");
+            var srcGitIgnorePath = Path.GetFullPath($"Packages/{CoreConstants.PACKAGE_NAME}/Editor/Installer/GitIgnore.txt");
             var gitIgnorePath = Path.GetFullPath(".gitignore");
             File.WriteAllText(gitIgnorePath, File.ReadAllText(srcGitIgnorePath));
         }
