@@ -1,7 +1,6 @@
 using System.IO;
 using UnityEditor;
 using UnityEngine;
-using SF = UnityEngine.SerializeField;
 
 namespace Framework.Editor.Saves
 {
@@ -23,10 +22,41 @@ namespace Framework.Editor.Saves
 		    var guiContent = new GUIContent( content.image);
 		    if (GUILayout.Button(guiContent, GUILayout.Width(30.0f)))
 		    {
-			    if (AssetDatabase.IsValidFolder(configPath))
+			    if (Event.current.button == 0 && Event.current.type == EventType.Used)
 			    {
-				    AssetDatabase.DeleteAsset(configPath);
-				    AssetDatabase.Refresh();   
+				    if (AssetDatabase.IsValidFolder(configPath))
+				    {
+					    AssetDatabase.DeleteAsset(configPath);
+					    AssetDatabase.Refresh();   
+				    }   
+			    }
+
+			    if (Event.current.button == 1 && Event.current.type == EventType.Used)
+			    {
+				    string folderPath = Application.dataPath + "/Saves";
+				    string[] filePaths = Directory.GetFiles(folderPath, "*.json");
+
+				    var menu = new GenericMenu();
+				    foreach (var path in filePaths)
+				    {
+					    string fileName = Path.GetFileNameWithoutExtension(path);
+					    
+					    menu.AddItem(new GUIContent($"{fileName}"), false, () =>
+					    {
+						    string assetPath = "Assets" + path.Substring(Application.dataPath.Length);
+						    AssetDatabase.DeleteAsset(assetPath);
+						    AssetDatabase.Refresh();
+
+						    string[] paths = Directory.GetFiles(folderPath, "*.json");
+						    if (paths.Length == 0)
+						    {
+							    AssetDatabase.DeleteAsset(configPath);
+							    AssetDatabase.Refresh();
+						    }
+					    });
+				    }
+				    
+				    menu.ShowAsContext();
 			    }
 		    }
 	    }
