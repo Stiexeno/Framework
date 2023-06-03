@@ -3,7 +3,7 @@ using SF = UnityEngine.SerializeField;
 
 namespace Framework.Core
 {
-	public abstract class ConfigBase : ScriptableObject
+	public abstract class AbstractConfig : ScriptableObject
 	{
 	}   
 }

@@ -99,7 +99,7 @@ namespace Framework
 			return list == null || list.Count <= 0;
 		}
 
-		public static bool ContainDetails<T>(this List<T> list, Predicate<T> match)
+		public static bool Contains<T>(this List<T> list, Predicate<T> match)
 		{
 			foreach (T value in list)
 			{

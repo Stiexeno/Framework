@@ -45,7 +45,7 @@ namespace Framework.Installer
 
             const float buttonHeight = 30f;
             rect.y += TOP_PADDING + 1;
-            if (OnButton(rect, "Setup App"))
+            if (OnButton(rect, "Setup Scene"))
             {
                 InstallerActions.SetupApp();
             }

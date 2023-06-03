@@ -84,7 +84,7 @@ namespace Framework.ContextEditor
 
 				foreach (var container in sceneContext.DiContainer.Container)
 				{
-					if (container.Value.Instance is ConfigBase)
+					if (container.Value.Instance is AbstractConfig)
 						continue;
 
 					var interfaces = "";
@@ -120,7 +120,7 @@ namespace Framework.ContextEditor
 			var tapRect = EditorGUILayout.GetControlRect();
 
 			tapRect.x = 0;
-			tapRect.y -= 4;
+			tapRect.y -= 5;
 			tapRect.width = EditorGUIUtility.currentViewWidth;
 			
 			// Create a custom GUIStyle for the active button
@@ -147,6 +147,11 @@ namespace Framework.ContextEditor
 			{
 				tab = Tab.Other;
 			}
+
+			tapRect.width = EditorGUIUtility.currentViewWidth;
+			tapRect.x = 0;
+			tapRect.height = 1;
+			EditorGUI.DrawRect(tapRect, new Color(0.1f, 0.1f, 0.1f));
 		}
 		
 		private void GenerateInstallers()

@@ -8,7 +8,7 @@ namespace Framework.Core
     {
         //Serialized fields
 
-        [SF] private bool autoRun;
+        [SF] private bool autoRun = true;
         [SF] private AbstractInstaller[] installers;
 
         //Private fields

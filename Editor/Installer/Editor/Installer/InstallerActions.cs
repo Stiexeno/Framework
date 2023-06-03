@@ -1,3 +1,4 @@
+using System.IO;
 using Framework.Core;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -84,6 +85,22 @@ namespace Framework.Installer
 
         public static void SetupApp()
         {
+            EditorUtility.DisplayProgressBar("Installer", $"Creating SceneContext to current scene", 0);
+
+            var sceneContext = GameObject.FindObjectOfType<SceneContext>();
+            
+            if (sceneContext == null)
+            {
+                var sceneContextInstace = new GameObject("SceneContext");
+                sceneContext = sceneContextInstace.AddComponent<SceneContext>();
+                
+                sceneContext.transform.SetAsFirstSibling();
+            }
+
+            SetupGitIgnore();
+            
+            EditorUtility.ClearProgressBar();
+            
             //EditorUtility.DisplayProgressBar("Installer", $"Cloning {App.MANIFEST_PATH}.cs", 0);
             //
             //string customModulesDir = Path.Combine(Application.dataPath, "Scripts/Core/");
@@ -113,6 +130,13 @@ namespace Framework.Installer
             //
             //CompilationPipeline.compilationFinished -= CompileFinished;
             //CompilationPipeline.compilationFinished += CompileFinished;
+        }
+
+        private static void SetupGitIgnore()
+        {
+            var srcGitIgnorePath = Path.GetFullPath($"Packages/com.framework.dependency-injection/Editor/Installer/GitIgnore.txt");
+            var gitIgnorePath = Path.GetFullPath(".gitignore");
+            File.WriteAllText(gitIgnorePath, File.ReadAllText(srcGitIgnorePath));
         }
         
         public static void SetupManifest()

@@ -4,8 +4,7 @@ using SF = UnityEngine.SerializeField;
 
 namespace Framework.Wallet
 {
-	[CreateAssetMenu(fileName = "WalletConfig", menuName = "Framework/Wallet/WalletConfig")]
-	public class WalletConfig : ConfigBase
+	public class WalletConfig : AbstractConfig
 	{
 		public Currency softCurrency;
 		public Currency hardCurrency;
