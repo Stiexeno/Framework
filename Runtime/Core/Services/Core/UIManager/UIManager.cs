@@ -154,7 +154,7 @@ namespace Framework.Core
             return EventSystem.IsPointerOverGameObject(0);
         }
         
-        public Vector2 ConvertWorldToCanvas(Vector3 worldPosition)
+        public Vector2 WorldToCanvas(Vector3 worldPosition)
         {
             var viewportPosition = Camera.WorldToViewportPoint(worldPosition);
             var canvasRect = Canvas.transform.RectTransform();

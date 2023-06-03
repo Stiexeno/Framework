@@ -29,7 +29,7 @@ namespace Framework.ContextEditor
 
 		public override void OnInspectorGUI()
 		{
-			DrawHeader();
+			DrawNavigation();
 
 			if (Application.isPlaying)
 				GUI.enabled = false;
@@ -115,7 +115,7 @@ namespace Framework.ContextEditor
 			}
 		}
 
-		private void DrawHeader()
+		private void DrawNavigation()
 		{
 			var tapRect = EditorGUILayout.GetControlRect();
 
@@ -131,13 +131,13 @@ namespace Framework.ContextEditor
 			GUI.Box(tapRect, "", EditorStyles.toolbar);
 
 			tapRect.width /= 3;
-			if (GUI.Button(tapRect, EditorHelper.CreateNamedIcon("Context", "d_Navigation"), tab == Tab.Context ? activeButtonStyle : EditorStyles.toolbarButton))
+			if (GUI.Button(tapRect, EditorHelper.Icon("Context", "d_Navigation"), tab == Tab.Context ? activeButtonStyle : EditorStyles.toolbarButton))
 			{
 				tab = Tab.Context;
 			}
 			
 			tapRect.x += tapRect.width;
-			if (GUI.Button(tapRect, EditorHelper.CreateNamedIcon("Configs", "d_ScriptableObject Icon"), tab == Tab.Config ? activeButtonStyle : EditorStyles.toolbarButton))
+			if (GUI.Button(tapRect, EditorHelper.Icon("Configs", "d_ScriptableObject Icon"), tab == Tab.Config ? activeButtonStyle : EditorStyles.toolbarButton))
 			{
 				tab = Tab.Config;
 			}

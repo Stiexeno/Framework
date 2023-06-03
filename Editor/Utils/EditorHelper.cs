@@ -6,6 +6,12 @@ namespace Framework.Editor
 {
     public static class EditorHelper
     {
+        /// <summary>
+        /// Draws a border rect in the editor by given rect
+        /// </summary>
+        /// <param name="area">Rect area</param>
+        /// <param name="color">Border color</param>
+        /// <param name="borderWidth">Border width</param>
         public static void DrawBorderRect(Rect area, Color color,
             float borderWidth)
         {
@@ -50,7 +56,14 @@ namespace Framework.Editor
             EditorGUI.DrawRect(lineRect, color);
         }
         
-        public static GUIContent CreateNamedIcon(string text, string iconId, string toolTip = null)
+        /// <summary>
+        /// Creates a GUIContent with given text and icon
+        /// </summary>
+        /// <param name="text">Text on the left, can be empty</param>
+        /// <param name="iconId">https://github.com/halak/unity-editor-icons/tree/master</param>
+        /// <param name="toolTip">Text on hover</param>
+        /// <returns></returns>
+        public static GUIContent Icon(string text, string iconId, string toolTip = null)
         {
             var icon = new GUIContent();
             if (string.IsNullOrEmpty(iconId) == false)
@@ -61,6 +74,11 @@ namespace Framework.Editor
             return new GUIContent($"{text}", icon.image, $"{toolTip}");
         }
         
+        /// <summary>
+        /// Creates a texture2D with given color
+        /// </summary>
+        /// <param name="color">Texture color</param>
+        /// <returns></returns>
         public static Texture2D Texture2DColor(Color color)
         {
             var texture = new Texture2D(Screen.width, Screen.height);
@@ -70,13 +88,22 @@ namespace Framework.Editor
             return texture;
         }
         
+        /// <summary>
+        /// Draws a vertical line in the editor by given rect
+        /// </summary>
+        /// <param name="rect"></param>
         public static void DrawVerticalLine(Rect rect)
         {
             rect.width = 1f;
-            
             EditorGUI.DrawRect(rect, new Color(0.14f, 0.14f, 0.14f));
         }
         
+        /// <summary>
+        /// Draws a vertical line in the editor
+        /// </summary>
+        /// <param name="color">Line color</param>
+        /// <param name="thickness">Line thickness</param>
+        /// <param name="padding">Line padding</param>
         public static void DrawVerticalLine(Color color, int thickness = 1, int padding = 10, int length = 100)
         {
             Rect r = EditorGUILayout.GetControlRect(GUILayout.Width(padding+thickness),GUILayout.Height(length));
@@ -86,6 +113,12 @@ namespace Framework.Editor
             EditorGUI.DrawRect(r, color);
         }
         
+        /// <summary>
+        /// Draws a horizontal line in the editor
+        /// </summary>
+        /// <param name="color">Line color</param>
+        /// <param name="thickness">Line thickness</param>
+        /// <param name="padding">Line padding</param>
         public static void DrawHorizontalLine(Color color, int thickness = 1, int padding = 10)
         {
             Rect r = EditorGUILayout.GetControlRect(GUILayout.Height(padding+thickness));

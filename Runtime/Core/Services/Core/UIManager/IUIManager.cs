@@ -17,6 +17,6 @@ namespace Framework.Core
 		
 		void CloseDialog<T>(Action callBack = null) where T : class, IDialog;
 		bool IsPointerOverUI();
-		Vector2 ConvertWorldToCanvas(Vector3 worldPosition);
+		Vector2 WorldToCanvas(Vector3 worldPosition);
 	}
 }

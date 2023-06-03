@@ -29,8 +29,6 @@ namespace Framework.Core
         {
             diContainer = Context.DiContainer.CreateSubContainer();
 
-            diContainer.Bind<IContext>().FromInstance(this);
-
             foreach (var installer in installers)
             {
                 installer.InstallBindings(diContainer);
