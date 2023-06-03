@@ -8,6 +8,7 @@ namespace Framework.Installer
     public static class InstallerRegistry
     {
         public static readonly string PACKAGE_REGISTRY = Path.Combine(Application.dataPath, "Installer");
+        
         private const string signature = "com.framework.";
         
         private static List<string> installedPackages = new List<string>();

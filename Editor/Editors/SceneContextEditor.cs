@@ -13,7 +13,12 @@ namespace Framework.ContextEditor
 	[CustomEditor(typeof(SceneContext))]
 	public class SceneContextEditor : UnityEditor.Editor
 	{
+		private enum Tab {Context, Config, Other}
+		
 		private SceneContext sceneContext;
+		private ConfigProvider configProvider;
+		
+		private Tab tab;
 
 		private const string INSTALLERS_PATH = "Configs/Installers/";
 
@@ -24,15 +29,34 @@ namespace Framework.ContextEditor
 
 		public override void OnInspectorGUI()
 		{
+			DrawHeader();
+
 			if (Application.isPlaying)
 				GUI.enabled = false;
-			
-			DrawDefaultInspector();
-			DrawRefreshButton();
-			
+
+			if (tab == Tab.Context)
+			{
+				DrawDefaultInspector();
+				DrawRefreshButton();
+			}
+			else if(tab == Tab.Config)
+			{
+				DrawConfig();
+			}
+			else
+			{
+				EditorGUILayout.LabelField("Not implemented yet");
+			}
+
 			if (Application.isPlaying)
 				GUI.enabled = true;
 			DrawFooter();
+		}
+
+		private void DrawConfig()
+		{
+			var editor = CreateEditor(configProvider);
+			editor.OnInspectorGUI();
 		}
 
 		private void DrawRefreshButton()
@@ -91,7 +115,40 @@ namespace Framework.ContextEditor
 			}
 		}
 
+		private void DrawHeader()
+		{
+			var tapRect = EditorGUILayout.GetControlRect();
 
+			tapRect.x = 0;
+			tapRect.y -= 4;
+			tapRect.width = EditorGUIUtility.currentViewWidth;
+			
+			// Create a custom GUIStyle for the active button
+			var activeButtonStyle = new GUIStyle(EditorStyles.toolbarButton);
+			activeButtonStyle.normal.background = EditorHelper.Texture2DColor(new Color(0.17f, 0.36f, 0.53f));
+			activeButtonStyle.imagePosition = ImagePosition.ImageLeft;
+			
+			GUI.Box(tapRect, "", EditorStyles.toolbar);
+
+			tapRect.width /= 3;
+			if (GUI.Button(tapRect, EditorHelper.CreateNamedIcon("Context", "d_Navigation"), tab == Tab.Context ? activeButtonStyle : EditorStyles.toolbarButton))
+			{
+				tab = Tab.Context;
+			}
+			
+			tapRect.x += tapRect.width;
+			if (GUI.Button(tapRect, EditorHelper.CreateNamedIcon("Configs", "d_ScriptableObject Icon"), tab == Tab.Config ? activeButtonStyle : EditorStyles.toolbarButton))
+			{
+				tab = Tab.Config;
+			}
+			
+			tapRect.x += tapRect.width;
+			if (GUI.Button(tapRect, "Other", tab == Tab.Other ? activeButtonStyle : EditorStyles.toolbarButton))
+			{
+				tab = Tab.Other;
+			}
+		}
+		
 		private void GenerateInstallers()
 		{
 			var installerTypes = AppDomain.CurrentDomain.GetAssemblies()
@@ -132,13 +189,29 @@ namespace Framework.ContextEditor
 			}
 		}
 
+		private void CollectConfig()
+		{
+			configProvider = Resources.Load<ConfigProvider>("ConfigProvider");
+			
+			if (configProvider == null)
+			{
+				var configInstance = CreateInstance<ConfigProvider>();
+				AssetDatabase.CreateAsset(configInstance, "Assets/Resources/ConfigProvider.asset");
+				
+				configProvider = Resources.Load<ConfigProvider>("ConfigProvider");
+			}
+		}
+
 		private void OnEnable()
 		{
 			sceneContext = (SceneContext)target;
 
 			var comp = sceneContext.GetComponent<Transform>();
-			
 			comp.hideFlags = HideFlags.HideInInspector;
+
+			CollectConfig();
+			
+			
 		}
 	}
 }
