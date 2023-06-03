@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Framework.Inspector;
 using UnityEditor;
 using UnityEngine;
-using SF = UnityEngine.SerializeField;
 
 namespace Framework.Core
 {
