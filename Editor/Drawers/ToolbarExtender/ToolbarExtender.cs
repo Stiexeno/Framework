@@ -56,6 +56,23 @@ namespace Framework.Editor
 		private const float PLAY_PAUSE_STOP_WIDTH_WIDTH = 100;
 #endif
 
+
+	    public static void RegisterRightEntry(Action right, int order)
+	    {
+		    if (order > rightToolbarGUI.Count)
+		    {
+			    rightToolbarGUI.Add(right);
+			    return;
+		    }
+		    
+		    if (order < 0)
+		    {
+			    order = 0;
+		    }
+		    
+		    rightToolbarGUI.Insert(order, right);
+	    }
+	    
         static void OnGUI()
         {
             if (commandStyle == null)

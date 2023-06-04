@@ -21,6 +21,15 @@ namespace Framework.Core
 			return instantiated.GetComponent<T>();
 		}
 
+		public T Instantiate<T>(string path) where T : MonoBehaviour
+		{
+			var instantiated = instantiator.InstantiatePrefab(GetPrefab<T>(path).gameObject);
+			instantiated.name = instantiated.name.Replace("(Clone)", string.Empty);
+			var transform = instantiated.transform;
+			transform.rotation = Quaternion.identity;
+			return instantiated.GetComponent<T>();
+		}
+
 		public T Instantiate<T>(GameObject prefab, Vector3 at, Transform parent = null) where T : MonoBehaviour
 		{
 			var instantiated = instantiator.InstantiatePrefab(prefab);

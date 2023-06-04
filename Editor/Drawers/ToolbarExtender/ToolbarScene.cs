@@ -15,7 +15,7 @@ namespace Framework.Editor
 
         static ToolbarScene()
         {
-            ToolbarExtender.rightToolbarGUI.Add(OnToolbarGUI);
+            ToolbarExtender.RegisterRightEntry(OnToolbarGUI, 2);
         }
 
         static void OnToolbarGUI()
@@ -52,7 +52,7 @@ namespace Framework.Editor
                 }
             }
 
-            int newSceneIndex = EditorGUILayout.Popup(sceneIndex, sceneNames, GUILayout.Width(200.0f));
+            int newSceneIndex = EditorGUILayout.Popup(sceneIndex, sceneNames, EditorStyles.toolbarPopup,GUILayout.Width(200.0f));
 
             if (newSceneIndex != sceneIndex)
             {

@@ -5,13 +5,12 @@ using Object = UnityEngine.Object;
 
 namespace Framework.Core
 {
-
     public class Binder : IBinder
     {
         private readonly Dictionary<Type, Binding> container;
         
         private IInstantiator instantiator;
-        private ConfigProvider configProvider;
+        private ConfigSettings configSettings;
 
         public Binder(Dictionary<Type, Binding> container, IInstantiator instantiator)
         {
@@ -38,17 +37,17 @@ namespace Framework.Core
 
         public void BindConfigs()
         {
-            if (configProvider == null)
+            if (configSettings == null)
             {
-                configProvider = Resources.Load<ConfigProvider>("ConfigProvider");
+                configSettings = ConfigSettings.Settings;
 
-                if (configProvider == null)
+                if (configSettings == null)
                 {
                     throw new NullReferenceException("ConfigProvider is not found. Please create ConfigProvider asset in Resources folder.");
                 }
             }
 			
-            foreach (var config in configProvider.configs)
+            foreach (var config in configSettings.configs)
             {
                 EnsureThatDependencyNotRegistered(config.GetType());
                 

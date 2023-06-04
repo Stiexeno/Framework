@@ -1,32 +1,22 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Framework.Core;
-using Framework.Editor;
 using Framework.Utils;
 using UnityEditor;
 using UnityEngine;
 
-namespace Framework.ContextEditor
+namespace Framework.Editor
 {
 	[CustomEditor(typeof(SceneContext))]
 	public class SceneContextEditor : UnityEditor.Editor
 	{
-		private enum Tab {Context, Config, Other}
-		
+		private enum Tab { Context, Config, Assets, Settings }
+
 		private SceneContext sceneContext;
-		private ConfigProvider configProvider;
+		private ConfigSettings configSettings;
 		private AssetSettings assetsSettings;
 
 		private Tab tab;
-
-		private const string INSTALLERS_PATH = "Configs/Installers/";
-
-		private static readonly HashSet<Type> excludedInstallers = new HashSet<Type>
-		{
-			typeof(BootstrapInstaller)
-		};
 
 		private MonoScript assetsScript;
 
@@ -42,34 +32,50 @@ namespace Framework.ContextEditor
 				DrawDefaultInspector();
 				DrawRefreshButton();
 			}
-			else if(tab == Tab.Config)
+			else if (tab == Tab.Config)
 			{
 				DrawConfig();
 			}
-			else
+			else if(tab == Tab.Assets)
 			{
 				DrawAssets();
+			}
+			else
+			{
+				DrawSettings();
 			}
 
 			if (Application.isPlaying)
 				GUI.enabled = true;
-			
+
 			DrawFooter();
+		}
+
+		private void DrawSettings()
+		{
+			EditorGUILayout.Toggle("Refresh on play", true);
 		}
 
 		private void DrawConfig()
 		{
-			var editor = CreateEditor(configProvider);
+			if (configSettings == null)
+				configSettings = ConfigSettings.Settings;
+			
+			var editor = CreateEditor(configSettings);
 			editor.OnInspectorGUI();
+
+			EditorGUILayout.HelpBox("AbstractConfigs will be automatically created as ScriptableObjects instances and saved to ConfigSettings", MessageType.Info);
+			if (GUILayout.Button("Refresh"))
+			{
+				ConfigSettings.Settings.GenerateConfigs();
+			}
 		}
 
 		private void DrawAssets()
 		{
 			if (assetsSettings == null)
-			{
 				assetsSettings = AssetSettings.Settings;
-			}
-			
+
 			var editor = CreateEditor(assetsSettings);
 			editor.OnInspectorGUI();
 
@@ -78,14 +84,16 @@ namespace Framework.ContextEditor
 				GUILayout.Space(5f);
 				GUI.enabled = false;
 				EditorGUILayout.ObjectField(assetsScript, typeof(MonoScript), false);
-				GUI.enabled = true;
+				
+				if (Application.isPlaying == false)
+					GUI.enabled = true;
 				
 				EditorGUILayout.HelpBox("Marked Assets will be generated to script as constants", MessageType.Info);
 			}
 
 			if (GUILayout.Button("Refresh"))
 			{
-				AssetSettings.GenerateAssetsScript(() =>
+				AssetSettings.Settings.GenerateAssetsScript(() =>
 				{
 					string outputPath = "Assets/Scripts/Generated/AssetsPath.cs";
 					assetsScript = AssetDatabase.LoadAssetAtPath<MonoScript>(outputPath);
@@ -95,12 +103,11 @@ namespace Framework.ContextEditor
 
 		private void DrawRefreshButton()
 		{
+			EditorGUILayout.HelpBox("Press Refresh button to create instance of missing installers", MessageType.Info);
 			if (GUILayout.Button("Refresh"))
 			{
-				GenerateInstallers();
+				Context.GenerateInstallers();
 			}
-
-			EditorGUILayout.HelpBox("Press Refresh button to create instance of missing installers", MessageType.Info);
 		}
 
 		private void DrawFooter()
@@ -108,7 +115,7 @@ namespace Framework.ContextEditor
 			if (Application.isPlaying)
 			{
 				EditorGUILayout.LabelField($"Scene load time: {Context.TimeTookToInstall:0.00}ms", EditorStyles.boldLabel);
-				
+
 				EditorHelper.DrawHorizontalLine(new Color(0.1f, 0.1f, 0.1f), 1, 2);
 
 				GUILayout.Space(15f);
@@ -156,89 +163,49 @@ namespace Framework.ContextEditor
 			tapRect.x = 0;
 			tapRect.y -= 5;
 			tapRect.width = EditorGUIUtility.currentViewWidth;
-			
+
 			// Create a custom GUIStyle for the active button
 			var activeButtonStyle = new GUIStyle(EditorStyles.toolbarButton);
 			activeButtonStyle.normal.background = EditorHelper.Texture2DColor(new Color(0.17f, 0.36f, 0.53f));
 			activeButtonStyle.imagePosition = ImagePosition.ImageLeft;
-			
+
 			GUI.Box(tapRect, "", EditorStyles.toolbar);
 
 			tapRect.width /= 3;
-			if (GUI.Button(tapRect, EditorHelper.Icon("Context", "d_Navigation"), tab == Tab.Context ? activeButtonStyle : EditorStyles.toolbarButton))
+			tapRect.width -= 15;
+			if (GUI.Button(tapRect, EditorHelper.Icon("Context", "d_Navigation"),
+				    tab == Tab.Context ? activeButtonStyle : EditorStyles.toolbarButton))
 			{
 				tab = Tab.Context;
 			}
-			
+
 			tapRect.x += tapRect.width;
-			if (GUI.Button(tapRect, EditorHelper.Icon("Configs", "d_ScriptableObject Icon"), tab == Tab.Config ? activeButtonStyle : EditorStyles.toolbarButton))
+			if (GUI.Button(tapRect, EditorHelper.Icon("Configs", "d_ScriptableObject Icon"),
+				    tab == Tab.Config ? activeButtonStyle : EditorStyles.toolbarButton))
 			{
 				tab = Tab.Config;
 			}
-			
+
 			tapRect.x += tapRect.width;
-			if (GUI.Button(tapRect, EditorHelper.Icon("Assets", "PreviewPackageInUse@2x"), tab == Tab.Other ? activeButtonStyle : EditorStyles.toolbarButton))
+			if (GUI.Button(tapRect, EditorHelper.Icon("Assets", "PreviewPackageInUse@2x"),
+				    tab == Tab.Assets ? activeButtonStyle : EditorStyles.toolbarButton))
 			{
-				tab = Tab.Other;
+				tab = Tab.Assets;
 			}
 
+			tapRect.x += tapRect.width;
+			tapRect.width = 45;
+			if (GUI.Button(tapRect, EditorHelper.Icon("", "d_Settings@2x"),
+				    tab == Tab.Settings ? activeButtonStyle : EditorStyles.toolbarButton))
+			{
+				tab = Tab.Settings;
+			}
+			
+			
 			tapRect.width = EditorGUIUtility.currentViewWidth;
 			tapRect.x = 0;
 			tapRect.height = 1;
 			EditorGUI.DrawRect(tapRect, new Color(0.1f, 0.1f, 0.1f));
-		}
-		
-		private void GenerateInstallers()
-		{
-			var installerTypes = AppDomain.CurrentDomain.GetAssemblies()
-				.SelectMany(assembly => assembly.GetTypes())
-				.Where(x => !x.IsAbstract)
-				.Where(type => type.BaseType == typeof(AbstractInstaller))
-				.Where(x => !excludedInstallers.Contains(x))
-				.ToArray();
-
-			var configsPath = Path.Combine(Application.dataPath, "Configs");
-			var installersPath = Path.Combine(Application.dataPath, INSTALLERS_PATH);
-
-			if (Directory.Exists(configsPath) == false)
-			{
-				Directory.CreateDirectory(configsPath);
-			}
-
-			if (Directory.Exists(installersPath) == false)
-			{
-				Directory.CreateDirectory(installersPath);
-			}
-
-			AssetDatabase.Refresh();
-
-			foreach (var installer in installerTypes)
-			{
-				var installerName = installer.Name;
-				var installerPath = "Assets/" + INSTALLERS_PATH + installerName + ".asset";
-				var installerAsset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(installerPath);
-
-				if (installerAsset == null)
-				{
-					var installerAssets = CreateInstance(installer);
-					AssetDatabase.CreateAsset(installerAssets, installerPath);
-					AssetDatabase.SaveAssets();
-					AssetDatabase.Refresh();
-				}
-			}
-		}
-
-		private void CollectConfig()
-		{
-			configProvider = Resources.Load<ConfigProvider>("ConfigProvider");
-			
-			if (configProvider == null)
-			{
-				var configInstance = CreateInstance<ConfigProvider>();
-				AssetDatabase.CreateAsset(configInstance, "Assets/Resources/ConfigProvider.asset");
-				
-				configProvider = Resources.Load<ConfigProvider>("ConfigProvider");
-			}
 		}
 
 		private void OnEnable()
@@ -248,10 +215,11 @@ namespace Framework.ContextEditor
 			var comp = sceneContext.GetComponent<Transform>();
 			comp.hideFlags = HideFlags.HideInInspector;
 
-			CollectConfig();
-
 			if (assetsSettings == null)
 				assetsSettings = AssetSettings.Settings;
+
+			if (configSettings == null)
+				configSettings = ConfigSettings.Settings;
 
 			string outputPath = "Assets/Scripts/Generated/AssetsPath.cs";
 			assetsScript = AssetDatabase.LoadAssetAtPath<MonoScript>(outputPath);

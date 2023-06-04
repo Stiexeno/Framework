@@ -9,18 +9,20 @@ namespace Framework.Editor.Saves
     {
 	    static ToolbarSaves()
 	    {
-		    ToolbarExtender.rightToolbarGUI.Add(OnToolbarGUI);
+		    ToolbarExtender.RegisterRightEntry(OnToolbarGUI, 0);
 	    }
 
 	    private static void OnToolbarGUI()
 	    {
+		    var cachedGUI = GUI.color;
+		    
 		    var configPath = Path.Combine("Assets", "Saves");
 		    if (!AssetDatabase.IsValidFolder(configPath))
 			    GUI.color = new Color(0.53f, 0.53f, 0.53f);
 			    
 		    var content = new GUIContent(EditorGUIUtility.IconContent("d_TreeEditor.Trash"));
 		    var guiContent = new GUIContent( content.image);
-		    if (GUILayout.Button(guiContent, GUILayout.Width(30.0f)))
+		    if (GUILayout.Button(guiContent, EditorStyles.toolbarButton,GUILayout.Width(30.0f)))
 		    {
 			    if (Event.current.button == 0 && Event.current.type == EventType.Used)
 			    {
@@ -34,6 +36,10 @@ namespace Framework.Editor.Saves
 			    if (Event.current.button == 1 && Event.current.type == EventType.Used)
 			    {
 				    string folderPath = Application.dataPath + "/Saves";
+
+				    if (!Directory.Exists(folderPath))
+					    return;
+				    
 				    string[] filePaths = Directory.GetFiles(folderPath, "*.json");
 
 				    var menu = new GenericMenu();
@@ -59,6 +65,8 @@ namespace Framework.Editor.Saves
 				    menu.ShowAsContext();
 			    }
 		    }
+
+		    GUI.color = cachedGUI;
 	    }
     }
 }

@@ -14,9 +14,9 @@ namespace Framework.Editor
 		
 		private const string ASSET_NAME = "AssetSettings";
 		private const string OBJECT_NAME = "com.framework.asset-settings";
-		private const string PACKAGES_PATH = "Assets/Configs";
+		private const string PATH = "Assets/Resources/Settings/";
 		
-		public static string DefaultAssetPath => PACKAGES_PATH + "/" + ASSET_NAME + ".asset";
+		private static string DefaultAssetPath => PATH + "/" + ASSET_NAME + ".asset";
 
 		private static AssetSettings assetSettings;
 		
@@ -41,8 +41,19 @@ namespace Framework.Editor
 					if (asset == null)
 					{
 						var assetInstance = CreateInstance<AssetSettings>();
+
+						if (Directory.Exists(PATH) == false)
+						{
+							if ((Directory.Exists("Assets/Resources") == false))
+							{
+								AssetDatabase.CreateFolder("Assets", "Resources");
+							}
+							
+							AssetDatabase.CreateFolder("Assets/Resources", "Settings");
+						}
 						AssetDatabase.CreateAsset(assetInstance, DefaultAssetPath);
 						AssetDatabase.SaveAssets();
+						AssetDatabase.Refresh();
 							
 						EditorBuildSettings.AddConfigObject(OBJECT_NAME, assetInstance, true);
 						EditorUtility.SetDirty(assetInstance);
@@ -55,7 +66,7 @@ namespace Framework.Editor
 			}
 		}
 
-		//[InitializeOnLoadMethod]
+		[InitializeOnLoadMethod]
 		static void RegisterWithAssetPostProcessor()
 		{
 			AssetPostProcessor.OnPostProcess.Register(OnPostProcessAllAssets, 0);
@@ -65,15 +76,15 @@ namespace Framework.Editor
 		{
 			foreach (var movedAsset in movedAssets)
 			{
-				internalValidate(movedAsset);
+				internalValidate(movedAsset, true);
 			}
 			
 			foreach (var deletedAsset in deletedAssets)
 			{
-				internalValidate(deletedAsset);
+				internalValidate(deletedAsset, false);
 			}
 
-			void internalValidate(string path)
+			void internalValidate(string path, bool recreate)
 			{
 				for (var i = Settings.assets.Count - 1; i >= 0; i--)
 				{
@@ -96,12 +107,18 @@ namespace Framework.Editor
 					}
 				}
 
+				if (recreate == false)
+					return;
+				
 				if (Settings.IsRegistered(path) == false)
 				{
 					if (IsInResources(path))
 					{
-						var asset = AssetDatabase.LoadAssetAtPath<Object>(path);
-						Settings.RegisterEntry(asset);
+						if (AssetDatabase.IsValidFolder(path) == false)
+						{
+							var asset = AssetDatabase.LoadAssetAtPath<Object>(path);
+							Settings.RegisterEntry(asset);	
+						}
 					}
 				}
 				
@@ -129,16 +146,16 @@ namespace Framework.Editor
 
 			assets.Remove(asset);
 		}
-		
-		internal bool IsRegistered(Object asset)
+
+		private bool IsRegistered(Object asset)
 		{
 			if (asset == null)
 				return false;
 
 			return assets.Contains(asset);
 		}
-		
-		internal bool IsRegistered(string path)
+
+		private bool IsRegistered(string path)
 		{
 			var assetPath = AssetDatabase.LoadAssetAtPath<Object>(path);
 			return IsRegistered(assetPath);
@@ -149,7 +166,7 @@ namespace Framework.Editor
 			return path.Replace('\\', '/').ToLower().Contains("/resources/");
 		}
 		
-		internal static void GenerateAssetsScript(Action callback = null)
+		internal void GenerateAssetsScript(Action callback = null)
 		{
 			string scriptContent = GenerateScriptContent();
 
@@ -161,7 +178,7 @@ namespace Framework.Editor
 			callback?.Invoke();
 		}
 
-		private static void EnsureOutputFolderExists(string outputPath)
+		private void EnsureOutputFolderExists(string outputPath)
 		{
 			string outputFolder = Path.GetDirectoryName(outputPath);
 			if (!Directory.Exists(outputFolder))
@@ -171,7 +188,7 @@ namespace Framework.Editor
 			}
 		}
 
-		private static string GenerateScriptContent()
+		private string GenerateScriptContent()
 		{
 			string scriptContent = "namespace Framework.Generated\n";
 			scriptContent += "{\n\t" +
