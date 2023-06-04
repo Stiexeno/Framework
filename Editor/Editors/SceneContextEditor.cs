@@ -15,10 +15,14 @@ namespace Framework.Editor
 		private SceneContext sceneContext;
 		private ConfigSettings configSettings;
 		private AssetSettings assetsSettings;
+		private SystemSettings systemSettings;
 
 		private Tab tab;
 
 		private MonoScript assetsScript;
+
+		private static GUIStyle activeButtonStyle;
+
 
 		public override void OnInspectorGUI()
 		{
@@ -53,7 +57,11 @@ namespace Framework.Editor
 
 		private void DrawSettings()
 		{
-			EditorGUILayout.Toggle("Refresh on play", true);
+			if (systemSettings == null)
+				systemSettings = SystemSettings.Settings;
+			
+			var editor = CreateEditor(systemSettings);
+			editor.OnInspectorGUI();
 		}
 
 		private void DrawConfig()
@@ -165,9 +173,18 @@ namespace Framework.Editor
 			tapRect.width = EditorGUIUtility.currentViewWidth;
 
 			// Create a custom GUIStyle for the active button
-			var activeButtonStyle = new GUIStyle(EditorStyles.toolbarButton);
-			activeButtonStyle.normal.background = EditorHelper.Texture2DColor(new Color(0.17f, 0.36f, 0.53f));
-			activeButtonStyle.imagePosition = ImagePosition.ImageLeft;
+
+			if (activeButtonStyle == null)
+			{
+				activeButtonStyle = new GUIStyle(EditorStyles.toolbarButton)
+				{
+					normal =
+					{
+						background = EditorHelper.Texture2DColor(new Color(0.17f, 0.36f, 0.53f))
+					},
+					imagePosition = ImagePosition.ImageLeft
+				};
+			}
 
 			GUI.Box(tapRect, "", EditorStyles.toolbar);
 
@@ -220,6 +237,9 @@ namespace Framework.Editor
 
 			if (configSettings == null)
 				configSettings = ConfigSettings.Settings;
+			
+			if (systemSettings == null)
+				systemSettings = SystemSettings.Settings;
 
 			string outputPath = "Assets/Scripts/Generated/AssetsPath.cs";
 			assetsScript = AssetDatabase.LoadAssetAtPath<MonoScript>(outputPath);

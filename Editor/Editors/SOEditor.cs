@@ -59,7 +59,7 @@ namespace Framework.Editor
         private void DrawButton(MethodInfo thisMethod)
         {
             var attribute         = thisMethod.GetCustomAttribute<ButtonAttribute>();
-            var buttonName = string.IsNullOrEmpty(attribute.label) ? $"Method: {thisMethod.Name}" : attribute.label;
+            var buttonName = string.IsNullOrEmpty(attribute.label) ? $"{thisMethod.Name}" : attribute.label;
             var ifPlaying         = thisMethod.GetCustomAttribute<IfPlaying>();
 
             var showButton = true;
