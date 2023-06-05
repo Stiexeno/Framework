@@ -28,8 +28,14 @@ namespace Framework.Editor.Saves
 			    {
 				    if (AssetDatabase.IsValidFolder(configPath))
 				    {
-					    AssetDatabase.DeleteAsset(configPath);
-					    AssetDatabase.Refresh();   
+					    var result = EditorUtility.DisplayDialog("Delete save data",
+						    "Are you sure you want to delete all save data?\n\nYou cannot undo the delete assets action", "Delete", "Cancel");
+
+					    if (result)
+					    {
+						    AssetDatabase.DeleteAsset(configPath);
+						    AssetDatabase.Refresh();      
+					    }
 				    }   
 			    }
 

@@ -11,6 +11,13 @@ namespace Framework.Editor.Timescale
 		static ToolbarTimeScale()
 		{
 			ToolbarExtender.leftToolbarGUI.Add(OnToolbarGUI);
+			EditorApplication.playModeStateChanged += ModeStateChanged ;
+		}
+
+		private static void ModeStateChanged(PlayModeStateChange state)
+		{
+			if(state == PlayModeStateChange.EnteredEditMode)
+				Time.timeScale = 1;
 		}
 
 		private static void OnToolbarGUI()
@@ -41,13 +48,14 @@ namespace Framework.Editor.Timescale
 			var rect = GUILayoutUtility.GetLastRect();
 
 			var sliderRect = rect;
-			var fillAomunt = Time.timeScale / 5f;
-			
-			sliderRect.width *= fillAomunt;
+			var fillAmount = Time.timeScale / 5f;
+
+			sliderRect.width *= fillAmount;
 			
 			EditorGUI.DrawRect(sliderRect, new Color(0.4f, 0.4f, 0.4f));
-			
-			GUI.Label(rect, $"Time Scale: {Time.timeScale:0.00}", textStyle);
+
+			var time = $"{Time.timeScale:0.00}".Replace(",", ".");
+			GUI.Label(rect, $"Time Scale: {time}", textStyle);
 
 			var defaultRect = rect;
 
