@@ -1,12 +1,11 @@
 using System;
 using System.Reflection;
-using Framework.Editor;
 using Framwework.Inspector;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Framwework.Editor
+namespace Framework.Editor
 {
 	[CustomPropertyDrawer(typeof(Object), true)]
 	public class RequiredDrawer : PropertyDrawer
@@ -19,6 +18,13 @@ namespace Framwework.Editor
 			position = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
 			EditorGUI.PropertyField(position, property, GUIContent.none, true);
 
+			OnRequired(position, property, label);
+
+			EditorGUI.indentLevel = indent;
+		}
+
+		protected void OnRequired(Rect position, SerializedProperty property, GUIContent label)
+		{
 			var value = property.objectReferenceValue;
 			var containsFieldAttribute = fieldInfo.GetCustomAttribute<CanBeNull>() != null;
 			var containsClassAttribute = property.serializedObject.targetObject.GetType().GetCustomAttribute<CanBeNull>() != null;
@@ -38,8 +44,8 @@ namespace Framwework.Editor
 					position.x -= 22f;
 
 					if (GUI.Button(position,
-						new GUIContent(EditorGUIUtility.IconContent(containsKey == false ? RequiredData.Data.GetIconType() : "Refresh")),
-						GUIStyle.none))
+						    new GUIContent(EditorGUIUtility.IconContent(containsKey == false ? RequiredData.Data.GetIconType() : "Refresh")),
+						    GUIStyle.none))
 					{
 						if (containsKey == false)
 						{
@@ -52,8 +58,6 @@ namespace Framwework.Editor
 					}
 				}
 			}
-
-			EditorGUI.indentLevel = indent;
 		}
 
 		private bool IsExcludedType(Type parentType)

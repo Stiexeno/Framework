@@ -63,6 +63,7 @@ namespace Framework.Editor
         /// <param name="iconId">https://github.com/halak/unity-editor-icons/tree/master</param>
         /// <param name="toolTip">Text on hover</param>
         /// <returns></returns>
+        /// TODO: Change it to string iconId, string text = "", string toolTip = null
         public static GUIContent Icon(string text, string iconId, string toolTip = null)
         {
             var icon = new GUIContent();
