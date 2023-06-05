@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Framework.Core;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -20,6 +21,13 @@ namespace Framework.Editor
 
 		private static AssetSettings assetSettings;
 		
+		private static HashSet<Type> excludedTypes = new HashSet<Type>
+		{
+			typeof(AssetSettings),
+			typeof(ConfigSettings),
+			typeof(SystemSettings)
+		};
+
 		public static AssetSettings Settings
 		{
 			get
@@ -86,6 +94,9 @@ namespace Framework.Editor
 
 			void internalValidate(string path, bool recreate)
 			{
+				if (excludedTypes.Contains(AssetDatabase.GetMainAssetTypeAtPath(path)))
+					return;
+				
 				for (var i = Settings.assets.Count - 1; i >= 0; i--)
 				{
 					var asset = Settings.assets[i];
