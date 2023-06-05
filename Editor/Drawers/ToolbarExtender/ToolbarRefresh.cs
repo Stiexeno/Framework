@@ -22,6 +22,8 @@ namespace Framework.Editor
                 ConfigSettings.Settings.GenerateConfigs();
                 AssetSettings.Settings.GenerateAssetsScript();
             }
+            
+            GUILayout.Space(5f);
         }
     }
 }

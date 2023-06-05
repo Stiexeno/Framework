@@ -1,14 +1,13 @@
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.Windows;
-using SF = UnityEngine.SerializeField;
 
 namespace Framework.Core
 {
 	public class SystemSettings : ScriptableObject
 	{
-		[FormerlySerializedAs("autoRefresh")] public bool autoRefreshOnPlay;
+		public bool autoRefreshOnPlay;
+		public bool deleteDataConfirmation;
 		
 		private const string ASSET_NAME = "SystemSettings";
 		private const string OBJECT_NAME = "com.framework.system-settings";
