@@ -17,7 +17,7 @@ namespace Framework.Editor
 			{
 				if (SystemSettings.Settings.autoRefreshOnPlay)
 				{
-					Context.GenerateInstallers();
+					ProjectContext.GenerateInstallers();
 					ConfigSettings.Settings.GenerateConfigs();
 					AssetSettings.Settings.GenerateAssetsScript();	
 				}

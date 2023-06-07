@@ -27,7 +27,7 @@ namespace Framework.Core
 
         public void CreateContainer(DiContainer overrideContainer = null)
         {
-            diContainer = Context.DiContainer.CreateSubContainer();
+            diContainer = ProjectContext.DiContainer.CreateSubContainer();
 
             foreach (var installer in installers)
             {
@@ -57,7 +57,7 @@ namespace Framework.Core
             
             this.diContainer.InjectToSceneGameObjects();
             
-            Context.TimeTookToInstall = Time.realtimeSinceStartup;
+            ProjectContext.TimeTookToInstall = Time.realtimeSinceStartup;
         }
 
         // MonoBehaviour

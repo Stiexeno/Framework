@@ -6,10 +6,11 @@ using System.Linq;
 using UnityEditor;
 #endif
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Framework.Core
 {
-	public static class Context
+	public static class ProjectContext
 	{
 		public static DiContainer DiContainer { get; private set; }
 
@@ -27,11 +28,28 @@ namespace Framework.Core
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 		private static void Initialize()
 		{
+			Assert.IsNotNull(GameObject.FindAnyObjectByType<SceneContext>(), 
+				"Could not find SceneContext in scene");
+			
 			OnPreInstall?.Invoke();
-			DiContainer = new DiContainer();
+
+			InternalInitialize();
+
 			OnPostInstall?.Invoke();
 
 			SetupBooststrap();
+		}
+
+		private static void InternalInitialize()
+		{
+			DiContainer = new DiContainer();
+			
+			// Add here InjectableMonoBehaviours
+			// And queue it for injection
+			
+			// After setup BootstrapInstaller
+			
+			// Resolve roots
 		}
 		
 		private static void SetupBooststrap()

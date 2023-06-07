@@ -109,7 +109,6 @@ namespace Framework
 		public void InjectToSceneGameObjects()
 		{
 			var sceneGameObjects = UnityEngine.Object.FindObjectsOfType<MonoBehaviour>(true);
-			
 			InjectInto(sceneGameObjects);
 		}
 

@@ -112,7 +112,7 @@ namespace Framework.Editor
 			EditorGUILayout.HelpBox("Press Refresh button to create instance of missing installers", MessageType.Info);
 			if (GUILayout.Button("Refresh"))
 			{
-				Context.GenerateInstallers();
+				ProjectContext.GenerateInstallers();
 			}
 		}
 
@@ -120,7 +120,7 @@ namespace Framework.Editor
 		{
 			if (Application.isPlaying)
 			{
-				EditorGUILayout.LabelField($"Scene load time: {Context.TimeTookToInstall:0.00}ms", EditorStyles.boldLabel);
+				EditorGUILayout.LabelField($"Scene load time: {ProjectContext.TimeTookToInstall:0.00}ms", EditorStyles.boldLabel);
 
 				EditorHelper.DrawHorizontalLine(new Color(0.1f, 0.1f, 0.1f), 1, 2);
 
