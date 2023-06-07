@@ -4,13 +4,14 @@ using UnityEngine;
 
 namespace Framework.Core
 {
-	public class DiContainer : IInstantiator, IResolver
+	public sealed class DiContainer : IInstantiator, IResolver
 	{
 		public Dictionary<Type, Binding> Container { get; }
 
 		private readonly IResolver resolver;
 		private readonly IInstantiator instantiator;
 		private readonly IBinder binder;
+		private readonly ILazyInjector lazyInjector;
 
 		private readonly List<DiContainer> parents;
 
@@ -21,6 +22,7 @@ namespace Framework.Core
 			binder = new Binder(Container, this);
 			instantiator = new Instantiator(this);
 			resolver = new Resolver(this, this);
+			lazyInjector = new LazyInjector(this);
 			
 			foreach (var parent in this.parents)
 			{
@@ -42,21 +44,28 @@ namespace Framework.Core
 
 		public ContractBinder<TContract> Bind<TContract>() => binder.Bind<TContract>();
 		public void Unbind<TContract>() => binder.Unbind<TContract>();
-		public void BindConfigs() => binder.BindConfigs();
+		internal void BindConfigs() => binder.BindConfigs();
 
 		// Instantiator
 
 		public T Instantiate<T>() => instantiator.Instantiate<T>();
 		public object Instantiate(Type bindingConcreteType) => instantiator.Instantiate(bindingConcreteType);
+		object IInstantiator.Instantiate(Binding binding)	=> instantiator.Instantiate(binding);
+
 		public T Instantiate<T>(params object[] args) => instantiator.Instantiate<T>(args);
 		public GameObject InstantiatePrefab(GameObject original) => instantiator.InstantiatePrefab(original);
-
-		public void InjectToSceneGameObjects() => instantiator.InjectToSceneGameObjects();
 
 		// Resolver
 
 		public T Resolve<T>() => resolver.Resolve<T>();
 		public object Resolve(Type contractType) => resolver.Resolve(contractType);
-		public T FindInScene<T>() where T : MonoBehaviour => resolver.FindInScene<T>();
+		T IResolver.FindInScene<T>() => resolver.FindInScene<T>();
+		
+		// Inject
+
+		public void Inject(object instance) => lazyInjector.Inject(instance);
+		public void Inject(IEnumerable<object> instances) => lazyInjector.Inject(instances);
+		internal void InjectAll() => lazyInjector.InjectAll();
+		internal void QueueForInject(object instance) => lazyInjector.QueueToInject(instance);
 	}
 }

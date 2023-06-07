@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Framework.Utils;
 #if UNITY_EDITOR
 using System.Linq;
 using UnityEditor;
@@ -10,9 +11,10 @@ using UnityEngine.Assertions;
 
 namespace Framework.Core
 {
-	public static class ProjectContext
+	public static class Context
 	{
 		public static DiContainer DiContainer { get; private set; }
+		public static SceneContext SceneContext { get; set; }
 
 		public static float TimeTookToInstall { get; set; }
 
@@ -28,30 +30,16 @@ namespace Framework.Core
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 		private static void Initialize()
 		{
-			Assert.IsNotNull(GameObject.FindAnyObjectByType<SceneContext>(), 
+			Assert.IsNotNull(GameObject.FindObjectOfType<SceneContext>(), 
 				"Could not find SceneContext in scene");
 			
 			OnPreInstall?.Invoke();
 
-			InternalInitialize();
-
-			OnPostInstall?.Invoke();
-
-			SetupBooststrap();
-		}
-
-		private static void InternalInitialize()
-		{
 			DiContainer = new DiContainer();
-			
-			// Add here InjectableMonoBehaviours
-			// And queue it for injection
-			
-			// After setup BootstrapInstaller
-			
-			// Resolve roots
+			SetupBooststrap();
+			OnPostInstall?.Invoke();
 		}
-		
+
 		private static void SetupBooststrap()
 		{
 			DiContainer.BindConfigs();
@@ -101,5 +89,10 @@ namespace Framework.Core
 			}
 		}
 		#endif
+		
+		public static void Exception(string message, string solution = "")
+		{
+			throw new Exception($"{"[Inject]".SetColor(new Color(0.64f, 0.87f, 0.18f))} {message} \n{solution.SetColor(new Color(0.98f, 0.69f, 0.16f))}");
+		}
 	}	
 }

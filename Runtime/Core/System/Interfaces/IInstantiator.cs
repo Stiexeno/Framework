@@ -7,7 +7,7 @@ namespace Framework
     {
         T Instantiate<T>();
         object Instantiate(Type objectType);
-        void InjectToSceneGameObjects();
+        internal object Instantiate(Binding binding);
         GameObject InstantiatePrefab(GameObject original);
         T Instantiate<T>(params object[] args);
     }

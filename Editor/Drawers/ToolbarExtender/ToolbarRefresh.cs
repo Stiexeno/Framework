@@ -18,7 +18,7 @@ namespace Framework.Editor
             var guiContent = new GUIContent( content.image);
             if (GUILayout.Button(guiContent, EditorStyles.toolbarButton,GUILayout.Width(30.0f)))
             {
-                ProjectContext.GenerateInstallers();
+                Context.GenerateInstallers();
                 ConfigSettings.Settings.GenerateConfigs();
                 AssetSettings.Settings.GenerateAssetsScript();
             }

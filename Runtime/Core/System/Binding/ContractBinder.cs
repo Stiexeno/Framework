@@ -2,18 +2,15 @@ using System;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Framework
+namespace Framework.Core
 {
-    public enum InstantiateArgs {None, DontDestroyOnLoad}
-    public class ContractBinder<TContract>
+    public class ContractBinder<TContract> : AbstractBinder
     {
-        private readonly Binding binding;
         private readonly IInstantiator instantiator;
 
-        public ContractBinder(Binding binding, IInstantiator instantiator)
+        public ContractBinder(Binding binding, IInstantiator instantiator) : base(binding)
         {
             this.instantiator = instantiator;
-            this.binding = binding;
         }
 
         public TContract FromInstance<TConcrete>(TConcrete instance) where TConcrete : TContract
@@ -25,31 +22,22 @@ namespace Framework
             
             return (TContract)binding.Instance;
         }
-
-        public TContract Instantiate(InstantiateArgs args = default)
+        
+        public NonLazyBinder NonLazy()
         {
-            var newInstance = instantiator.Instantiate<TContract>();
-
-            if (newInstance is MonoBehaviour monoBehaviour)
-            {
-                if (args == InstantiateArgs.DontDestroyOnLoad)
-                {
-                    Object.DontDestroyOnLoad(monoBehaviour);
-                }
-            }
-            
-            return FromInstance(newInstance);
+            return new NonLazyBinder(binding, instantiator);
         }
         
         //TODO: Find a better solution to get rid of <TConcrete>
-        public TContract FindInScene<TConcrete>() where TConcrete : Object, TContract
+        public TContract FindInScene()
         {
-            var targetObject = Object.FindObjectOfType<TConcrete>(true);
+            object targetObject = Object.FindObjectOfType(typeof(TContract), true);
             
             if (targetObject == null)
-                throw new NullReferenceException($"Object of type {typeof(TContract)} not found in scene");
+                Context.Exception($"Object of type {typeof(TContract).Name} not found in scene", 
+                    $"Create {typeof(TContract).Name} in scene or add binding to Installer");
                 
-            return FromInstance(targetObject);
+            return FromInstance((TContract)targetObject);
         }
     }
 }

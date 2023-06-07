@@ -16,7 +16,7 @@ namespace Framework.Utils
 			{
 				if (coroutineManager == null)
 				{
-					coroutineManager = ProjectContext.DiContainer.Resolve<ICoroutineManager>();
+					coroutineManager = Context.DiContainer.Resolve<ICoroutineManager>();
 				}
 
 				return coroutineManager;

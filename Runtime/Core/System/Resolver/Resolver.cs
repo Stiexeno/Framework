@@ -1,9 +1,8 @@
 using System;
-using UnityEngine;
 
 namespace Framework.Core
 {
-    public class Resolver : IResolver
+    public sealed class Resolver : IResolver
     {
         private readonly DiContainer diContainer;
         private readonly IInstantiator instantiator;
@@ -50,18 +49,19 @@ namespace Framework.Core
                 if (binding.Instance != null)
                     return binding.Instance;
 
-                binding.Instance = instantiator.Instantiate(binding.ContractType);
+                binding.Instance = instantiator.Instantiate(binding);
                 return binding.Instance;
             }
         }
 
-        public T FindInScene<T>() where T: MonoBehaviour
+        T IResolver.FindInScene<T>()
         {
             var targetObject = UnityEngine.Object.FindObjectOfType<T>(true);
 
             if (targetObject == null)
-                throw new NullReferenceException($"Object of type {typeof(T)} not found in scene");
-                
+                Context.Exception($"Object of type {typeof(T)} not found in scene",
+                    "Create {typeof(T).Name} in scene or add binding to Installer");
+
             return targetObject;
         }
     }

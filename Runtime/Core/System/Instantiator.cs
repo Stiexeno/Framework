@@ -1,20 +1,22 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+using Framework.Core;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Framework
 {
 	public class Instantiator : IInstantiator
 	{
 		private readonly IResolver resolver;
+		private readonly DiContainer diContainer;
 
 		public Instantiator(IResolver resolver)
 		{
 			this.resolver = resolver;
+			this.diContainer = resolver as DiContainer;
 		}
-		
+
 		public T Instantiate<T>() => (T)Instantiate(typeof(T));
 
 		public object Instantiate(Type objectType)
@@ -24,6 +26,23 @@ namespace Framework
 				: InstantiateNonMonoBehaviour(objectType);
 		}
 		
+		object IInstantiator.Instantiate(Binding binding)
+		{
+			var instance = Instantiate(binding.ContractType);
+			
+			if (instance.GetType().IsSubclassOf(typeof(MonoBehaviour)))
+			{
+				if (binding.DontDestroyOnLoad)
+				{
+					var gameObject = (instance as MonoBehaviour).gameObject;
+					gameObject.transform.SetParent(null);
+					Object.DontDestroyOnLoad(gameObject);
+				}
+			}
+
+			return instance;
+		}
+
 		public T Instantiate<T>(params object[] args)
 		{
 			return (T)InstantiateNonMonoBehaviour(typeof(T), args);
@@ -37,84 +56,56 @@ namespace Framework
 			{
 				return Activator.CreateInstance(objectType);
 			}
-			
+
 			var args = constructors[0].GetParameters();
 			var argsToInject = new object[args.Length];
-			
+
 			for (int i = 0; i < args.Length; i++)
 			{
-				try
+				var resolvedArg = resolver.Resolve(args[i].ParameterType);
+
+				if (resolvedArg != null)
 				{
-					var resolvedArg = resolver.Resolve(args[i].ParameterType);
-				
-					if (resolvedArg != null)
-					{
-						argsToInject[i] = resolvedArg;
-						continue;
-					}
-				
-					argsToInject[i] = constructorArgs[i];
+					argsToInject[i] = resolvedArg;
+					continue;
 				}
-				catch (Exception e)
+
+				if (constructorArgs.Length <= i)
 				{
-					Debug.LogError($"{objectType} => {args[i].ParameterType} => {constructorArgs[i]} => {e}");
+					Context.Exception(
+						$"Can't inject {args[i].ParameterType.Name} to {objectType.Name}",
+						$"Try to refresh Configs or check if you have added {args[i].ParameterType.Name} to the Container");
 				}
+
+				argsToInject[i] = constructorArgs[i];
 			}
-			
+
 			return Activator.CreateInstance(objectType, argsToInject);
 		}
-		
+
 		private object InstantiateMonoBehaviour(Type objectType)
 		{
 			var gameObject = new GameObject(objectType.Name);
+
+			if (Context.SceneContext != null)
+			{
+				gameObject.transform.SetParent(Context.SceneContext.transform);
+			}
+
 			Component component = gameObject.AddComponent(objectType);
 
-			InjectInto(new List<MonoBehaviour> {component as MonoBehaviour});
+			diContainer.Inject(new List<MonoBehaviour> { component as MonoBehaviour });
 			return component;
 		}
 
-		private void InjectInto(IEnumerable<MonoBehaviour> components)
-		{
-			foreach (var component in components)
-			{
-				var injectMethods = component
-					.GetType()
-					.GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
-					.Where(HasInjectMethods)
-					.ToList();
-
-				foreach (MethodInfo injectMethod in injectMethods)
-				{
-					var args = injectMethod.GetParameters();
-					var argsToInject = new object[args.Length];
-					
-					for (int i = 0; i < args.Length; i++)
-						argsToInject[i] = resolver.Resolve(args[i].ParameterType);
-					
-					injectMethod.Invoke(component, argsToInject);
-				}
-			}
-		}
-		
 		public GameObject InstantiatePrefab(GameObject original)
 		{
 			GameObject clone = UnityEngine.Object.Instantiate(original);
 			var components = clone.GetComponentsInChildren<MonoBehaviour>();
 
-			InjectInto(components);
+			diContainer.Inject(components);
 
 			return clone;
 		}
-		
-		public void InjectToSceneGameObjects()
-		{
-			var sceneGameObjects = UnityEngine.Object.FindObjectsOfType<MonoBehaviour>(true);
-			InjectInto(sceneGameObjects);
-		}
-
-		// Helpers
-		
-		private static bool HasInjectMethods(MethodInfo methodInfo) =>
-			methodInfo.GetCustomAttributes(typeof(InjectAttribute), false).Length > 0;
 	}
 }

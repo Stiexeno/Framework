@@ -7,6 +7,6 @@ namespace Framework
     {
         T Resolve<T>();
         object Resolve(Type contractType);
-        T FindInScene<T>() where T: MonoBehaviour;
+        internal T FindInScene<T>() where T: MonoBehaviour;
     }
 }

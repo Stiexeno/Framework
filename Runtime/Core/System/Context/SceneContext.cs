@@ -4,7 +4,7 @@ using SF = UnityEngine.SerializeField;
 
 namespace Framework.Core
 {
-    public class SceneContext : MonoBehaviour, IContext, IContainerFactory
+    public sealed class SceneContext : MonoBehaviour, IContext, IContainerFactory
     {
         //Serialized fields
 
@@ -27,13 +27,28 @@ namespace Framework.Core
 
         public void CreateContainer(DiContainer overrideContainer = null)
         {
-            diContainer = ProjectContext.DiContainer.CreateSubContainer();
-
+            // Register scene context
+            Context.SceneContext = this;
+            
+            // Creating sub container
+            diContainer = Context.DiContainer.CreateSubContainer();
+            
+            // Getting scene mono behaviours
+            var sceneMonoBehaviours = new List<MonoBehaviour>();
+            InjectExtensions.GetSceneMonoBehaviours(ref sceneMonoBehaviours);
+			
+            // Queueing for injection
+            foreach (var monoBehaviour in sceneMonoBehaviours)
+            {
+                DiContainer.QueueForInject(monoBehaviour);
+            }
+            
+            // Installing bindings
             foreach (var installer in installers)
             {
                 installer.InstallBindings(diContainer);
             }
-
+            
             foreach (var binding in diContainer.Container)
             {
                 if(binding.Value.Instance == null)
@@ -55,9 +70,9 @@ namespace Framework.Core
                 }
             }
             
-            this.diContainer.InjectToSceneGameObjects();
+            DiContainer.InjectAll();
             
-            ProjectContext.TimeTookToInstall = Time.realtimeSinceStartup;
+            Context.TimeTookToInstall = Time.realtimeSinceStartup;
         }
 
         // MonoBehaviour

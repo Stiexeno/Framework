@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 namespace Framework.Core
 {
-	public class UIManager : MonoBehaviour, IUIManager, IProcessable, ITickable
+	public sealed class UIManager : MonoBehaviour, IUIManager, IProcessable, ITickable
 	{
         public Camera Camera { get; private set; }
         public Canvas Canvas { get; private set; }

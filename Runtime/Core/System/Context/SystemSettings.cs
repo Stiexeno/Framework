@@ -6,8 +6,8 @@ namespace Framework.Core
 {
 	public class SystemSettings : ScriptableObject
 	{
-		public bool autoRefreshOnPlay;
-		public bool deleteDataConfirmation;
+		public bool autoRefreshOnPlay = true;
+		public bool deleteDataConfirmation = true;
 		
 		private const string ASSET_NAME = "SystemSettings";
 		private const string OBJECT_NAME = "com.framework.system-settings";

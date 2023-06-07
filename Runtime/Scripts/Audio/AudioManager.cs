@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Framework.Audio
 {
-	public class AudioManager : MonoBehaviour, IAudioManager
+	public sealed class AudioManager : MonoBehaviour, IAudioManager
 	{
 		// Private fields
 	
