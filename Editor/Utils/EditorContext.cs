@@ -11,13 +11,13 @@ namespace Framework.Editor
 		[MenuItem("GameObject/UI/ProgressBar", false, 15)]
 		public static void CreateProgressbar(MenuCommand command)
 		{
-			SpawnPrefab<Progressbar>($"Packages/{CoreConstants.PACKAGE_NAME}/Prefabs/Progressbar.prefab");
+			SpawnPrefab<Progressbar>($"Packages/{CoreConstants.PACKAGE_NAME}/Runtime/Prefabs/Progressbar.prefab");
 		}
 		
 		[MenuItem("GameObject/UI/Button", false, 14)]
 		public static void CreateButton(MenuCommand command)
 		{
-			SpawnPrefab<Button>($"Packages/{CoreConstants.PACKAGE_NAME}/Prefabs/Button.prefab");
+			SpawnPrefab<Button>($"Packages/{CoreConstants.PACKAGE_NAME}/Runtime/Prefabs/Button.prefab");
 		}
 		
 		private static void SpawnPrefab<T>(string path) where T : MonoBehaviour

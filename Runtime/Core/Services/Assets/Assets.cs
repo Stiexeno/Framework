@@ -30,6 +30,22 @@ namespace Framework.Core
 			return instantiated.GetComponent<T>();
 		}
 
+		public T Instantiate<T>(string path, Transform parent) where T : MonoBehaviour
+		{
+			var instantiated = Instantiate<T>(path);
+			instantiated.transform.SetParent(parent);
+
+			return instantiated;
+		}
+
+		public T Instantiate<T>(string path, Vector3 at) where T : MonoBehaviour
+		{
+			var instantiated = Instantiate<T>(path);
+			instantiated.transform.position = at;
+
+			return instantiated;
+		}
+
 		public T Instantiate<T>(GameObject prefab, Vector3 at, Transform parent = null) where T : MonoBehaviour
 		{
 			var instantiated = instantiator.InstantiatePrefab(prefab);

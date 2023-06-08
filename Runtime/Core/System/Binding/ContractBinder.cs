@@ -1,5 +1,3 @@
-using System;
-using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Framework.Core
@@ -28,7 +26,6 @@ namespace Framework.Core
             return new NonLazyBinder(binding, instantiator);
         }
         
-        //TODO: Find a better solution to get rid of <TConcrete>
         public TContract FindInScene()
         {
             object targetObject = Object.FindObjectOfType(typeof(TContract), true);
