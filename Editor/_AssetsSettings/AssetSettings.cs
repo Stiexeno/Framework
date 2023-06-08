@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
 using Framework.Core;
 using UnityEditor;
 using UnityEngine;
@@ -82,6 +84,11 @@ namespace Framework.Editor
 
 		private static void OnPostProcessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
 		{
+			foreach (var importedAsset in importedAssets)
+			{
+				internalValidate(importedAsset, true);
+			}
+			
 			foreach (var movedAsset in movedAssets)
 			{
 				internalValidate(movedAsset, true);
@@ -201,38 +208,92 @@ namespace Framework.Editor
 
 		private string GenerateScriptContent()
 		{
-			string scriptContent = "namespace Framework.Generated\n";
-			scriptContent += "{\n\t" +
-			                 "[System.Serializable]\n\t" +
-			                 "public class AssetsPath\n\t" +
-			                 "{\n";
+			var foldersWithAssets = new List<FolderWithAssets>();
+			var assetsWithoutFolder = new List<Object>();
+			
+			var folders = Settings.assets.Where(x => AssetDatabase.IsValidFolder(AssetDatabase.GetAssetPath(x))).ToList();
+
+			foreach (var folder in folders)
+			{
+				foldersWithAssets.Add(new FolderWithAssets
+				{
+					folder = folder,
+					assets = new List<Object>()
+				});
+			}
 
 			foreach (var asset in Settings.assets)
 			{
-				var file = AssetDatabase.GetAssetPath(asset);
+				var assetPath = AssetDatabase.GetAssetPath(asset);
+
+				if (AssetDatabase.IsValidFolder(assetPath))
+					continue;
 				
-				if (!file.EndsWith(".meta"))
+				var folder = foldersWithAssets.FirstOrDefault(x => assetPath.StartsWith(AssetDatabase.GetAssetPath(x.folder)));
+
+				if (folder.folder != null)
 				{
-					string filePath = Path.GetDirectoryName(file).Replace("\\", "/");
-					string resourceName = Path.GetFileNameWithoutExtension(file).Replace(" ", "");
-
-					string[] folders = filePath.Split('/');
-					string resourcePath = string.Join("/", folders, 2, folders.Length - 2);
-
-					if (string.IsNullOrEmpty(resourcePath))
-					{
-						scriptContent += $"\t\tpublic const string {resourceName} = \"{resourceName}\";\n";
-					}
-					else
-					{
-						scriptContent += $"\t\tpublic const string {resourceName} = \"{resourcePath}/{resourceName}\";\n";
-					}
+					Object assetInstance = AssetDatabase.LoadAssetAtPath<Object>(assetPath);
+					folder.assets.Add(assetInstance);
+					
+					continue;
 				}
+
+				assetsWithoutFolder.Add(asset);	
+			}
+			
+			StringBuilder scriptBuilder = new StringBuilder();
+			
+			scriptBuilder.AppendLine("namespace Framework.Generated");
+			scriptBuilder.AppendLine("{");
+			scriptBuilder.AppendLine("\tpublic static class AssetsPath");
+			scriptBuilder.AppendLine("\t{");
+
+			foreach (var folder in foldersWithAssets)
+			{
+				scriptBuilder.AppendLine("\t\tpublic static class " + folder.folder.name.Replace(" ", ""));
+				scriptBuilder.AppendLine("\t\t{");
+
+				foreach (var asset in folder.assets)
+				{
+					var assetPath = AssetDatabase.GetAssetPath(asset);
+					string filePath = Path.GetDirectoryName(assetPath).Replace("\\", "/");
+					
+					var assetName = Path.GetFileNameWithoutExtension(assetPath).Replace(" ", "");
+					
+					string[] assetSplitPath = filePath.Split('/');
+					string resourcePath = string.Join("/", assetSplitPath, 2, assetSplitPath.Length - 2);
+					
+					scriptBuilder.AppendLine($"\t\t\tpublic const string {assetName} = \"{resourcePath}/{assetName}\";");
+				}
+				
+				scriptBuilder.AppendLine("\t\t}");
+				scriptBuilder.AppendLine("");
+			}
+			
+			foreach (var assetWithoutFolder in assetsWithoutFolder)
+			{
+				var assetPath = AssetDatabase.GetAssetPath(assetWithoutFolder);
+				string filePath = Path.GetDirectoryName(assetPath).Replace("\\", "/");
+					
+				var assetName = Path.GetFileNameWithoutExtension(assetPath).Replace(" ", "");
+					
+				string[] assetSplitPath = filePath.Split('/');
+				string resourcePath = string.Join("/", assetSplitPath, 2, assetSplitPath.Length - 2);
+					
+				scriptBuilder.AppendLine($"\t\tpublic const string {assetName} = \"{resourcePath}/{assetName}\";");
 			}
 
-			scriptContent += "\t}\n}";
+			scriptBuilder.AppendLine("\t}");
+			scriptBuilder.AppendLine("}");
+			
+			return scriptBuilder.ToString();
+		}
 
-			return scriptContent;
+		private struct FolderWithAssets
+		{
+			public Object folder;
+			public List<Object> assets;
 		}
 	}	
 }
