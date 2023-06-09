@@ -1,4 +1,4 @@
-Shader "puzzle-hitman/LightGradientSurf_Effects"
+Shader "Framework/LightGradient_Silluete"
 {
     Properties
     {
@@ -12,21 +12,78 @@ Shader "puzzle-hitman/LightGradientSurf_Effects"
         _RimLightSZ ("Rim Light Size", Range(0.0,1.0)) = 0.0
         _LightGradient ("Light Gradient", 2D) = "white" {}
         _BlikGradient ("Blik Gradient", 2D) = "black" {}
+        _SiluetteColor("Siluette Color", Color) = (1,1,1,0)
         _Flash("Flash", Range(0.0,1.0)) = 0.0
-        _FlashColor("Flash Color", Color) = (1,1,1,1)
 
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque"  }
+         Pass
+		{
+			
+			Name "AlwaysVisible"
+			Tags{ "RenderType"="Transparent" "Queue" = "AlphaTest"}
+
+			Cull Front
+			ZWrite Off
+			ZTest Always
+			
+			Stencil {
+                Ref 0
+                Comp Equal
+                Pass IncrSat
+				Fail IncrSat
+			}
+
+            Blend SrcAlpha OneMinusSrcAlpha
+			
+			CGPROGRAM
+			#pragma vertex vert
+			#pragma fragment frag
+			#include "UnityCG.cginc"
+
+			struct v2f
+			{
+				float4 vertex : SV_POSITION;
+			    fixed4 color    : COLOR0;
+			};
+
+			float4 _SiluetteColor;
+			
+			v2f vert(appdata_full v)
+			{
+				v2f o;
+            	o.vertex = UnityObjectToClipPos(v.vertex);
+				
+				float _MaxDistance = 40;
+				float _MinDistance = 20;
+				
+				o.color = float4(_SiluetteColor.r,_SiluetteColor.g,_SiluetteColor.b,1);
+				
+        		half3 viewDirW = _WorldSpaceCameraPos - mul((half4x4)unity_ObjectToWorld, v.vertex);
+        		half viewDist = length(viewDirW);
+        		half falloff = saturate((viewDist - _MinDistance) / (_MaxDistance - _MinDistance));
+        		o.color.a *= ((1.0f - falloff) * _SiluetteColor.a);
+				
+				return o;
+			};
+			
+			fixed4 frag(v2f i) : SV_Target
+			{
+				return i.color;
+			};
+			
+			ENDCG
+		}
+        
+         Tags { "RenderType"="Opaque"  }
         LOD 250
 
         CGPROGRAM
         
         
         // Physically based Standard lighting model, and enable shadows on all light types
-        #pragma surface surf AddictumBlinnPhong addshadow exclude_path:prepass nolightmap noforwardadd halfasview interpolateview vertex:vert
-        #pragma target 3.0
+        #pragma surface surf AddictumBlinnPhong addshadow exclude_path:prepass nolightmap noforwardadd halfasview interpolateview
         
 
         fixed4 _Color;
@@ -39,9 +96,7 @@ Shader "puzzle-hitman/LightGradientSurf_Effects"
         sampler2D _LightGradient;
         sampler2D _BlikGradient;
         float _Flash;
-        fixed4 _FlashColor;
 
-        
         
         struct SurfaceABP {
             half3 Albedo;
@@ -52,8 +107,6 @@ Shader "puzzle-hitman/LightGradientSurf_Effects"
             float ShadowStrength;
             float Reflectiveness;
             float _Flash;
-            fixed4 _FlashColor;
-
 
         };
         
@@ -128,34 +181,26 @@ Shader "puzzle-hitman/LightGradientSurf_Effects"
         struct Input {
             float2 uv_MainTex;
             fixed3 normal;
-            float4 vertColor;
         };
-
-        void vert(inout appdata_full v, out Input o) {
-            UNITY_INITIALIZE_OUTPUT(Input, o);
-            o.vertColor = v.color;
-        }
             
 
         void surf (Input IN, inout SurfaceABP o)
         {
             // Albedo comes from a texture tinted by color
             //Flash color
-            float4 color5 = _FlashColor;
-
+            float4 color5 = float4(1, 1, 1, 1);
             fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
-            o.Albedo = IN.vertColor.rgb;
+            o.Albedo =  c.rgb;
             o.Alpha = c.a;
             
             o.Normal = UnpackNormal (fixed4(0.5,0.5,1,1));
             o.Shininess = _Shininess;
             o.ShadowStrength = _ShadowStrength;
             o.Reflectiveness = _Reflectiveness;
-            
+
             //Flash 
             float4 lerpResult6 = lerp(float4(0, 0, 0, 0), color5, _Flash);
             o.Emission = lerpResult6;
-
         }
         ENDCG
     }

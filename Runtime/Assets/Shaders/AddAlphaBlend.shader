@@ -1,4 +1,4 @@
-﻿Shader "Mobile/Particles/AddAlphaBlend_NoCurve" {
+﻿Shader "Framework/Particles/AddAlphaBlend" {
     Properties {
         _Color ("Multiplier", Color) = (1,1,1,1)
         _MainTex ("MainTex", 2D) = "white" {}

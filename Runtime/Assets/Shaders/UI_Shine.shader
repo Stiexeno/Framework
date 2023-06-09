@@ -1,4 +1,4 @@
-﻿Shader "UI/ScreenSpaceBlik"
+﻿Shader "Framework/UI/Shine"
 {
      Properties{
          [PerRendererData] _MainTex("Sprite Texture", 2D) = "white" {}

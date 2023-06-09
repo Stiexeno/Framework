@@ -1,4 +1,4 @@
-﻿Shader "UI/ScreenSpaceJump"
+﻿Shader "Framework/UI/Jump"
 {
     Properties
     {

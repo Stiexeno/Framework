@@ -1,4 +1,4 @@
-﻿Shader "UI/UVFloat"
+﻿Shader "Framework/UI/Float"
 {
     Properties
     {

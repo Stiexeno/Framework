@@ -1,4 +1,4 @@
-Shader "puzzle-hitman/LightGradientSurf"
+Shader "Framework/LightGradient"
 {
     Properties
     {
