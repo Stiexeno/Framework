@@ -24,6 +24,7 @@ namespace Framework.Core
         //Properties
         
         public DiContainer DiContainer => diContainer;
+        public AbstractInstaller[] Installers => installers;
 
         public void CreateContainer(DiContainer overrideContainer = null)
         {

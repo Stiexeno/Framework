@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace Framework.Core
 {
-	public class Assets : IAssets
+	public class AssetLoader : IAssets
 	{
 		private IInstantiator instantiator;
 
-		public Assets(IInstantiator instantiator)
+		public AssetLoader(IInstantiator instantiator)
 		{
 			this.instantiator = instantiator;
 		}

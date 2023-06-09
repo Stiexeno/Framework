@@ -2,12 +2,16 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Windows;
 
-namespace Framework.Core
+namespace Framework.Editor
 {
 	public class SystemSettings : ScriptableObject
 	{
 		public bool autoRefreshOnPlay = true;
 		public bool deleteDataConfirmation = true;
+
+		[Header("Default folders")]
+		[CanBeNull] public Object defaultInstallerFolder;
+		[CanBeNull] public Object defaultConfigsFolder;
 		
 		private const string ASSET_NAME = "SystemSettings";
 		private const string OBJECT_NAME = "com.framework.system-settings";

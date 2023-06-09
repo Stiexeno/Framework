@@ -18,7 +18,7 @@ namespace Framework
             EditorGUI.indentLevel = 0;
 
             var propertyRect = position;
-
+            
             if (property.objectReferenceValue == null)
             {
                 propertyRect = new Rect(position.x, position.y, position.width - 27, position.height);

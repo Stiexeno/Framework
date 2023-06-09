@@ -15,11 +15,7 @@ namespace Framework.Core
             diContainer.Bind<Timer>();
             diContainer.Bind<LocalClock>().NonLazy();
             diContainer.Bind<UIManager>().FindInScene();
-            diContainer.Bind<Assets>();
-            
-            // Services
-
-            diContainer.Bind<Wallet>().NonLazy();
+            diContainer.Bind<AssetLoader>();
         }
     }
 }

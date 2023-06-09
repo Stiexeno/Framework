@@ -188,7 +188,7 @@ namespace Framework.Editor
 		{
 			string scriptContent = GenerateScriptContent();
 
-			string outputPath = "Assets/Scripts/Generated/AssetsPath.cs";
+			string outputPath = "Assets/Scripts/Generated/Assets.cs";
 			EnsureOutputFolderExists(outputPath);
 			File.WriteAllText(outputPath, scriptContent);
 
@@ -246,7 +246,7 @@ namespace Framework.Editor
 			
 			scriptBuilder.AppendLine("namespace Framework.Generated");
 			scriptBuilder.AppendLine("{");
-			scriptBuilder.AppendLine("\tpublic static class AssetsPath");
+			scriptBuilder.AppendLine("\tpublic static class Assets");
 			scriptBuilder.AppendLine("\t{");
 
 			foreach (var folder in foldersWithAssets)

@@ -1,4 +1,3 @@
-using Framework.Core;
 using UnityEditor;
 
 namespace Framework.Editor
@@ -17,9 +16,9 @@ namespace Framework.Editor
 			{
 				if (SystemSettings.Settings.autoRefreshOnPlay)
 				{
-					Context.GenerateInstallers();
-					ConfigSettings.Settings.GenerateConfigs();
-					AssetSettings.Settings.GenerateAssetsScript();	
+					SystemGenerator.GenerateInstallers();
+					SystemGenerator.GenerateConfigs();
+					SystemGenerator.GenerateAssetsScript();
 				}
 			}
 		}

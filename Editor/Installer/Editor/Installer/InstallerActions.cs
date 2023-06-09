@@ -1,4 +1,5 @@
 using System.IO;
+using System.Linq;
 using Framework.Core;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -53,6 +54,16 @@ namespace Framework.Installer
             
             uiManager.AddComponent<EventSystem>();
             uiManager.AddComponent<StandaloneInputModule>();
+
+            var uiCamera = new GameObject("UICamera");
+            uiCamera.transform.SetParent(uiManager.transform);
+            uiCamera.layer = LayerMask.NameToLayer("UI");
+            
+            var cam = uiCamera.AddComponent<Camera>();
+            
+            cam.cullingMask = (1 << LayerMask.NameToLayer("UI"));
+            
+            cam.clearFlags = CameraClearFlags.Depth;
             
             var canvasObject = new GameObject("UICanvas");
           
@@ -67,15 +78,6 @@ namespace Framework.Installer
             scalar.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scalar.matchWidthOrHeight = 1f;
             scalar.referenceResolution = vertical ? new Vector2(1440, 2960) : new Vector2(2960, 1440);
-
-            var uiCamera = new GameObject("UICamera");
-            uiCamera.transform.SetParent(uiManager.transform);
-            
-            var cam = uiCamera.AddComponent<Camera>();
-            
-            cam.cullingMask = (1 << LayerMask.NameToLayer("UI"));
-            
-            cam.clearFlags = CameraClearFlags.Depth;
             
             canvas.renderMode = RenderMode.ScreenSpaceCamera;
             canvas.worldCamera = cam;
@@ -96,6 +98,14 @@ namespace Framework.Installer
                 
                 sceneContext.transform.SetAsFirstSibling();
             }
+
+            var cameras = GameObject.FindObjectsOfType<Camera>();
+            var lighting = GameObject.FindObjectOfType<Light>();
+            
+            var camera = cameras.FirstOrDefault(x => x.gameObject.layer != LayerMask.NameToLayer("UI"));
+            
+            camera.transform.SetParent(sceneContext.transform);
+            lighting.transform.SetParent(sceneContext.transform);
 
             SetupGitIgnore();
             

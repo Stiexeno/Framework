@@ -66,37 +66,5 @@ namespace Framework.Core
 				return configSettings;
 			}
 		}
-
-#if UNITY_EDITOR
-		public void GenerateConfigs(Action callback = null)
-		{
-			foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-			{
-				foreach (Type tp in assembly.GetTypes())
-				{
-					if (tp.BaseType == typeof(AbstractConfig))
-					{
-						if (configs.Contains(x => x.GetType() == tp))
-							continue;
-
-						var path = "Assets/Configs/" + tp.Name + ".asset";
-						var targetConfig = AssetDatabase.LoadAssetAtPath<AbstractConfig>(path);
-
-						if (targetConfig == null)
-						{
-							var instance = CreateInstance(tp);
-							AssetDatabase.CreateAsset(instance, path);
-							targetConfig = AssetDatabase.LoadAssetAtPath<AbstractConfig>(path);
-						}
-
-						configs.Add(targetConfig);
-
-						AssetDatabase.Refresh();
-						callback?.Invoke();
-					}
-				}
-			}
-		}
-#endif
 	}
 }

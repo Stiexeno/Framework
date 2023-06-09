@@ -20,8 +20,7 @@ namespace Framework.Editor
 		private MonoScript assetsScript;
 
 		private static GUIStyle activeButtonStyle;
-
-
+		
 		public override void OnInspectorGUI()
 		{
 			DrawNavigation();
@@ -73,7 +72,7 @@ namespace Framework.Editor
 			EditorGUILayout.HelpBox("AbstractConfigs will be automatically created as ScriptableObjects instances and saved to ConfigSettings", MessageType.Info);
 			if (GUILayout.Button("Refresh"))
 			{
-				ConfigSettings.Settings.GenerateConfigs();
+				SystemGenerator.GenerateConfigs();
 			}
 		}
 
@@ -112,7 +111,7 @@ namespace Framework.Editor
 			EditorGUILayout.HelpBox("Press Refresh button to create instance of missing installers", MessageType.Info);
 			if (GUILayout.Button("Refresh"))
 			{
-				Context.GenerateInstallers();
+				SystemGenerator.GenerateInstallers();
 			}
 		}
 
