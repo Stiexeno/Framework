@@ -78,16 +78,15 @@
             float4 _MainTex_ST;
             float _JumpBy;
             float _SpeedMul;
-            float _UnscaledTime;
             
             v2f vert(appdata_t IN) {
                  v2f OUT;
                  OUT.vertex = UnityObjectToClipPos(IN.vertex);
                  
                  if ( _ProjectionParams.x < 0 )
-                    OUT.vertex.y += -_JumpBy * abs(sin(_UnscaledTime*_SpeedMul));
+                    OUT.vertex.y += -_JumpBy * abs(sin(_Time*_SpeedMul));
                  else
-                    OUT.vertex.y += _JumpBy * abs(sin(_UnscaledTime*_SpeedMul));
+                    OUT.vertex.y += _JumpBy * abs(sin(_Time*_SpeedMul));
                  
                  OUT.uv = IN.uv;
                  

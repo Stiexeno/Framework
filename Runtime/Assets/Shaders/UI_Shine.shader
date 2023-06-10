@@ -76,7 +76,6 @@
          float _Interval;
          float _Speed;
          float _Size;
-         float _UnscaledTime;
  
      v2f vert(appdata_t IN)
      {
@@ -98,7 +97,7 @@
      fixed4 frag(v2f i) : COLOR{
          fixed4 c = tex2D(_MainTex, i.texcoord) * i.color;
 
-         float t = _UnscaledTime * _Speed;
+         float t = _Time * _Speed;
 
          float aspect = _ScreenParams.x / _ScreenParams.y;
 

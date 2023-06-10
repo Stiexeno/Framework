@@ -3,7 +3,7 @@ Shader "Framework/LightGradient"
     Properties
     {
         _MainTex ("Albedo (RGB)", 2D) = "white" {}
-        [PerRendererData]_Color ("Color", Color) = (1,1,1,1)
+        _Color ("Color", Color) = (1,1,1,1)
         _SpecularColor("Specular Color", Color) = (1,1,1,1)
         _ShadowStrength("Shadow Strength", Range(0.0,1.0)) = 0.0
         _Shininess ( "Glossiness", float) = 1.0
