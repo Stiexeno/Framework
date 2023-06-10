@@ -182,7 +182,7 @@ namespace Framework.Editor
 		
 		internal static bool IsInResources(string path)
 		{
-			return path.Replace('\\', '/').ToLower().Contains("/resources/");
+			return path.Replace('\\', '/').ToLower().Contains("assets/resources/");
 		}
 		
 		internal void GenerateAssetsScript(Action callback = null)
