@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 namespace Framework.Core
 {
-	public sealed class UIManager : MonoBehaviour, IUIManager, IProcessable, ITickable
+	public sealed class UIManager : MonoBehaviour, IUIManager, IProcessable, ITickable, IInitializable
 	{
         public Camera Camera { get; private set; }
         public Canvas Canvas { get; private set; }
@@ -16,7 +16,7 @@ namespace Framework.Core
         private readonly List<ITickable> tickableDialogs = new();
 
         [Inject]
-        public void Initialize()
+        public void Construct()
         {
             foreach (var dialog in GetComponentsInChildren<IDialog>(true))
             {
@@ -37,10 +37,6 @@ namespace Framework.Core
                     tickableDialogs.Add(tickable);
                 }
             }
-
-            Camera = GetComponentInChildren<Camera>();
-            Canvas = GetComponentInChildren<Canvas>();
-            EventSystem = GetComponentInChildren<EventSystem>();
         }
 
         private void OnDestroy()
@@ -162,6 +158,13 @@ namespace Framework.Core
             return new Vector2((viewportPosition.x * canvasRect.sizeDelta.x) - (canvasRect.sizeDelta.x * 0.5f),
                 (viewportPosition.y * canvasRect.sizeDelta.y) - (canvasRect.sizeDelta.y * 0.5f));
         }
-	}   
+        
+        public void Initialize()
+        {
+            Camera = GetComponentInChildren<Camera>();
+            Canvas = GetComponentInChildren<Canvas>();
+            EventSystem = GetComponentInChildren<EventSystem>();
+        }
+    }   
 }
 

@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,7 +7,7 @@ using SF = UnityEngine.SerializeField;
 namespace Framework.Utils
 {
 	[ExecuteInEditMode]
-	public class Progressbar : MonoBehaviour
+	public class ProgressBar : MonoBehaviour
 	{
 		// Serialized fields
 
@@ -14,11 +15,16 @@ namespace Framework.Utils
 		[SF] private float fillDuration;
 		[SF] private AnimationCurve ease = AnimationCurve.Linear(0f, 0f, 1f, 1f);
 		[SF] private float delay = 0f;
+		[SF] private bool lookAtCamera;
 
 		// Private fields
 		
 		private float value;
 		private float progress;
+
+		private bool active;
+		
+		private CanvasGroup canvasGroup;
 
 		// Properties
 
@@ -59,6 +65,35 @@ namespace Framework.Utils
 			{
 				fill.fillAmount = progress;
 			}).SetEase(ease).SetDelay(delay);
+		}
+
+		public void SetEnabled(bool value)
+		{
+			if (active == value)
+				return;
+			
+			active = value;
+			
+			if (canvasGroup != null)
+			{
+				canvasGroup.DOFade(value ? 1f : 0f, 0.2f);
+				return;
+			}
+			
+			gameObject.SetActive(value);
+		}
+
+		private void Awake()
+		{
+			canvasGroup = GetComponent<CanvasGroup>();
+		}
+
+		private void Update()
+		{
+			if (active & lookAtCamera)
+			{
+				transform.forward = Camera.main.transform.forward;
+			}
 		}
 	}	
 }

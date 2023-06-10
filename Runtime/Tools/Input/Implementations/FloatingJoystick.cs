@@ -24,18 +24,19 @@ namespace Framework.SimpleInput
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            if (InputSystem.Enabled == false)
+            if (InputManager.Enabled == false)
                 return;
             
-            stickHolder.gameObject.SetActive(true);
             RectTransformUtility.ScreenPointToLocalPointInRectangle(inputRect, eventData.position, eventData.pressEventCamera, out pointerDownPosition);
             stickHolder.anchoredPosition = pointerDownPosition;
         }
 
         public void OnDrag(PointerEventData eventData)
         {
-            if (InputSystem.Enabled == false)
+            if (InputManager.Enabled == false)
                 return;
+            
+            stickHolder.gameObject.SetActive(true);
             
             RectTransformUtility.ScreenPointToLocalPointInRectangle(inputRect, eventData.position, eventData.pressEventCamera, out var position);
 
@@ -49,7 +50,7 @@ namespace Framework.SimpleInput
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            if (InputSystem.Enabled == false)
+            if (InputManager.Enabled == false)
                 return;
             
             stickHolder.gameObject.SetActive(false);

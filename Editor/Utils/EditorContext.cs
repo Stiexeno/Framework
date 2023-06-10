@@ -11,7 +11,7 @@ namespace Framework.Editor
 		[MenuItem("GameObject/UI/ProgressBar", false, 15)]
 		public static void CreateProgressbar(MenuCommand command)
 		{
-			SpawnPrefab<Progressbar>($"Packages/{CoreConstants.PACKAGE_NAME}/Runtime/Prefabs/Progressbar.prefab");
+			SpawnPrefab<ProgressBar>($"Packages/{CoreConstants.PACKAGE_NAME}/Runtime/Prefabs/Progressbar.prefab");
 		}
 		
 		[MenuItem("GameObject/UI/Button", false, 14)]

@@ -4,17 +4,19 @@ using SF = UnityEngine.SerializeField;
 
 namespace Framework.SimpleInput
 {
-    public class InputSystem : MonoBehaviour
+    public class InputManager : MonoBehaviour, IInputManager
     {
         [SF] private InputHandler axisInput;
         [SF] private float sensitivity = 10;
 
-        public static Vector2 Axis { get; private set; }
         public static bool Enabled { get; set; } = true;
         
         // Private fields
         
+        private Vector2 axis;
         private Canvas canvas;
+
+        public Vector2 Axis => axis;
         
         // MonoBehaviour
 
@@ -45,26 +47,26 @@ namespace Framework.SimpleInput
                     input.Normalize();
                 }
                 
-                Axis = Vector2.Lerp(Axis, input, sensitivity * Time.deltaTime);
+                axis = Vector2.Lerp(Axis, input, sensitivity * Time.deltaTime);
             }
             else
             {
                 if (axisInput) // Iterate through InputHandler[]
                 {
-                    Axis = Vector2.Lerp(Axis, axisInput.Direction, sensitivity * Time.deltaTime);
+                    axis = Vector2.Lerp(Axis, axisInput.Direction, sensitivity * Time.deltaTime);
                     
                     if (axisInput.Direction == Vector2.zero && Axis.sqrMagnitude < 0.01f) // consider it's zero already at this point
                     {
-                        Axis = Vector2.zero;
+                        axis = Vector2.zero;
                     }
                 }
                 else
                 {
-                    Axis = Vector2.Lerp(Axis,Vector2.zero,sensitivity * Time.deltaTime);
+                    axis = Vector2.Lerp(Axis,Vector2.zero,sensitivity * Time.deltaTime);
                     
                     if (Axis.sqrMagnitude < 0.01f) // consider it's zero already at this point
                     {
-                        Axis = Vector2.zero;
+                        axis = Vector2.zero;
                     }
                 }
             }

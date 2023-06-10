@@ -69,6 +69,11 @@ namespace Framework.Core
                 {
                     tickables.Add(tickable);
                 }
+
+                if (binding.Value.Instance is IInitializable initializable)
+                {
+                    initializable.Initialize();
+                }
             }
             
             DiContainer.InjectAll();

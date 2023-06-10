@@ -6,14 +6,14 @@ using SF = UnityEngine.SerializeField;
 
 namespace Framework.Editor
 {
-	[CustomEditor(typeof(Progressbar))]
+	[CustomEditor(typeof(ProgressBar))]
 	public class ProgressBarEditor : UnityEditor.Editor
 	{
 		public override void OnInspectorGUI()
 		{
 			base.OnInspectorGUI();
 
-			Progressbar myTarget = target as Progressbar;
+			ProgressBar myTarget = target as ProgressBar;
 
 			float previousValue = myTarget.DirectValue;
 			EditorGUILayout.BeginHorizontal();
