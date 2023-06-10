@@ -27,7 +27,8 @@ namespace Framework.Editor
 		{
 			typeof(AssetSettings),
 			typeof(ConfigSettings),
-			typeof(SystemSettings)
+			typeof(SystemSettings),
+			typeof(RequiredData)
 		};
 
 		public static AssetSettings Settings

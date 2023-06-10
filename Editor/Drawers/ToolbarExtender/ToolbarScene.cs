@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Framework.Editor
 {
@@ -61,6 +63,29 @@ namespace Framework.Editor
                     EditorSceneManager.OpenScene(scenePaths[newSceneIndex], OpenSceneMode.Single);
                 }
             }
+            
+            if (IsSceneInBuildSettings(EditorSceneManager.GetActiveScene()) == false)
+            {
+                if (GUILayout.Button(EditorHelper.Icon("Add Open Scene", "Warning"), EditorStyles.toolbarButton, GUILayout.Width(130.0f)))
+                {
+                    EditorBuildSettings.scenes = EditorBuildSettings.scenes.Append(new EditorBuildSettingsScene(EditorSceneManager.GetActiveScene().path, true)).ToArray();
+                }
+            }
+        }
+        
+        public static bool IsSceneInBuildSettings(Scene scene)
+        {
+            string scenePath = scene.path;
+
+            for (int i = 0; i < EditorBuildSettings.scenes.Length; i++)
+            {
+                if (EditorBuildSettings.scenes[i].path == scenePath)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
