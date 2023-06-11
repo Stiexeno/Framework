@@ -56,11 +56,13 @@ namespace Framework.Editor
 			if (AssetDatabase.IsValidFolder("Assets/Configs") == false)
 			{
 				AssetDatabase.CreateFolder("Assets", "Configs");
+				EditorUtility.SetDirty(SystemSettings.Settings);
 			}
 			
 			if (createDefaultFolder && AssetDatabase.IsValidFolder("Assets/Configs/Installers") == false)
 			{
 				AssetDatabase.CreateFolder("Assets/Configs", "Installers");
+				EditorUtility.SetDirty(SystemSettings.Settings);
 			}
 
 			AssetDatabase.Refresh();
@@ -76,6 +78,7 @@ namespace Framework.Editor
 					var installerAssets = ScriptableObject.CreateInstance(installer);
 					AssetDatabase.CreateAsset(installerAssets, installerPath);
 					AssetDatabase.SaveAssets();
+					EditorUtility.SetDirty(installerAssets);
 					AssetDatabase.Refresh();
 				}
 			}
@@ -96,6 +99,7 @@ namespace Framework.Editor
 				if (configs[i] == null)
 				{
 					configs.RemoveAt(i);
+					EditorUtility.SetDirty(configsSettings);
 				}
 			}
 			
@@ -126,13 +130,15 @@ namespace Framework.Editor
 						}
 
 						configs.Add(targetConfig);
+						EditorUtility.SetDirty(configsSettings);
 
 						AssetDatabase.Refresh();
 						callback?.Invoke();
 					}
 				}
-				
 			}
+			
+			ConfigSettings.Settings.OnResfresh.Invoke();
 		}
 	}	
 }

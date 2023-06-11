@@ -112,6 +112,7 @@ namespace Framework.Editor
 					if (asset == null)
 					{
 						Settings.assets.RemoveAt(i);
+						EditorUtility.SetDirty(Settings);
 						continue;
 					}
 					
@@ -121,6 +122,7 @@ namespace Framework.Editor
 						if (IsInResources(assetPath) == false)
 						{
 							Settings.RemoveEntry(asset);
+							EditorUtility.SetDirty(Settings);
 							break;
 						}
 					}
@@ -137,6 +139,7 @@ namespace Framework.Editor
 						{
 							var asset = AssetDatabase.LoadAssetAtPath<Object>(path);
 							Settings.RegisterEntry(asset);	
+							EditorUtility.SetDirty(Settings);
 						}
 					}
 				}
@@ -153,6 +156,7 @@ namespace Framework.Editor
 				return;
 
 			assets.Add(asset);
+			EditorUtility.SetDirty(this);
 		}
 		
 		internal void RemoveEntry(Object asset)
@@ -164,6 +168,7 @@ namespace Framework.Editor
 				return;
 
 			assets.Remove(asset);
+			EditorUtility.SetDirty(this);
 		}
 
 		private bool IsRegistered(Object asset)
@@ -192,6 +197,7 @@ namespace Framework.Editor
 			string outputPath = "Assets/Scripts/Generated/Assets.cs";
 			EnsureOutputFolderExists(outputPath);
 			File.WriteAllText(outputPath, scriptContent);
+			EditorUtility.SetDirty(this);
 
 			AssetDatabase.Refresh();
 			callback?.Invoke();

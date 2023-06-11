@@ -5,14 +5,15 @@ using SF = UnityEngine.SerializeField;
 
 namespace Framework.Character
 {
-	public enum State { Move, Combat}
+	public enum State { Move, Combat, Action}
 
 	public class CharacterState : MonoBehaviour, ICharacterState
 	{
-		private IInputManager inputManager;
 		//Serialized fields
 
 		//Private fields
+		
+		private IInputManager inputManager;
 
 		//Properties
 
@@ -38,6 +39,10 @@ namespace Framework.Character
 					}
 					
 					break;
+				case State.Action:
+					State = State.Action;
+					break;
+				
 			}
 		}
 		

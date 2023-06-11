@@ -1,6 +1,6 @@
 namespace Framework.Core
 {
-	public interface IInitializable
+	public interface IPreInstall
 	{
 		void Initialize();
 	}

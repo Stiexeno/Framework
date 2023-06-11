@@ -100,7 +100,10 @@ namespace Framework
 
 		public GameObject InstantiatePrefab(GameObject original)
 		{
-			GameObject clone = UnityEngine.Object.Instantiate(original);
+			GameObject clone = Object.Instantiate(original);
+			clone.transform.localScale = original.transform.localScale;
+			clone.transform.position = original.transform.position;
+			
 			var components = clone.GetComponentsInChildren<MonoBehaviour>();
 
 			diContainer.Inject(components);

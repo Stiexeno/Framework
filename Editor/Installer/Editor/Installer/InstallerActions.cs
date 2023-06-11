@@ -62,8 +62,8 @@ namespace Framework.Installer
             var cam = uiCamera.AddComponent<Camera>();
             
             cam.cullingMask = (1 << LayerMask.NameToLayer("UI"));
-            
             cam.clearFlags = CameraClearFlags.Depth;
+            cam.orthographic = true;
             
             var canvasObject = new GameObject("UICanvas");
           

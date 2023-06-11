@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using UnityEditor;
 #endif
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Framework.Core
 {
 	public class ConfigSettings : ScriptableObject
 	{
 		public List<AbstractConfig> configs = new List<AbstractConfig>();
+		
+		public UnityEvent OnResfresh = new UnityEvent();
 
 		private const string ASSET_NAME = "ConfigSettings";
 		private const string OBJECT_NAME = "com.framework.config-settings";
@@ -42,10 +45,11 @@ namespace Framework.Core
 					{
 						var assetInstance = CreateInstance<ConfigSettings>();
 						AssetDatabase.CreateAsset(assetInstance, DefaultAssetPath);
+						EditorUtility.SetDirty(assetInstance);
+						AssetDatabase.Refresh();
 						AssetDatabase.SaveAssets();
 
 						EditorBuildSettings.AddConfigObject(OBJECT_NAME, assetInstance, true);
-						EditorUtility.SetDirty(assetInstance);
 
 						configSettings = AssetDatabase.LoadAssetAtPath<ConfigSettings>(DefaultAssetPath);
 					}
@@ -53,7 +57,7 @@ namespace Framework.Core
 #endif
 					if (Application.isPlaying)
 					{
-						var instance = Resources.Load<ConfigSettings>(DefaultAssetPath);
+						var instance = Resources.Load<ConfigSettings>("Settings/ConfigSettings");
 
 						if (instance == null)
 						{

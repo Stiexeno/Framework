@@ -70,7 +70,7 @@ namespace Framework.Core
                     tickables.Add(tickable);
                 }
 
-                if (binding.Value.Instance is IInitializable initializable)
+                if (binding.Value.Instance is IPreInstall initializable)
                 {
                     initializable.Initialize();
                 }

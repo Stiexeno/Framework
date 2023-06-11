@@ -11,7 +11,14 @@ namespace Framework.Pool
         [SF] private Transform parent;
 
         private readonly List<Component> pool = new List<Component>();
+        private IInstantiator instantiator;
 
+        [Inject]
+        private void Construct(IInstantiator instantiator)
+        {
+            this.instantiator = instantiator;
+        }
+        
         private void Awake()
         {
             if (string.IsNullOrEmpty(source.scene.name) == false) // NOTE: way of checking if it's prefab or a scene object
@@ -20,7 +27,7 @@ namespace Framework.Pool
             }
         }
 
-        public void ReturnAll()
+        public void DisableAll()
         {
             foreach (var obj in pool)
             {
@@ -110,8 +117,9 @@ namespace Framework.Pool
                     return obj as T;
                 }
             }
-
-            var newObj = Instantiate(source, parent ? parent : transform).GetComponent<T>();
+            
+            var newObj = instantiator.InstantiatePrefab(source).GetComponent<T>();
+            newObj.transform.SetParent(parent ? parent : transform, false);
             pool.Add(newObj);
 
             newObj.gameObject.SetActive(true);

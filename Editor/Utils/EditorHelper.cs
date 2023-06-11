@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -128,6 +129,23 @@ namespace Framework.Editor
             r.x-=2;
             r.width +=6;
             EditorGUI.DrawRect(r, color);
+        }
+        
+        public static List<Object> LoadAllAssetsAtPath (string path, string assetType = "asset") 
+        {
+            var objects = new List<Object>();
+            if (System.IO.Directory.Exists(path)) 
+            {
+                var assets = System.IO.Directory.GetFiles(path);
+                foreach (string assetPath in assets) 
+                {
+                    if (assetPath.Contains($".{assetType}") && !assetPath.Contains(".meta")) 
+                    {
+                        objects.Add(UnityEditor.AssetDatabase.LoadMainAssetAtPath(assetPath));
+                    }
+                }
+            }
+            return objects;
         }
     }
 }
