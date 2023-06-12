@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
@@ -9,12 +10,12 @@ namespace Framework.Core
     {
         public static void GetSceneMonoBehaviours(ref List<MonoBehaviour> monoBehaviours)
         {
-            var sceneGameObjects = UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects();
-
-            foreach (GameObject sceneGameObject in sceneGameObjects)
+            foreach (var rootObject in GetRooGameObjects())
             {
-                var components = sceneGameObject.GetComponentsInChildren<MonoBehaviour>(true);
-                monoBehaviours.AddRange(components);
+                if (rootObject != null)
+                {
+                    GetInjectableMonoBehavioursUnderGameObjectInternal(rootObject, ref monoBehaviours);
+                }
             }
 
             var uiManager = monoBehaviours.Find(x => x is UIManager) as UIManager;
@@ -31,6 +32,45 @@ namespace Framework.Core
             Array.Reverse(methods);
             
             return Array.FindAll(methods, HasInjectMethods);
+        }
+        
+        private static void GetInjectableMonoBehavioursUnderGameObjectInternal(GameObject gameObject, ref List<MonoBehaviour> monoBehaviours)
+        {
+            if (gameObject == null)
+                return;
+            
+            var foundBehaviours = gameObject.GetComponents<MonoBehaviour>();
+
+            for (int i = 0; i < gameObject.transform.childCount; i++)
+            {
+                var child = gameObject.transform.GetChild(i);
+
+                if (child != null)
+                {
+                    GetInjectableMonoBehavioursUnderGameObjectInternal(child.gameObject, ref monoBehaviours);
+                }
+            }
+            
+            for (int i = 0; i < foundBehaviours.Length; i++)
+            {
+                if (foundBehaviours[i] != null)
+                {
+                    monoBehaviours.Add(foundBehaviours[i]);
+                }
+            }
+        }
+
+        private static IEnumerable<GameObject> GetRooGameObjects()
+        {
+            var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+
+            if (scene.isLoaded)
+            {
+                return scene.GetRootGameObjects();
+            }
+
+            return Resources.FindObjectsOfTypeAll<GameObject>()
+                .Where(x => x.transform.parent == null && x.scene == scene);
         }
 
         private static MethodInfo[] GetAllMethods(Type type)
