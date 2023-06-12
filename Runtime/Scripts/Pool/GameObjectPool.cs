@@ -19,12 +19,16 @@ namespace Framework.Pool
             this.instantiator = instantiator;
         }
         
+        protected virtual void Init(){}
+        
         private void Awake()
         {
             if (string.IsNullOrEmpty(source.scene.name) == false) // NOTE: way of checking if it's prefab or a scene object
             {
                 source.gameObject.SetActive(false);
             }
+            
+            Init();
         }
 
         public void DisableAll()
