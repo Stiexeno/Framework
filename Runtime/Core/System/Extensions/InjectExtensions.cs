@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 namespace Framework.Core
@@ -22,5 +24,35 @@ namespace Framework.Core
                 monoBehaviours.Add(uiManager);
             }
         }
+        
+        public static IEnumerable<MethodInfo> GetInjectableMethods(Type type)
+        {
+            MethodInfo[] methods = GetAllMethods(type);
+            Array.Reverse(methods);
+            
+            return Array.FindAll(methods, HasInjectMethods);
+        }
+
+        private static MethodInfo[] GetAllMethods(Type type)
+        {
+            if (type == null || type == typeof(MonoBehaviour))
+                return Array.Empty<MethodInfo>();
+            
+            BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy;
+            MethodInfo[] methods = type.GetMethods(flags);
+
+            // Get methods from base types recursively
+            Type baseType = type.BaseType;
+            MethodInfo[] baseMethods = GetAllMethods(baseType);
+
+            MethodInfo[] allMethods = new MethodInfo[methods.Length + baseMethods.Length];
+            methods.CopyTo(allMethods, 0);
+            baseMethods.CopyTo(allMethods, methods.Length);
+            
+            return allMethods;
+        }
+        
+        private static bool HasInjectMethods(MethodInfo methodInfo) =>
+            methodInfo.GetCustomAttributes(typeof(InjectAttribute), false).Length > 0;
     }
 }

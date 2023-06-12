@@ -21,13 +21,15 @@ namespace Framework.Core
 			if (existingBinding != null && existingBinding.Initialized)
 				return;
 
-			var injectMethods = instance
-				.GetType()
-				.GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
-				.Where(HasInjectMethods)
-				.ToList();
+			//var injectMethods = instance
+			//	.GetType()
+			//	.GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
+			//	.Where(HasInjectMethods)
+			//	.ToList();
 
-			foreach (MethodInfo injectMethod in injectMethods)
+			var injectableMethods = InjectExtensions.GetInjectableMethods(instance.GetType());
+
+			foreach (MethodInfo injectMethod in injectableMethods)
 			{
 				var args = injectMethod.GetParameters();
 				var argsToInject = new object[args.Length];
