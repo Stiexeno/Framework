@@ -9,16 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18bd840b706853d4a934ec3199f63a41, type: 3}
+  m_Script: {fileID: 11500000, guid: 7c2e1a395ddb9ca448b7fcdf6be379fd, type: 3}
   m_Name: Animancer Settings
   m_EditorClassIdentifier: 
   _TransitionPreviewWindow:
     _AutoClose: 1
-    _Models:
-    - {fileID: 6736382083600824351, guid: ec9612f51b455418fa3b14258a58b638, type: 3}
-    - {fileID: 1711639599176843713, guid: 9fdc4004c2a611c4991259ce62c4c61a, type: 3}
-    - {fileID: 2775701720816950608, guid: 429ad8f3a2acf4b5fb069f02fec799e8, type: 3}
-    - {fileID: 2124474537707371549, guid: 4cb2ee562266d44e780d722f88d184f2, type: 3}
+    _Models: []
   _AnimationTimeFields:
     showApproximations: 1
     showNormalized: 1
