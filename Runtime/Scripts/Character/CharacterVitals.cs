@@ -11,6 +11,7 @@ namespace Framework.Character
 
 		[SF] private int maxHealth;
 		[SF] private ProgressBar healthbar;
+		[SF, CanBeNull] private ParticleSystem hitVFX;
 
 		//Private fields
 
@@ -36,6 +37,8 @@ namespace Framework.Character
 			
 			Health -= args.damage;
 			healthbar.Value = (float)Health / maxHealth;
+
+			hitVFX?.Play();	
 
 			if (Health <= 0)
 			{

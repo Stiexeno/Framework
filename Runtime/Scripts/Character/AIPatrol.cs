@@ -10,7 +10,8 @@ namespace Framework.Character
 	{
 		//Serialized fields
 
-		[SF] private float wanderRange;
+		[SF] private float minWanderRange;
+		[SF] private float maxWanderRange;
 
 		//Private fields
 
@@ -23,6 +24,7 @@ namespace Framework.Character
 		
 		private Vector3 GetRandomPoint()
 		{
+			var wanderRange = Random.Range(minWanderRange, maxWanderRange);
 			var randomDirection = transform.GetRandomPointAround(wanderRange);
 			NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, wanderRange, 1);
 			Vector3 finalPosition = hit.position;
