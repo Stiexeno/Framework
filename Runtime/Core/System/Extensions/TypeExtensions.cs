@@ -14,14 +14,15 @@ namespace Framework
             typeof(IProcessable),
             typeof(ITickable),
             typeof(IDisposable),
-            typeof(IFixedProcessable)
+            typeof(IFixedProcessable),
+            typeof(IPreInstall)
         };
         
         public static Type[] Interfaces(this Type type)
         {
             if (interfaces.TryGetValue(type, out Type[] result) == false)
             {
-                result = type.GetInterfaces().Except(excludedInterfaces).ToArray();;
+                result = type.GetInterfaces().Except(excludedInterfaces).ToArray();
                 interfaces.Add(type, result);
             }
             

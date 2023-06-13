@@ -50,6 +50,9 @@ namespace Framework.Core
                 installer.InstallBindings(diContainer);
             }
             
+            // Installing here UIManager because he must be in every scene
+            diContainer.Bind<UIManager>().FindInScene();
+            
             foreach (var binding in diContainer.Container)
             {
                 if(binding.Value.Instance == null)

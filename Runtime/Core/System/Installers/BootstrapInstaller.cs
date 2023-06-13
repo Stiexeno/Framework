@@ -8,13 +8,12 @@ namespace Framework.Core
 
             diContainer.Bind<DataManager>();
             diContainer.Bind<FocusManager>().DontDestroyOnLoad();
-            diContainer.Bind<SceneManager>();
-            diContainer.Bind<CoroutineManager>();
-            
+            diContainer.Bind<SceneManager>().DontDestroyOnLoad();
+            diContainer.Bind<CoroutineManager>().DontDestroyOnLoad();
+
             diContainer.Bind<EventManager>();
             diContainer.Bind<Timer>();
             diContainer.Bind<LocalClock>().NonLazy();
-            diContainer.Bind<UIManager>().FindInScene();
             diContainer.Bind<AssetLoader>();
         }
     }
