@@ -88,8 +88,5 @@ namespace Framework.Core
 				}
 			}
 		}
-		
-		private static bool HasInjectMethods(MethodInfo methodInfo) =>
-			methodInfo.GetCustomAttributes(typeof(InjectAttribute), false).Length > 0;
 	}
 }
