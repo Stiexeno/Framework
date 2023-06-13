@@ -10,5 +10,7 @@ namespace Framework.Character
 		void Stop();
 		void SetSpeed(float speed);
 		bool ReachedDestination();
+		void AddSpeed(float speed);
+		void SetEnabled(bool value);
 	}
 }

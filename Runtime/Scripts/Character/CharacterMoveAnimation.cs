@@ -12,21 +12,21 @@ namespace Framework.Character
 		[SF] private LinearMixerTransition transition;
 
 		//Private fields
-		
+
 		private LinearMixerTransition currentTransition;
 		private AnimancerLayer baseLayer;
 		private AnimancerComponent animancer;
-		
+
 		private ICharacterState characterState;
 		private ICharacterMovement characterMovement;
 
 		//Properties
-		
+
 		public void SetTransition(LinearMixerTransition transition)
 		{
 			currentTransition = transition;
 		}
-        
+
 		public void SetDefaultTransition()
 		{
 			currentTransition = transition;
@@ -36,9 +36,13 @@ namespace Framework.Character
 		{
 			if (characterState.State == State.Move)
 			{
+				baseLayer.StartFade(1);
+			}
+			else if (characterState.State == State.MoveAttack)
+			{
 				baseLayer.Play(currentTransition);
 			}
-			
+
 			currentTransition.State.Parameter = characterMovement.Velocity / characterMovement.MaxSpeed;
 		}
 
@@ -47,12 +51,11 @@ namespace Framework.Character
 			characterState = GetComponent<ICharacterState>();
 			characterMovement = GetComponent<ICharacterMovement>();
 			animancer = GetComponentInChildren<AnimancerComponent>();
-			
+
 			SetDefaultTransition();
-            
+
 			animancer.Play(currentTransition);
-            
 			baseLayer = animancer.Layers[0];
 		}
-	}	
+	}
 }

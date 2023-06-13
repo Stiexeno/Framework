@@ -3,11 +3,14 @@ using SF = UnityEngine.SerializeField;
 
 namespace Framework.Character
 {
+	public enum Team { Player, Enemy, Neutral }
 	public interface ITarget
 	{
 		public Transform transform { get; }
+		public Team Team { get; }
 		public bool IsAlive { get; }
 		public int Health { get; set; }
+		public int MaxHealth { get; }
 
 		public void DealDamage(DamageArgs args);
 	}

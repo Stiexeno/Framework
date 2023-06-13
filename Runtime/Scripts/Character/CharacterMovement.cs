@@ -1,3 +1,4 @@
+using Animancer;
 using Framework.Core;
 using Framework.SimpleInput;
 using UnityEngine;
@@ -18,6 +19,7 @@ namespace Framework.Character
 		private ICharacterState characterState;               
 		private Character character;                      
 		private CharacterController characterController;  
+		private AnimancerLayer baseLayer;
 
 		//Properties
 		

@@ -5,7 +5,7 @@ using SF = UnityEngine.SerializeField;
 
 namespace Framework.Character
 {
-	public enum State { Move, Combat, Action}
+	public enum State { Move, Combat, Action, MoveAttack}
 
 	public class CharacterState : MonoBehaviour, ICharacterState
 	{
@@ -32,12 +32,8 @@ namespace Framework.Character
 				case State.Move:
 					State = State.Move;
 					break;
-				case State.Combat:
-					if (inputManager.Axis == Vector2.zero)
-					{
-						State = State.Combat;
-					}
-					
+				case State.MoveAttack:
+					State = State.MoveAttack;
 					break;
 				case State.Action:
 					State = State.Action;

@@ -43,6 +43,17 @@ namespace Framework.Character
 		{
 			agent.speed = speed;
 		}
+
+		public void AddSpeed(float speed)
+		{
+			agent.speed += speed;
+		}
+
+		public void SetEnabled(bool value)
+		{
+			agent.enabled = value;
+			enabled = value;
+		}
 		
 		public void Process(in float deltaTime)
 		{
