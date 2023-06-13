@@ -38,7 +38,7 @@ namespace Framework.Core
 
 		public static void Exception(string message, string solution = "")
 		{
-			throw new Exception($"{"[Inject]".SetColor(new Color(0.64f, 0.87f, 0.18f))} {message} \n{solution.SetColor(new Color(0.98f, 0.69f, 0.16f))}");
+			throw new Exception($"{"<b>[Inject]</b>".SetColor(new Color(0.64f, 0.87f, 0.18f))} {message} \n{solution.SetColor(new Color(0.98f, 0.69f, 0.16f))}");
 		}
 	}	
 }

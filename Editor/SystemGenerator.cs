@@ -14,7 +14,8 @@ namespace Framework.Editor
 		
 		private static readonly HashSet<Type> excludedInstallers = new HashSet<Type>
 		{
-			typeof(BootstrapInstaller)
+			typeof(BootstrapInstaller),
+			typeof(SceneInstaller)
 		};
 
 		public static void GenerateInstallers()

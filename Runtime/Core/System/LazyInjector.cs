@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Framework.Utils;
+using UnityEngine;
 
 namespace Framework.Core
 {
@@ -33,9 +35,18 @@ namespace Framework.Core
 			{
 				var args = injectMethod.GetParameters();
 				var argsToInject = new object[args.Length];
-					
+
 				for (int i = 0; i < args.Length; i++)
+				{
 					argsToInject[i] = diContainer.Resolve(args[i].ParameterType);
+
+					if (argsToInject[i] == null)
+					{
+						var parameter = $"{args[i].ParameterType}".SetColor(new Color(0.64f, 0.87f, 0.18f));
+						Context.Exception($"Failed to inject {parameter} into {instance.GetType()}", $"Make sure that you added binding to installer");
+					}
+				}
+				
 					
 				injectMethod.Invoke(instance, argsToInject);
 			}
