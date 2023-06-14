@@ -10,6 +10,7 @@ namespace Framework.Character
 		public Team Team { get; }
 		public bool IsAlive { get; }
 		public int Health { get; set; }
+		public int MinHealth { get; }
 		public int MaxHealth { get; }
 
 		public void DealDamage(DamageArgs args);

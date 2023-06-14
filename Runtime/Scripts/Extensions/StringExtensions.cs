@@ -66,17 +66,17 @@ namespace Framework.Core
 			float nNum = amount;
             
 			if (nNum >= 1000000000000)
-				return (nNum / 1000000000000).ToString("F2").Replace(',', '.') + "<color=yellow><size=75%>T</size></color>";
-			else if (nNum >= 1000000000)
-				return (nNum / 1000000000).ToString("F2").Replace(',', '.') + "<color=yellow><size=75%>B</size></color>";
-			else if (nNum >= 10000000)
-				return (nNum / 1000000).ToString("F2").Replace(',', '.') + "<color=yellow><size=75%>M</size></color>";
-			else if (nNum >= 1000000)
-				return (nNum / 1000000).ToString("F2").Replace(',', '.') + "<color=yellow><size=75%>M</size></color>";
-			else if (nNum >= 100000)
-				return (nNum / 10000).ToString("F2").Replace(',', '.') + "<color=yellow><size=75%>K</size></color>";
-			else if (nNum >= 1000)
-				return (nNum / 1000).ToString("F2").Replace(',', '.') + "<color=yellow><size=75%>K</size></color>";
+				return (nNum / 1000000000000).ToString("F1").Replace(',', '.') + "<color=yellow><size=75%>T</size></color>";
+			if (nNum >= 1000000000)
+				return (nNum / 1000000000).ToString("F1").Replace(',', '.') + "<color=yellow><size=75%>B</size></color>";
+			if (nNum >= 10000000)
+				return (nNum / 1000000).ToString("F1").Replace(',', '.') + "<color=yellow><size=75%>M</size></color>";
+			if (nNum >= 1000000)
+				return (nNum / 1000000).ToString("F1").Replace(',', '.') + "<color=yellow><size=75%>M</size></color>";
+			if (nNum >= 100000)
+				return (nNum / 10000).ToString("F1").Replace(',', '.') + "<color=yellow><size=75%>K</size></color>";
+			if (nNum >= 1000)
+				return (nNum / 1000).ToString("F1").Replace(',', '.') + "<color=yellow><size=75%>K</size></color>";
 
 			return amount.ToString();
 		}

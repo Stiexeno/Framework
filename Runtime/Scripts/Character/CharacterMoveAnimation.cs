@@ -10,7 +10,7 @@ namespace Framework.Character
 		//Serialized fields
 
 		[SF] private LinearMixerTransition transition;
-
+		
 		//Private fields
 
 		private LinearMixerTransition currentTransition;
@@ -34,14 +34,7 @@ namespace Framework.Character
 
 		public void Process(in float deltaTime)
 		{
-			if (characterState.State == State.Move)
-			{
-				baseLayer.StartFade(1);
-			}
-			else if (characterState.State == State.MoveAttack)
-			{
-				baseLayer.Play(currentTransition);
-			}
+			baseLayer.Play(currentTransition);
 
 			currentTransition.State.Parameter = characterMovement.Velocity / characterMovement.MaxSpeed;
 		}
@@ -54,8 +47,9 @@ namespace Framework.Character
 
 			SetDefaultTransition();
 
-			animancer.Play(currentTransition);
 			baseLayer = animancer.Layers[0];
+
+			animancer.Play(currentTransition);
 		}
 	}
 }

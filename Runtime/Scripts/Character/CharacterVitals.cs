@@ -11,6 +11,7 @@ namespace Framework.Character
 
 		[SF] private Team team;
 		[SF] private int maxHealth;
+		[SF] private int minHealth;
 		[SF] private ProgressBar healthbar;
 		[SF, CanBeNull] private ParticleSystem hitVFX;
 
@@ -21,6 +22,7 @@ namespace Framework.Character
 		public Team Team => team;
 		public bool IsAlive => Health > 0;
 		public int Health { get; set; }
+		public int MinHealth => minHealth;
 		public int MaxHealth => maxHealth;
 
 		public event Action<DamageArgs> OnDamageTaken;
@@ -38,7 +40,8 @@ namespace Framework.Character
 		{
 			healthbar.SetEnabled(true);
 			
-			Health -= args.damage;
+			var targetHealth = Mathf.Clamp(Health - args.damage, minHealth, maxHealth);
+			Health = targetHealth;
 			healthbar.Value = (float)Health / maxHealth;
 
 			if (hitVFX != null)
