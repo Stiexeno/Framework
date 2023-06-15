@@ -140,6 +140,16 @@ namespace Framework.Editor
 			}
 			
 			ConfigSettings.Settings.OnResfresh.Invoke();
+
+			//? This is way to execute UnityEvent in EditorMode
+			var evnt = ConfigSettings.Settings.OnResfresh;
+			for (int i = 0; i < evnt.GetPersistentEventCount(); i++)
+			{
+				evnt.GetPersistentTarget(i)
+					.GetType()
+					.GetMethod(evnt.GetPersistentMethodName(i))
+					.Invoke(evnt.GetPersistentTarget(i), null);
+			}
 		}
 	}	
 }
