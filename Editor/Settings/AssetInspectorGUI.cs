@@ -1,10 +1,23 @@
+using System;
+using System.Collections.Generic;
+using Framework.Core;
 using Framework.Editor;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 [InitializeOnLoad]
 public static class AssetInspectorGUI
 {
+	private static HashSet<Type> excludedTypes = new HashSet<Type>
+	{
+		typeof(AssetSettings),
+		typeof(ConfigSettings),
+		typeof(SystemSettings),
+		typeof(ControllerSettings),
+		typeof(RequiredData)
+	};
+	
 	static AssetInspectorGUI()
 	{
 		Editor.finishedDefaultHeaderGUI += OnPostHeaderGUI;
@@ -15,7 +28,7 @@ public static class AssetInspectorGUI
 		if (editor.target != null)
 		{
 			var target = editor.target;
-			if (AssetDatabase.IsMainAsset(target))
+			if (AssetDatabase.IsMainAsset(target) && excludedTypes.Contains(target.GetType()) == false)
 			{
 				using (var toggle = new EditorGUI.ChangeCheckScope())
 				{

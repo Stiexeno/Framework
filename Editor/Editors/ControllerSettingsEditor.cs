@@ -2,11 +2,12 @@ using Framework.Core;
 using Framework.Utils;
 using UnityEditor;
 using UnityEngine;
+using SF = UnityEngine.SerializeField;
 
 namespace Framework.Editor
 {
-	//[CustomEditor(typeof(SceneContext))]
-	public class SceneContextEditor : UnityEditor.Editor
+	[CustomEditor(typeof(ControllerSettings))]
+	public class ControllerSettingsEditor : UnityEditor.Editor
 	{
 		private enum Tab { Context, Config, Assets, Settings }
 
@@ -20,7 +21,7 @@ namespace Framework.Editor
 		private MonoScript assetsScript;
 
 		private static GUIStyle activeButtonStyle;
-		
+
 		public override void OnInspectorGUI()
 		{
 			DrawNavigation();
@@ -30,14 +31,14 @@ namespace Framework.Editor
 
 			if (tab == Tab.Context)
 			{
-				DrawDefaultInspector();
+				DrawSceneContext();
 				DrawRefreshButton();
 			}
 			else if (tab == Tab.Config)
 			{
 				DrawConfig();
 			}
-			else if(tab == Tab.Assets)
+			else if (tab == Tab.Assets)
 			{
 				DrawAssets();
 			}
@@ -52,11 +53,20 @@ namespace Framework.Editor
 			DrawFooter();
 		}
 
+		private void DrawSceneContext()
+		{
+			if (sceneContext == null)
+				sceneContext = FindObjectOfType<SceneContext>();
+
+			var editor = CreateEditor(sceneContext);
+			editor.OnInspectorGUI();
+		}
+
 		private void DrawSettings()
 		{
 			if (systemSettings == null)
 				systemSettings = SystemSettings.Settings;
-			
+
 			var editor = CreateEditor(systemSettings);
 			editor.OnInspectorGUI();
 		}
@@ -65,11 +75,12 @@ namespace Framework.Editor
 		{
 			if (configSettings == null)
 				configSettings = ConfigSettings.Settings;
-			
+
 			var editor = CreateEditor(configSettings);
 			editor.OnInspectorGUI();
 
-			EditorGUILayout.HelpBox("AbstractConfigs will be automatically created as ScriptableObjects instances and saved to ConfigSettings", MessageType.Info);
+			EditorGUILayout.HelpBox("AbstractConfigs will be automatically created as ScriptableObjects instances and saved to ConfigSettings",
+				MessageType.Info);
 			if (GUILayout.Button("Refresh"))
 			{
 				SystemGenerator.GenerateConfigs();
@@ -89,10 +100,10 @@ namespace Framework.Editor
 				GUILayout.Space(5f);
 				GUI.enabled = false;
 				EditorGUILayout.ObjectField(assetsScript, typeof(MonoScript), false);
-				
+
 				if (Application.isPlaying == false)
 					GUI.enabled = true;
-				
+
 				EditorGUILayout.HelpBox("Marked Assets will be generated to script as constants", MessageType.Info);
 			}
 
@@ -214,8 +225,8 @@ namespace Framework.Editor
 			{
 				tab = Tab.Settings;
 			}
-			
-			
+
+
 			tapRect.width = EditorGUIUtility.currentViewWidth;
 			tapRect.x = 0;
 			tapRect.height = 1;
@@ -224,7 +235,7 @@ namespace Framework.Editor
 
 		private void OnEnable()
 		{
-			sceneContext = (SceneContext)target;
+			sceneContext = FindObjectOfType<SceneContext>();
 
 			var comp = sceneContext.GetComponent<Transform>();
 			comp.hideFlags = HideFlags.HideInInspector;
@@ -234,7 +245,7 @@ namespace Framework.Editor
 
 			if (configSettings == null)
 				configSettings = ConfigSettings.Settings;
-			
+
 			if (systemSettings == null)
 				systemSettings = SystemSettings.Settings;
 

@@ -17,7 +17,7 @@ namespace Framework.Editor
 
         static ToolbarScene()
         {
-            ToolbarExtender.RegisterRightEntry(OnToolbarGUI, 2);
+            ToolbarExtender.RegisterRightEntry(OnToolbarGUI, 3);
         }
 
         static void OnToolbarGUI()

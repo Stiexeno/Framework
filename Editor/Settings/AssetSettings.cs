@@ -10,7 +10,6 @@ using Object = UnityEngine.Object;
 
 namespace Framework.Editor
 {
-	[CreateAssetMenu(fileName = "AssetSettings", menuName = "Framework/AssetSettings", order = 0)]
 	public class AssetSettings : ScriptableObject
 	{
 		public List<Object> assets = new List<Object>();
@@ -28,6 +27,7 @@ namespace Framework.Editor
 			typeof(AssetSettings),
 			typeof(ConfigSettings),
 			typeof(SystemSettings),
+			typeof(ControllerSettings),
 			typeof(RequiredData)
 		};
 

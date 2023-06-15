@@ -21,8 +21,6 @@ namespace Framework.Editor
                 SystemGenerator.GenerateConfigs();
                 SystemGenerator.GenerateAssetsScript();
             }
-            
-            GUILayout.Space(5f);
         }
     }
 }
