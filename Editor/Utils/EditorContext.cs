@@ -20,6 +20,20 @@ namespace Framework.Editor
 			SpawnPrefab<Button>($"Packages/{CoreConstants.PACKAGE_NAME}/Runtime/Prefabs/Button.prefab");
 		}
 		
+		[MenuItem("CONTEXT/RectTransform/Expand")]
+		public static void ExpandRectTransform(MenuCommand command)
+		{
+			var rect = (RectTransform) command.context;
+	        
+			rect.anchorMax = Vector2.one;
+			rect.anchorMin = Vector2.zero;
+	        
+			rect.offsetMin = new Vector2(0, rect.offsetMin.y);
+			rect.offsetMax = new Vector2(0, rect.offsetMax.y);
+			rect.offsetMin = new Vector2(rect.offsetMin.x, 0);
+			rect.offsetMax = new Vector2(rect.offsetMax.x, 0);
+		}
+		
 		private static void SpawnPrefab<T>(string path) where T : MonoBehaviour
 		{
 			var selectedGameObject = Selection.activeTransform;

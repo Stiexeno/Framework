@@ -95,6 +95,12 @@ namespace Framework.Editor
 			var editor = CreateEditor(assetsSettings);
 			editor.OnInspectorGUI();
 
+			if (assetsScript == null)
+			{
+				string outputPath = "Assets/Scripts/Generated/Assets.cs";
+				assetsScript = AssetDatabase.LoadAssetAtPath<MonoScript>(outputPath);
+			}
+
 			if (assetsScript != null)
 			{
 				GUILayout.Space(5f);
@@ -205,14 +211,14 @@ namespace Framework.Editor
 			}
 
 			tapRect.x += tapRect.width;
-			if (GUI.Button(tapRect, EditorHelper.Icon("Configs", "d_ScriptableObject Icon"),
+			if (GUI.Button(tapRect, EditorHelper.Icon("Configs", "d_ScriptableObject Icon", "Store for AbstractConfigs which will be used in game as Binding."),
 				    tab == Tab.Config ? activeButtonStyle : EditorStyles.toolbarButton))
 			{
 				tab = Tab.Config;
 			}
 
 			tapRect.x += tapRect.width;
-			if (GUI.Button(tapRect, EditorHelper.Icon("Assets", "PreviewPackageInUse@2x"),
+			if (GUI.Button(tapRect, EditorHelper.Icon("Assets", "PreviewPackageInUse@2x","Container for assets references which will be used in script generation from Resource folder. \nEDITOR ONLY"),
 				    tab == Tab.Assets ? activeButtonStyle : EditorStyles.toolbarButton))
 			{
 				tab = Tab.Assets;
@@ -248,9 +254,6 @@ namespace Framework.Editor
 
 			if (systemSettings == null)
 				systemSettings = SystemSettings.Settings;
-
-			string outputPath = "Assets/Scripts/Generated/AssetsPath.cs";
-			assetsScript = AssetDatabase.LoadAssetAtPath<MonoScript>(outputPath);
 		}
 	}
 }
