@@ -17,9 +17,9 @@ namespace Framework.Core
         
         private float lastTick;
         
-        private readonly HashSet<IProcessable> processables = new HashSet<IProcessable>();
-        private readonly HashSet<ITickable> tickables = new HashSet<ITickable>();
-        private readonly HashSet<IFixedProcessable> fixedProcessables = new HashSet<IFixedProcessable>();
+        private readonly HashSet<Binding> processables = new HashSet<Binding>();
+        private readonly HashSet<Binding> tickables = new HashSet<Binding>();
+        private readonly HashSet<Binding> fixedProcessables = new HashSet<Binding>();
 
         //Properties
         
@@ -49,31 +49,33 @@ namespace Framework.Core
             {
                 installer.InstallBindings(diContainer);
             }
-
             
             // Installing scene bootstrap bindings
             ScriptableObject.CreateInstance<SceneInstaller>().InstallBindings(diContainer);
 
             foreach (var binding in diContainer.Container)
             {
+                if (binding.Value.ModifierInterfaces != null)
+                {
+                    if (binding.Value.ModifierInterfaces.Contains(typeof(IProcessable)))
+                    {
+                        processables.Add((binding.Value));
+                    }
+                
+                    if (binding.Value.ModifierInterfaces.Contains(typeof(IFixedProcessable)))
+                    {
+                        fixedProcessables.Add((binding.Value));
+                    }
+                
+                    if (binding.Value.ModifierInterfaces.Contains(typeof(ITickable)))
+                    {
+                        tickables.Add((binding.Value));
+                    }
+                }
+
                 if(binding.Value.Instance == null)
                     continue;
                 
-                if (binding.Value.Instance is IProcessable processable)
-                {
-                    processables.Add(processable);
-                }
-                
-                if (binding.Value.Instance is IFixedProcessable fixedProcessable)
-                {
-                    fixedProcessables.Add(fixedProcessable);
-                }
-                
-                if (binding.Value.Instance is ITickable tickable)
-                {
-                    tickables.Add(tickable);
-                }
-
                 if (binding.Value.Instance is IPreInstall initializable)
                 {
                     initializable.Initialize();
@@ -99,7 +101,11 @@ namespace Framework.Core
         {
             foreach (var processable in processables)
             {
-                processable.Process(Time.deltaTime);
+                if (processable.Instance != null)
+                {
+                    var instnace = processable.Instance as IProcessable;
+                    instnace.Process(Time.deltaTime);   
+                }
             }
             
             if (Time.time - lastTick >= 1)
@@ -108,7 +114,11 @@ namespace Framework.Core
                 
                 foreach (var tickable in tickables)
                 {
-                    tickable.Tick();
+                    if (tickable.Instance != null)
+                    {
+                        var instnace = tickable.Instance as ITickable;
+                        instnace.Tick();   
+                    }
                 }
             }
         }
@@ -117,7 +127,11 @@ namespace Framework.Core
         {
             foreach (var fp in fixedProcessables)
             {
-                fp.FixedProcess(Time.fixedDeltaTime);
+                if (fp.Instance != null)
+                {
+                    var instnace = fp.Instance as IFixedProcessable;
+                    instnace.FixedProcess(Time.deltaTime);   
+                }
             }
         }
     }

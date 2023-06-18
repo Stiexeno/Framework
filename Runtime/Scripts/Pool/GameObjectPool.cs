@@ -124,6 +124,7 @@ namespace Framework.Pool
             
             var newObj = instantiator.InstantiatePrefab(source).GetComponent<T>();
             newObj.transform.SetParent(parent ? parent : transform, false);
+            newObj.transform.localPosition = Vector3.zero;
             pool.Add(newObj);
 
             newObj.gameObject.SetActive(true);

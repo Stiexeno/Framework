@@ -12,6 +12,7 @@ namespace Framework.Character
 		//Serialized fields
 
 		[SF] private float moveSpeed = 20;
+		[SF] private float fallSpeed = 2;
 
 		//Private fields
 		
@@ -36,14 +37,21 @@ namespace Framework.Character
 		public void Process(in float deltaTime)
 		{
 			var moveDirection = new Vector3(inputManager.Axis.x, 0, inputManager.Axis.y);
-			characterController.Move(moveDirection * (moveSpeed * deltaTime));
-			moveDirection.SetY(0);
+			characterController.Move((moveDirection + ProcessFalling()) * (moveSpeed * deltaTime));
 
 			if (moveDirection != Vector3.zero)
 			{
 				characterState.State = State.Move;
 				transform.rotation = Quaternion.LookRotation(moveDirection);
 			}
+		}
+
+		private Vector3 ProcessFalling()
+		{
+			bool isFalling = !characterController.isGrounded;
+			Vector3 fallVelocity = isFalling ? new Vector3(0, -fallSpeed * Time.deltaTime, 0) : Vector3.zero;
+
+			return fallVelocity;
 		}
 
 		public void Init(Character character)

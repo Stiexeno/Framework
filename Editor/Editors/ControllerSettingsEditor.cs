@@ -2,7 +2,6 @@ using Framework.Core;
 using Framework.Utils;
 using UnityEditor;
 using UnityEngine;
-using SF = UnityEngine.SerializeField;
 
 namespace Framework.Editor
 {
@@ -242,9 +241,6 @@ namespace Framework.Editor
 		private void OnEnable()
 		{
 			sceneContext = FindObjectOfType<SceneContext>();
-
-			var comp = sceneContext.GetComponent<Transform>();
-			comp.hideFlags = HideFlags.HideInInspector;
 
 			if (assetsSettings == null)
 				assetsSettings = AssetSettings.Settings;

@@ -49,7 +49,7 @@ namespace Framework.Core
 		public T Instantiate<T>(GameObject prefab, Vector3 at, Transform parent = null) where T : MonoBehaviour
 		{
 			var instantiated = instantiator.InstantiatePrefab(prefab);
-			instantiated.transform.SetParent(parent);
+			instantiated.transform.SetParent(parent, true);
 			instantiated.name = instantiated.name.Replace("(Clone)", string.Empty);
 			var transform = instantiated.transform;
 			transform.position = at;

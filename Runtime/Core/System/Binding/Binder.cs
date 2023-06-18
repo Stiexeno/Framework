@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Framework.Core
 {
@@ -26,6 +27,7 @@ namespace Framework.Core
            {
                binding.ContractType = typeof(T);   
                binding.Interfaces = typeof(T).Interfaces();
+               binding.ModifierInterfaces = typeof(T).ModiferInterfaces();
            }
            
            container.Add(typeof(T), binding);

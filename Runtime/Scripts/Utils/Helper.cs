@@ -199,5 +199,22 @@ namespace Framework.Utils
 
             return json;
         }
+
+        public static bool IsOnScreen(Transform transform)
+        {
+            Vector3 viewportPosition = Camera.main.WorldToViewportPoint(transform.position);
+
+            const float padding = -0.1f;
+
+            float minX = 0 - padding;
+            float maxX = 1 + padding;
+            float minY = 0 - padding;
+            float maxY = 1 + padding;
+            
+            bool isOnScreen = (viewportPosition.x >= minX && viewportPosition.x <= maxX) &&
+                              (viewportPosition.y >= minY && viewportPosition.y <= maxY);
+
+            return isOnScreen;
+        }
     }
 }

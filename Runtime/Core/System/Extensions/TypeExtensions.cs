@@ -28,5 +28,10 @@ namespace Framework
             
             return result;
         }
+        
+        public static Type[] ModiferInterfaces(this Type type)
+        {
+            return type.GetInterfaces().Intersect(excludedInterfaces).ToArray();
+        }
     }
 }

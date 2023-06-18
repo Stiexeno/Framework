@@ -14,7 +14,7 @@ namespace Framework
         public override void OnInspectorGUI()
         {
 	        GUI.enabled = false;
-            config.Guid = EditorGUILayout.TextField("GUID", config.Guid);
+            config.guid = EditorGUILayout.TextField("GUID", config.guid);
             GUI.enabled = true;
 
             var rect = GUILayoutUtility.GetLastRect();
@@ -25,7 +25,7 @@ namespace Framework
             var icon = new GUIContent(EditorGUIUtility.IconContent("Refresh@2x"));
             if (GUI.Button(rect, icon))
             {
-	            config.Guid = System.Guid.NewGuid().ToString();
+	            config.guid = System.Guid.NewGuid().ToString();
 	            EditorUtility.SetDirty(config);
 	            AssetDatabase.SaveAssets();
             }
@@ -37,9 +37,9 @@ namespace Framework
         {
             config = target as Config;
 
-            if (config.Guid == "UNSET")
+            if (config.guid == "UNSET")
             {
-                config.Guid = System.Guid.NewGuid().ToString();
+                config.guid = System.Guid.NewGuid().ToString();
                 EditorUtility.SetDirty(config);
                 AssetDatabase.SaveAssets();
             }
