@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Framework.Core;
 using UnityEditor;
@@ -10,8 +9,6 @@ namespace Framework.Editor
 {
 	public static class SystemGenerator
 	{
-		private const string INSTALLERS_PATH = "Assets/Configs/Installers";
-		
 		private static readonly HashSet<Type> excludedInstallers = new HashSet<Type>
 		{
 			typeof(BootstrapInstaller),

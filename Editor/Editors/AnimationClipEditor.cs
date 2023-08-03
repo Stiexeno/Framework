@@ -1,7 +1,6 @@
 using System;
 using UnityEditor;
 using UnityEngine;
-using SF = UnityEngine.SerializeField;
 
 [CustomEditor(typeof (AnimationClip), true)]
 public class AnimationClipEditor : Editor

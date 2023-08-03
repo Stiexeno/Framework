@@ -12,7 +12,7 @@ namespace Framework.Editor
 {
 	public class AssetSettings : ScriptableObject
 	{
-		public List<Object> assets = new List<Object>();
+		internal List<Object> assets = new List<Object>();
 		
 		private const string ASSET_NAME = "AssetSettings";
 		private const string OBJECT_NAME = "com.framework.asset-settings";

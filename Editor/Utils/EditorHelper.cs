@@ -141,7 +141,7 @@ namespace Framework.Editor
                 {
                     if (assetPath.Contains($".{assetType}") && !assetPath.Contains(".meta")) 
                     {
-                        objects.Add(UnityEditor.AssetDatabase.LoadMainAssetAtPath(assetPath));
+                        objects.Add(AssetDatabase.LoadMainAssetAtPath(assetPath));
                     }
                 }
             }

@@ -1,7 +1,9 @@
-using Framework.Core;
 using UnityEngine;
 
-public abstract class AbstractInstaller : ScriptableObject
+namespace Framework.Core
 {
-	public abstract void InstallBindings(DiContainer diContainer);
+	public abstract class AbstractInstaller : ScriptableObject
+	{
+		public abstract void InstallBindings(DiContainer diContainer);
+	}
 }
