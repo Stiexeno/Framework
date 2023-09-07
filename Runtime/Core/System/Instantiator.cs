@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Runtime.Serialization;
 using Framework.Core;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -52,9 +54,16 @@ namespace Framework
 		{
 			var constructors = objectType.GetConstructors();
 
-			if (constructors.Length <= 0)
+			foreach (var cont in constructors)
 			{
-				return Activator.CreateInstance(objectType);
+			}
+			
+			if (constructors[0].GetParameters().Length <= 0)
+			{
+				var instance = FormatterServices.GetUninitializedObject(objectType);
+				diContainer.Inject(new List<object> { instance });
+				
+				return instance;
 			}
 
 			var args = constructors[0].GetParameters();
