@@ -35,7 +35,7 @@ namespace Framework.Editor
 
 		public delegate void Delegate(T1 arg1, T2 arg2, T3 arg3, T4 arg4);
 
-		private SortedList<int, Delegate> m_SortedInvocationList = new SortedList<int, Delegate>();
+		private readonly SortedList<int, Delegate> m_SortedInvocationList = new SortedList<int, Delegate>();
 
 		public void Unregister(Delegate toUnregister)
 		{

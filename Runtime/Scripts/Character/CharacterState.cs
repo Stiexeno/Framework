@@ -1,4 +1,3 @@
-using System;
 using Framework.SimpleInput;
 using UnityEngine;
 using SF = UnityEngine.SerializeField;
@@ -12,8 +11,6 @@ namespace Framework.Character
 		//Serialized fields
 
 		//Private fields
-		
-		private IInputManager inputManager;
 
 		//Properties
 
@@ -22,7 +19,6 @@ namespace Framework.Character
 		[Inject]
 		private void Construct(IInputManager inputManager)
 		{
-			this.inputManager = inputManager;
 		}
 
 		public void SetState(State state)

@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace Framework.Character
 {
 	public interface ICharacterMovement : ICharacterComponent

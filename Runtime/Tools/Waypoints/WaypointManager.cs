@@ -61,7 +61,7 @@ namespace Framework.Tools
         }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class TrackedWaypoint
     {
         public string waypointTag;

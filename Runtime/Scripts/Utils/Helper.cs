@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Framework.Core;
+using Enumerable = System.Linq.Enumerable;
 using Random = UnityEngine.Random;
 
 namespace Framework.Utils
@@ -143,10 +144,11 @@ namespace Framework.Utils
 
                     var collection = (IEnumerable)pair.Value;
 
-                    var colSize = collection.Count();
+                    var enumerable = collection as object[] ?? Enumerable.ToArray(Enumerable.Cast<object>(collection));
+                    var colSize = enumerable.Count();
                     int x = 0;
 
-                    foreach (var element in collection)
+                    foreach (var element in enumerable)
                     {
                         if (colSize <= x + 1)
                         {

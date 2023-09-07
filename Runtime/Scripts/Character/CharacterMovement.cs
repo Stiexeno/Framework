@@ -1,5 +1,4 @@
 using Animancer;
-using Framework.Core;
 using Framework.SimpleInput;
 using UnityEngine;
 using SF = UnityEngine.SerializeField;
@@ -17,8 +16,7 @@ namespace Framework.Character
 		//Private fields
 		
 		private IInputManager inputManager;               
-		private ICharacterState characterState;               
-		private Character character;                      
+		private ICharacterState characterState;
 		private CharacterController characterController;  
 		private AnimancerLayer baseLayer;
 
@@ -56,7 +54,6 @@ namespace Framework.Character
 
 		public void Init(Character character)
 		{
-			this.character = character;
 			characterController = GetComponent<CharacterController>();
 			characterState = GetComponent<ICharacterState>();
 		}

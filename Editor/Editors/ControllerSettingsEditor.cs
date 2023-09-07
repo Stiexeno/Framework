@@ -28,22 +28,21 @@ namespace Framework.Editor
 			if (Application.isPlaying)
 				GUI.enabled = false;
 
-			if (tab == Tab.Context)
+			switch (tab)
 			{
-				DrawSceneContext();
-				DrawRefreshButton();
-			}
-			else if (tab == Tab.Config)
-			{
-				DrawConfig();
-			}
-			else if (tab == Tab.Assets)
-			{
-				DrawAssets();
-			}
-			else
-			{
-				DrawSettings();
+				case Tab.Context:
+					DrawSceneContext();
+					DrawRefreshButton();
+					break;
+				case Tab.Config:
+					DrawConfig();
+					break;
+				case Tab.Assets:
+					DrawAssets();
+					break;
+				default:
+					DrawSettings();
+					break;
 			}
 
 			if (Application.isPlaying)
@@ -54,11 +53,15 @@ namespace Framework.Editor
 
 		private void DrawSceneContext()
 		{
+			// TODO: Optimize it that way that it will not try to find sceneContext every frame
 			if (sceneContext == null)
 				sceneContext = FindObjectOfType<SceneContext>();
 
-			var editor = CreateEditor(sceneContext);
-			editor.OnInspectorGUI();
+			if (sceneContext != null)
+			{
+				var editor = CreateEditor(sceneContext);
+				editor.OnInspectorGUI();	
+			}
 		}
 
 		private void DrawSettings()

@@ -3,9 +3,10 @@ using UnityEngine;
 
 namespace Framework.Inspector
 {
-    [AttributeUsage(System.AttributeTargets.All, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
     public class DisplayValue : PropertyAttribute
     {
+        // ReSharper disable once EmptyConstructor
         public DisplayValue()
         {
             

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Framework.Inspector;
-using Framework.Utils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;

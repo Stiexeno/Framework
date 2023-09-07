@@ -70,7 +70,7 @@ namespace Framework.Utils
             string filename = GetFileName((int)rect.width, (int)rect.height);
 
             byte[] fileHeader = null;
-            byte[] fileData = null;
+            byte[] fileData;
 
             if (format == Format.RAW)
             {

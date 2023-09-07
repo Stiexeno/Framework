@@ -1,5 +1,4 @@
 using Framework.Core;
-using UnityEngine;
 using SF = UnityEngine.SerializeField;
 
 namespace Framework.Wallet

@@ -1,4 +1,3 @@
-using Framework.Character;
 using UnityEngine;
 using SF = UnityEngine.SerializeField;
 

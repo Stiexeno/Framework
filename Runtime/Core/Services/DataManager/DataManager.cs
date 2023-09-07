@@ -110,10 +110,11 @@ namespace Framework
 		{
 			string dataKey = typeof(T).Name;
 
-			string json = "";
+			string json;
 
 			if (HasData<T>())
 			{
+				// ReSharper disable once RedundantAssignment
 				json = PlayerPrefs.GetString(dataKey);
 			}
 

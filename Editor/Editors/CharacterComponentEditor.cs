@@ -21,6 +21,7 @@ namespace Framework.Editor
 
 		private Character.Character character;
 
+		// ReSharper disable once UnusedMember.Local
 		private static readonly HashSet<Type> excludedComponents = new HashSet<Type>();
 
 		// Properties
@@ -47,6 +48,9 @@ namespace Framework.Editor
 			{
 				var components = character.GetComponents<ICharacterComponent>()
 					.Where(x => x != null);
+				
+				var characterComponents = components as ICharacterComponent[] ?? components.ToArray();
+				
 				{
 					var labelRect = EditorGUILayout.GetControlRect(true);
 					EditorGUI.LabelField(labelRect, "Entity Components", EditorStyles.boldLabel);
@@ -55,7 +59,7 @@ namespace Framework.Editor
 
 					if (GUI.Button(buttonRect, "+", EditorStyles.miniButton))
 					{
-						var existingComponentPrototypes = components
+						var existingComponentPrototypes = characterComponents
 							.Select(x => x.GetType())
 							.ToList();
 
@@ -64,7 +68,7 @@ namespace Framework.Editor
 							.ToList();
 
 						EditorUtility.DisplayCustomMenu(buttonRect, availableComponents.Select(x => new GUIContent(x.Name)).ToArray(), -1,
-							(userData, opts, selected) =>
+							(_, _, selected) =>
 							{
 								var component = Undo.AddComponent(character.gameObject, availableComponents[selected]);
 								component.hideFlags = HideFlags.HideInInspector;
@@ -79,7 +83,7 @@ namespace Framework.Editor
 
 				using (new EditorGUI.IndentLevelScope())
 				{
-					foreach (var c in components)
+					foreach (var c in characterComponents)
 					{
 						var go = (Object)c;
 						var so = new SerializedObject(go);

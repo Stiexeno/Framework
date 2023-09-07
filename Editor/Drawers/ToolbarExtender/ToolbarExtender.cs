@@ -47,8 +47,7 @@ namespace Framework.Editor
 #else
 		private const float SPACE = 10;
 #endif
-        private const float LARGE_SPACE = 20;
-        private const float BOTTOM_WIDTH = 32;
+		private const float BOTTOM_WIDTH = 32;
         private const float DROPDOWN_WIDTH = 80;
 #if UNITY_2019_1_OR_NEWER
         private const float PLAY_PAUSE_STOP_WIDTH_WIDTH = 140;

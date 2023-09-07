@@ -1,6 +1,7 @@
 using System.Collections;
 using Framework.Core;
 using UnityEngine;
+// ReSharper disable All
 
 namespace Framework.Utils
 {

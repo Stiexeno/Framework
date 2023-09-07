@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+// ReSharper disable SuspiciousTypeConversion.Global
 
 namespace Framework.Core
 {

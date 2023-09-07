@@ -22,8 +22,7 @@ namespace Framework.Core
 
 		public bool isOpened { get; private set; }
 		public bool Initialized { get; private set; }
-		
-		private RectTransform rect;
+
 		private Action hiddenCallback;
 		private Action beforeHideCallback;
 
@@ -42,9 +41,7 @@ namespace Framework.Core
 				transition.Init();
 			}
 
-			rect = transform as RectTransform;
-
-#if UNITY_STANDALONE == false
+			#if UNITY_STANDALONE == false
             if (ignoreSafeArea == false)
                 ApplySafeArea();
 #endif

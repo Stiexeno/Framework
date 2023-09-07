@@ -1,8 +1,6 @@
-using UnityEngine;
-using SF = UnityEngine.SerializeField;
-
 namespace Framework
 {
+    // TODO: Create editor framework
     public interface IWindowView
     {
         public void OnGUI();

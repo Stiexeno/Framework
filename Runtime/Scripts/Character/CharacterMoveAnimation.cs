@@ -17,7 +17,6 @@ namespace Framework.Character
 		private AnimancerLayer baseLayer;
 		private AnimancerComponent animancer;
 
-		private ICharacterState characterState;
 		private ICharacterMovement characterMovement;
 
 		//Properties
@@ -41,7 +40,7 @@ namespace Framework.Character
 
 		public void Init(Character character)
 		{
-			characterState = GetComponent<ICharacterState>();
+			GetComponent<ICharacterState>();
 			characterMovement = GetComponent<ICharacterMovement>();
 			animancer = GetComponentInChildren<AnimancerComponent>();
 

@@ -1,4 +1,3 @@
-using System;
 using Framework.Wallet;
 
 namespace Framework.Core

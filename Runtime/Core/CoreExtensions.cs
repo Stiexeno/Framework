@@ -109,7 +109,7 @@ namespace Framework.Core
         public static int Count(this IEnumerable collection)
         {
             int amount = 0;
-            foreach (var element in collection)
+            foreach (var unused in collection)
             {
                 amount++;
             }
