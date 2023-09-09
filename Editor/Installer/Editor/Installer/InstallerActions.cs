@@ -48,6 +48,13 @@ namespace Framework.Installer
 
         public static void CreateUIManager(bool vertical)
         {
+            var foundUiManager = GameObject.FindObjectOfType<UIManager>();
+
+            if (foundUiManager != null)
+            {
+                Object.DestroyImmediate(foundUiManager.gameObject);
+            }
+            
             var uiManager = new GameObject("UIManager");
             uiManager.layer = 5;
             uiManager.AddComponent<UIManager>();

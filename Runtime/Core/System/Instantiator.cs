@@ -53,10 +53,6 @@ namespace Framework
 		private object InstantiateNonMonoBehaviour(Type objectType, params object[] constructorArgs)
 		{
 			var constructors = objectType.GetConstructors();
-
-			foreach (var cont in constructors)
-			{
-			}
 			
 			if (constructors[0].GetParameters().Length <= 0)
 			{

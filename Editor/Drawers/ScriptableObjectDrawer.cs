@@ -33,6 +33,8 @@ namespace Framework
             EditorGUI.PropertyField(propertyRect, property, GUIContent.none);
             OnRequired(propertyRect, property, label);
             
+            property.serializedObject.ApplyModifiedProperties();
+            
             // Set indent back to what it was
             EditorGUI.indentLevel = indent;
 

@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using DG.DemiEditor;
 using Framwework.Inspector;
 using UnityEditor;
 using UnityEngine;
@@ -103,6 +104,11 @@ namespace Framework.Editor
 			y1 = area.y + GetPropertyHeight(property, label) - 1f;
 			x2 = area.width;
 			y2 = borderWidth;
+
+			if (property.IsArrayElement())
+			{
+				y1 += 2f;
+			}
 
 			lineRect = new Rect(x1, y1, x2, y2);
 
