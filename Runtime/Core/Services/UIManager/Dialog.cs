@@ -219,8 +219,8 @@ namespace Framework.Core
             anchorMax.x /= rootCanvas.pixelRect.width;
             anchorMax.y /= rootCanvas.pixelRect.height;
 
-            rect.anchorMin = anchorMin;
-            rect.anchorMax = anchorMax;
+            //rect.anchorMin = anchorMin;
+            //rect.anchorMax = anchorMax;
         }
 #endif
 	}

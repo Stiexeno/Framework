@@ -143,7 +143,7 @@ namespace Framework.Editor
 				EditorHelper.DrawHorizontalLine(new Color(0.1f, 0.1f, 0.1f), 1, 2);
 
 				GUILayout.Space(15f);
-				GUILayout.Label($"Registered Services: {sceneContext.DiContainer.Container.Count}", EditorStyles.boldLabel);
+				GUILayout.Label($"Registered Dependencies: {sceneContext.DiContainer.Container.Count}", EditorStyles.boldLabel);
 
 				EditorGUILayout.BeginVertical("HelpBox");
 
@@ -151,7 +151,7 @@ namespace Framework.Editor
 				{
 					if (container.Value.Instance is AbstractConfig)
 						continue;
-
+					
 					var interfaces = "";
 
 					if (container.Value.Interfaces != null)
@@ -173,7 +173,13 @@ namespace Framework.Editor
 					style.fontSize = 12;
 					style.normal.textColor = new Color(0.74f, 0.74f, 0.74f);
 					style.margin = new RectOffset(10, 10, 5, 5);
-					GUILayout.Label($"• <b>{type}</b> {interfaces.SetColor(new Color(0.05f, 0.83f, 0.55f))}", style);
+
+					var modifier = "";
+					if (container.Value.Instance != null && container.Value.Instance.GetType().IsSubclassOf(typeof(MonoBehaviour)))
+					{
+						modifier = "MonoBehaviour ";
+					}
+					GUILayout.Label($"• <b>{type}</b> {modifier.SetColor(new Color(0.64f, 0.45f, 0.75f))}{interfaces.SetColor(new Color(0.05f, 0.83f, 0.55f))}", style);
 				}
 
 				EditorGUILayout.EndVertical();

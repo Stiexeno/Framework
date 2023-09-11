@@ -7,12 +7,13 @@ using Framework.Core;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
+using SF = UnityEngine.SerializeField;
 
 namespace Framework.Editor
 {
 	public class AssetSettings : ScriptableObject
 	{
-		internal List<Object> assets = new List<Object>();
+		[SF] internal List<Object> assets = new List<Object>();
 		
 		private const string ASSET_NAME = "AssetSettings";
 		private const string OBJECT_NAME = "com.framework.asset-settings";
@@ -170,6 +171,11 @@ namespace Framework.Editor
 			assets.Remove(asset);
 			EditorUtility.SetDirty(this);
 		}
+		
+		internal static bool IsInResources(string path)
+		{
+			return path.Replace('\\', '/').ToLower().Contains("assets/resources/");
+		}
 
 		private bool IsRegistered(Object asset)
 		{
@@ -184,12 +190,7 @@ namespace Framework.Editor
 			var assetPath = AssetDatabase.LoadAssetAtPath<Object>(path);
 			return IsRegistered(assetPath);
 		}
-		
-		internal static bool IsInResources(string path)
-		{
-			return path.Replace('\\', '/').ToLower().Contains("assets/resources/");
-		}
-		
+
 		internal void GenerateAssetsScript(Action callback = null)
 		{
 			string scriptContent = GenerateScriptContent();
