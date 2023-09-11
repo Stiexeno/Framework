@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acb14dcb4dbef0744a0cc35fda9ad6ef, type: 3}
+  m_Name: GraphPreferences
+  m_EditorClassIdentifier: 
+  gridTexture: {fileID: 2800000, guid: c6477b4e02a970d4db6367a3a5f0b158, type: 3}
+  defaultNodeBackground: {fileID: 2800000, guid: 07ce2f6d67b92fb4ea8ce63a4351786a, type: 3}
+  zoomDelta: 0.2
+  minZoom: 1
+  maxZoom: 3
+  panSpeed: 1
+  iconSize: 0
+  portHeight: 25
+  nodeSizePadding: {x: 0, y: 0}
+  nodeWidthPadding: 0
+  snapThreshold: 10
