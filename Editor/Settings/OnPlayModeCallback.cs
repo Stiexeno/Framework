@@ -19,6 +19,7 @@ namespace Framework.Editor
 					SystemGenerator.GenerateInstallers();
 					SystemGenerator.GenerateConfigs();
 					SystemGenerator.GenerateAssetsScript();
+					SystemGenerator.CheckForInstallers();
 				}
 			}
 		}

@@ -29,11 +29,17 @@ namespace Framework
                     CreateScriptableObject(property);
                 }
             }
-            
-            EditorGUI.PropertyField(propertyRect, property, GUIContent.none);
-            OnRequired(propertyRect, property, label);
-            
-            property.serializedObject.ApplyModifiedProperties();
+
+            using (var check = new EditorGUI.ChangeCheckScope())
+            {
+                EditorGUI.PropertyField(propertyRect, property, GUIContent.none);
+                OnRequired(propertyRect, property, label);
+                
+                if (check.changed)
+                {
+                    property.serializedObject.ApplyModifiedProperties();
+                }
+            };
             
             // Set indent back to what it was
             EditorGUI.indentLevel = indent;

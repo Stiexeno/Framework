@@ -29,7 +29,8 @@ namespace Framework.Editor
 			typeof(ConfigSettings),
 			typeof(SystemSettings),
 			typeof(ControllerSettings),
-			typeof(RequiredData)
+			typeof(RequiredData),
+			typeof(BootstrapBaseInstaller)
 		};
 
 		public static AssetSettings Settings
@@ -104,6 +105,9 @@ namespace Framework.Editor
 			void internalValidate(string path, bool recreate)
 			{
 				if (excludedTypes.Contains(AssetDatabase.GetMainAssetTypeAtPath(path)))
+					return;
+
+				if (path.Contains("BootstrapInstaller"))
 					return;
 				
 				for (var i = Settings.assets.Count - 1; i >= 0; i--)

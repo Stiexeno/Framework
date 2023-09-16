@@ -24,16 +24,34 @@ namespace Framework.Core
 			OnPreInstall?.Invoke();
 
 			DiContainer = new DiContainer();
-			SetupBooststrap();
+			SetupCore();
+			SetupBootstrap();
+			
 			OnPostInstall?.Invoke();
 		}
 
-		private static void SetupBooststrap()
+		private static void SetupCore()
 		{
 			DiContainer.BindConfigs();
 			
-			var bootstrapInstaller = ScriptableObject.CreateInstance<BootstrapInstaller>();
+			var bootstrapInstaller = ScriptableObject.CreateInstance<CoreInstaller>();
 			bootstrapInstaller.InstallBindings(DiContainer);
+		}
+
+		private static void SetupBootstrap()
+		{
+			var bootstrapInstaller = ScriptableObject.CreateInstance("BootstrapInstaller") as BootstrapBaseInstaller;
+
+			if (bootstrapInstaller != null)
+			{
+				bootstrapInstaller.InstallBindings(DiContainer);
+			}
+			//var bootstrapInstaller = Resources.Load<BootstrapBaseInstaller>("BootstrapInstaller");
+
+			//if (bootstrapInstaller != null)
+			//{
+			//	bootstrapInstaller.InstallBindings(DiContainer);	
+			//}
 		}
 
 		public static void Exception(string message, string solution = "")

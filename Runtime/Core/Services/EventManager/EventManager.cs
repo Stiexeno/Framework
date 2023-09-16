@@ -1,14 +1,20 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Framework
 {
     public class EventManager : IEventManager
     {
-        private readonly Dictionary<Type, List<Delegate>> eventHandlers = new();
+        private Dictionary<Type, List<Delegate>> eventHandlers = new Dictionary<Type, List<Delegate>>();
 
         public void Subscribe<T>(Action<T> action) where T : IEvent
         {
+            if (eventHandlers == null)
+            {
+                eventHandlers = new Dictionary<Type, List<Delegate>>();
+            }
+
             eventHandlers.GetOrAdd(typeof(T), new List<Delegate>()).Add(action);
         }
 

@@ -51,9 +51,10 @@ namespace Framework.Core
 		public T Instantiate<T>() => instantiator.Instantiate<T>();
 		public object Instantiate(Type bindingConcreteType) => instantiator.Instantiate(bindingConcreteType);
 		object IInstantiator.Instantiate(Binding binding)	=> instantiator.Instantiate(binding);
-
+        
 		public T Instantiate<T>(params object[] args) => instantiator.Instantiate<T>(args);
 		public GameObject InstantiatePrefab(GameObject original) => instantiator.InstantiatePrefab(original);
+		public T InstantiatePrefab<T>(T original) where T : class => instantiator.InstantiatePrefab(original);
 
 		// Resolver
 

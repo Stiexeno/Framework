@@ -110,7 +110,7 @@ namespace Framework
 		{
 			string dataKey = typeof(T).Name;
 
-			string json;
+			string json = "";
 
 			if (HasData<T>())
 			{

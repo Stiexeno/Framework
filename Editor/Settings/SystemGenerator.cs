@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Framework.Core;
 using UnityEditor;
 using UnityEngine;
+using Directory = UnityEngine.Windows.Directory;
 
 namespace Framework.Editor
 {
@@ -11,7 +13,7 @@ namespace Framework.Editor
 	{
 		private static readonly HashSet<Type> excludedInstallers = new HashSet<Type>
 		{
-			typeof(BootstrapInstaller),
+			typeof(CoreInstaller),
 			typeof(SceneInstaller)
 		};
 
@@ -67,6 +69,12 @@ namespace Framework.Editor
 
 			foreach (var installer in installerTypes)
 			{
+				if (installer.Name == "BootstrapInstaller")
+					continue;
+				
+				if (installer.Name == "BootstrapBaseInstaller")
+					continue;
+				
 				var installerName = installer.Name;
 				var installerPath = $"{folderPath}/{installerName}.asset";
 				var installerAsset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(installerPath);
@@ -146,6 +154,26 @@ namespace Framework.Editor
 					.GetType()
 					.GetMethod(evnt.GetPersistentMethodName(i))
 					.Invoke(evnt.GetPersistentTarget(i), null);
+			}
+		}
+
+		public static void CheckForInstallers()
+		{
+			return;
+			if (EditorPrefs.GetBool("RequestBootstrap"))
+			{
+				var bootstrap = ScriptableObject.CreateInstance("BootstrapInstaller");
+				string resourcesFolder = Path.Combine(Application.dataPath, "Resources");
+
+				if (Directory.Exists(resourcesFolder) == false)
+				{
+					Directory.CreateDirectory(resourcesFolder);
+				}
+
+				string bootstrapAssetPath = "Assets/Resources/BootstrapInstaller.asset";
+				AssetDatabase.CreateAsset(bootstrap, bootstrapAssetPath);
+				
+				EditorPrefs.SetBool("RequestBootstrap", false);
 			}
 		}
 	}	

@@ -5,6 +5,7 @@ using SF = UnityEngine.SerializeField;
 
 namespace Framework.Utils
 {
+	[RequireComponent(typeof(CanvasGroup))]
 	[ExecuteInEditMode]
 	public class ProgressBar : MonoBehaviour
 	{

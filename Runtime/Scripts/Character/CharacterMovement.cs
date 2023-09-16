@@ -5,7 +5,7 @@ using SF = UnityEngine.SerializeField;
 
 namespace Framework.Character
 {
-	[RequireComponent(typeof(CharacterController), typeof(ICharacterState))]
+	[RequireComponent(typeof(CharacterController), typeof(CharacterState))]
 	public class CharacterMovement : MonoBehaviour, ICharacterMovement
 	{
 		//Serialized fields

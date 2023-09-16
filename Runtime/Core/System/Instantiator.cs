@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Runtime.Serialization;
 using Framework.Core;
 using UnityEngine;
@@ -64,7 +63,7 @@ namespace Framework
 
 			var args = constructors[0].GetParameters();
 			var argsToInject = new object[args.Length];
-
+            
 			for (int i = 0; i < args.Length; i++)
 			{
 				var resolvedArg = resolver.Resolve(args[i].ParameterType);
@@ -74,15 +73,26 @@ namespace Framework
 					argsToInject[i] = resolvedArg;
 					continue;
 				}
+                
+				var constructorFound = false;
+				
+				foreach (var constructorArg in constructorArgs)
+				{
+					if (args[i].ParameterType.IsInstanceOfType(constructorArg))
+					{
+						argsToInject[i] = constructorArg;
+						constructorFound = true;
+						
+						break;
+					}
+				}
 
-				if (constructorArgs.Length <= i)
+				if (constructorFound == false)
 				{
 					Context.Exception(
 						$"Can't inject {args[i].ParameterType.Name} to {objectType.Name}",
 						$"Try to refresh Configs or check if you have added {args[i].ParameterType.Name} to the Container");
 				}
-
-				argsToInject[i] = constructorArgs[i];
 			}
 
 			return Activator.CreateInstance(objectType, argsToInject);
@@ -111,6 +121,16 @@ namespace Framework
 			diContainer.Inject(components);
 
 			return clone;
+		}
+		
+		public T InstantiatePrefab<T>(T original) where T : class
+		{
+			GameObject clone = Object.Instantiate(original as MonoBehaviour).gameObject;
+			var components = clone.GetComponentsInChildren<MonoBehaviour>();
+
+			diContainer.Inject(components);
+
+			return clone.GetComponent<T>();
 		}
 	}
 }

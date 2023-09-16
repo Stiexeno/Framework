@@ -1,3 +1,4 @@
+using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Framework.Core

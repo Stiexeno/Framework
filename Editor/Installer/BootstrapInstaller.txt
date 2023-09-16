@@ -1,0 +1,12 @@
+using Framework.Core;
+
+namespace REPLACE_ME
+{
+	public class BootstrapInstaller : BootstrapBaseInstaller
+	{
+		public override void InstallBindings(DiContainer diContainer)
+		{
+            // Bind your dependencies here
+		}
+	}
+}

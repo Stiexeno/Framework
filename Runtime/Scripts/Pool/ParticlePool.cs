@@ -25,6 +25,14 @@ namespace Framework.Pool
 				pool.Add(newParticleSys);
 			}
 		}
+		
+		public ParticleSystem Play(Vector3 position)
+		{
+			var particleSys = Play();
+			particleSys.transform.position = position;
+
+			return particleSys;
+		}
 
 		public ParticleSystem Play()
 		{
