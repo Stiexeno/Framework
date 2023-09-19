@@ -13,5 +13,6 @@ namespace Framework.Core
 		T GetPrefab<T>(string path) where T : MonoBehaviour;
 		T GetScriptableObject<T>(string path) where T : ScriptableObject;
 		T[] GetPrefabs<T>(string path) where T : MonoBehaviour;
+		T InstantiateType<T>(string path) where T : class;
 	}
 }

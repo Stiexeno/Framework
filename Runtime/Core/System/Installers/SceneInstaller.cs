@@ -4,7 +4,7 @@ namespace Framework.Core
 	{
 		public override void InstallBindings(DiContainer diContainer)
 		{
-			diContainer.Bind<UIManager>().FindInScene();
+			diContainer.Bind<UIManager>().FromScene();
 		}
 	}	
 }

@@ -27,7 +27,7 @@ namespace Framework.Core
             return new NonLazyBinder(binding, instantiator);
         }
         
-        public TContract FindInScene()
+        public TContract FromScene()
         {
             object targetObject = Object.FindObjectOfType(typeof(TContract), true);
             

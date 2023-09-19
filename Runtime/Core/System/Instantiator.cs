@@ -125,10 +125,16 @@ namespace Framework
 		
 		public T InstantiatePrefab<T>(T original) where T : class
 		{
-			GameObject clone = Object.Instantiate(original as MonoBehaviour).gameObject;
+			var type = original as GameObject;
+			GameObject clone = Object.Instantiate(type);
 			var components = clone.GetComponentsInChildren<MonoBehaviour>();
 
 			diContainer.Inject(components);
+
+			if (typeof(T) == typeof(GameObject))
+			{
+				return clone as T;
+			}
 
 			return clone.GetComponent<T>();
 		}

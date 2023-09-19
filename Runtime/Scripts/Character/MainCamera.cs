@@ -1,9 +1,10 @@
+using Framework.Core;
 using UnityEngine;
 using SF = UnityEngine.SerializeField;
 
 namespace Framework.Character
 {
-	public class CameraFollow : MonoBehaviour
+	public class MainCamera : MonoBehaviour, ICamera
 	{
 		[SF] protected Transform target;
 		[SF] private float smoothTime = 0.3f;
@@ -11,6 +12,8 @@ namespace Framework.Character
 
 		private Vector3 initialOffset;
 		private Vector3 velocity = Vector3.zero;
+		
+		public Camera Camera { get; set; }
 
 		public void SetSmoothTime(float value)
 		{

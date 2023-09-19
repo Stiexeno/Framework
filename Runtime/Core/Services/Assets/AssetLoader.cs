@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Framework.Core
 {
@@ -30,6 +31,24 @@ namespace Framework.Core
 			return instantiated.GetComponent<T>();
 		}
 
+		public T InstantiateType<T>(string path) where T : class
+		{
+			var instantiated = instantiator.InstantiatePrefab(GetPrefabByType<T>(path));
+            
+			var instance = instantiated as GameObject;
+            
+			instance.name = instance.name.Replace("(Clone)", string.Empty);
+			var transform = instance.transform;
+			transform.rotation = Quaternion.identity;
+
+			if (typeof(T) == typeof(GameObject))
+			{
+				return instance as T;
+			}
+			
+			return instance.GetComponent<T>();
+		}
+        
 		public T Instantiate<T>(string path, Transform parent) where T : MonoBehaviour
 		{
 			var instantiated = Instantiate<T>(path);
@@ -67,6 +86,18 @@ namespace Framework.Core
 			}
             
 			return prefab;
+		}
+		
+		public T GetPrefabByType<T>(string path) where T : class
+		{
+			var prefab = Resources.Load(path);
+
+			if (prefab == null)
+			{
+				Debug.LogError($"Couldn't load prefab from resources by path: {path}");
+			}
+            
+			return prefab as T;
 		}
 
 		public T GetScriptableObject<T>(string path) where T : ScriptableObject
