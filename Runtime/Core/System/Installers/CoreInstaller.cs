@@ -1,3 +1,5 @@
+using Framework.StateMachine;
+
 namespace Framework.Core
 {
     public class CoreInstaller : AbstractInstaller
