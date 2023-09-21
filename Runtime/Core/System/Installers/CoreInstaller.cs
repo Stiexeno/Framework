@@ -15,6 +15,8 @@ namespace Framework.Core
             diContainer.Bind<Timer>();
             diContainer.Bind<LocalClock>().NonLazy();
             diContainer.Bind<AssetLoader>();
+            
+            diContainer.Bind<StateFactory>();
         }
     }
 }
