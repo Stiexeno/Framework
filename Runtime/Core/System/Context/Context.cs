@@ -25,6 +25,10 @@ namespace Framework.Core
 
 			DiContainer = new DiContainer();
 			SetupCore();
+			
+			// Setting new Instantiator
+			DiContainer.Resolve<InstantiatorProvider>().instantiator = DiContainer;
+			
 			SetupBootstrap();
 			
 			OnPostInstall?.Invoke();
@@ -45,13 +49,12 @@ namespace Framework.Core
 			if (bootstrapInstaller != null)
 			{
 				bootstrapInstaller.InstallBindings(DiContainer);
-			}
-			//var bootstrapInstaller = Resources.Load<BootstrapBaseInstaller>("BootstrapInstaller");
 
-			//if (bootstrapInstaller != null)
-			//{
-			//	bootstrapInstaller.InstallBindings(DiContainer);	
-			//}
+				if (bootstrapInstaller is IInitializable initializable)
+				{
+					initializable.Initialize();
+				}
+			}
 		}
 
 		public static void Exception(string message, string solution = "")

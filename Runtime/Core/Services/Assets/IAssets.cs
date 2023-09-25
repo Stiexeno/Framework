@@ -5,7 +5,7 @@ namespace Framework.Core
 {
 	public interface IAssets
 	{
-		T Instantiate<T>(GameObject prefab) where T : MonoBehaviour;
+		GameObject Instantiate(GameObject prefab);
 		T Instantiate<T>(string path) where T : MonoBehaviour;
 		T Instantiate<T>(string path, Transform parent) where T : MonoBehaviour;
 		T Instantiate<T>(string path, Vector3 at) where T : MonoBehaviour;
@@ -14,5 +14,6 @@ namespace Framework.Core
 		T GetScriptableObject<T>(string path) where T : ScriptableObject;
 		T[] GetPrefabs<T>(string path) where T : MonoBehaviour;
 		T InstantiateType<T>(string path) where T : class;
+		GameObject Instantiate(GameObject prefab, Vector3 at, Transform parent = null);
 	}
 }

@@ -18,7 +18,8 @@ namespace Framework.StateMachine
 
 		public void Enter<TState>() where TState : IState
 		{
-			throw new System.NotImplementedException();
+			IState state = ChangeActiveStateTo<TState>();
+			(state as IEnter)?.Enter();
 		}
 
 		public void Enter<TState, TPayload>(TPayload payload) where TState : IState, IPayloadedEnter<TPayload>

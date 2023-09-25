@@ -6,7 +6,7 @@ using SF = UnityEngine.SerializeField;
 
 namespace Framework.Core
 {
-    public class SceneManager : MonoBehaviour, ISceneManager
+    public class SceneService : MonoBehaviour, ISceneService
     {
         private AsyncOperation loadSceneOperation;
         
@@ -22,16 +22,21 @@ namespace Framework.Core
             loadSceneOperation.allowSceneActivation = true;
         }
 
-        public void LoadScene(int sceneIndex, LoadSceneMode mode = LoadSceneMode.Single, bool switchLoadedScene = true, float delay = 0f, Action done = null)
+        public void LoadScene(string sceneName, LoadSceneMode mode = LoadSceneMode.Single, bool switchLoadedScene = true, float delay = 0f, Action done = null)
         {
-            StartCoroutine(LoadSceneCoroutine(sceneIndex, mode, switchLoadedScene, delay, done));
+            StartCoroutine(LoadSceneCoroutine(sceneName, mode, switchLoadedScene, delay, done));
+        }
+
+        public void LoadScene(string name, Action onLoadded = null)
+        {
+            LoadScene(name, LoadSceneMode.Single, true, 0f, onLoadded);
         }
         
-        private IEnumerator LoadSceneCoroutine(int sceneIndex, LoadSceneMode mode, bool switchLoadedScene, float delay, Action done)
+        private IEnumerator LoadSceneCoroutine(string sceneName, LoadSceneMode mode, bool switchLoadedScene, float delay, Action done)
         {
             SceneLoadProgress = 0;
             
-            loadSceneOperation = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneIndex, mode);
+            loadSceneOperation = SceneManager.LoadSceneAsync(sceneName, mode);
 
             loadSceneOperation.allowSceneActivation = switchLoadedScene;
             
@@ -56,7 +61,7 @@ namespace Framework.Core
 
         private void Awake()
         {
-            UnityEngine.SceneManagement.SceneManager.activeSceneChanged += OnActiveSceneChanged;
+            SceneManager.activeSceneChanged += OnActiveSceneChanged;
         }
     }
 }

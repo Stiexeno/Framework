@@ -15,7 +15,8 @@ namespace Framework
             typeof(ITickable),
             typeof(IDisposable),
             typeof(IFixedProcessable),
-            typeof(IPreInstall)
+            typeof(IPreInstall),
+            typeof(IInitializable)
         };
         
         public static Type[] Interfaces(this Type type)

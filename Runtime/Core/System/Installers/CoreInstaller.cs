@@ -10,7 +10,7 @@ namespace Framework.Core
 
             diContainer.Bind<DataManager>();
             diContainer.Bind<FocusManager>().DontDestroyOnLoad();
-            diContainer.Bind<SceneManager>().DontDestroyOnLoad();
+            diContainer.Bind<SceneService>().DontDestroyOnLoad();
             diContainer.Bind<CoroutineManager>().DontDestroyOnLoad();
 
             diContainer.Bind<EventManager>();
@@ -19,6 +19,7 @@ namespace Framework.Core
             diContainer.Bind<AssetLoader>();
             
             diContainer.Bind<StateFactory>();
+            diContainer.Bind<InstantiatorProvider>();
         }
     }
 }

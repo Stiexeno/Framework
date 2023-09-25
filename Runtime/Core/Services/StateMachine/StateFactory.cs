@@ -1,14 +1,16 @@
+using UnityEngine;
+
 namespace Framework.StateMachine
 {
 	public class StateFactory : IStatesFactory
 	{
-		private readonly IInstantiator _instantiator;
+		private readonly InstantiatorProvider instantiatorProvider;
 
-		public StateFactory(IInstantiator instantiator)
+		public StateFactory(InstantiatorProvider instantiatorProvider)
 		{
-			_instantiator = instantiator;
+			this.instantiatorProvider = instantiatorProvider;
 		}
 
-		public T Create<T>() where T : IState => _instantiator.Instantiate<T>();
+		public T Create<T>() where T : IState => instantiatorProvider.instantiator.Instantiate<T>();
 	}
 }

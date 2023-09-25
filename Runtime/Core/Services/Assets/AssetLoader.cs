@@ -6,25 +6,39 @@ namespace Framework.Core
 {
 	public class AssetLoader : IAssets
 	{
-		private IInstantiator instantiator;
+		private InstantiatorProvider instantiatorProvider;
+		
+		private IInstantiator Instantiator => instantiatorProvider.instantiator;
 
-		public AssetLoader(IInstantiator instantiator)
+		public AssetLoader(InstantiatorProvider instantiator)
 		{
-			this.instantiator = instantiator;
+			this.instantiatorProvider = instantiator;
 		}
 		
-		public T Instantiate<T>(GameObject prefab) where T : MonoBehaviour
+		public GameObject Instantiate(GameObject prefab)
 		{
-			var instantiated = instantiator.InstantiatePrefab(prefab);
+			var instantiated = Instantiator.InstantiatePrefab(prefab);
 			instantiated.name = instantiated.name.Replace("(Clone)", string.Empty);
 			var transform = instantiated.transform;
 			transform.rotation = Quaternion.identity;
-			return instantiated.GetComponent<T>();
+			return instantiated;
+		}
+		
+		public GameObject Instantiate(GameObject prefab, Vector3 at, Transform parent = null)
+		{
+			var instantiated = Instantiator.InstantiatePrefab(prefab);
+			instantiated.name = instantiated.name.Replace("(Clone)", string.Empty);
+			var transform = instantiated.transform;
+			transform.rotation = Quaternion.identity;
+			
+			transform.position = at;
+			transform.SetParent(parent);
+			return instantiated;
 		}
 
 		public T Instantiate<T>(string path) where T : MonoBehaviour
 		{
-			var instantiated = instantiator.InstantiatePrefab(GetPrefab<T>(path).gameObject);
+			var instantiated = Instantiator.InstantiatePrefab(GetPrefab<T>(path).gameObject);
 			instantiated.name = instantiated.name.Replace("(Clone)", string.Empty);
 			var transform = instantiated.transform;
 			transform.rotation = Quaternion.identity;
@@ -33,7 +47,7 @@ namespace Framework.Core
 
 		public T InstantiateType<T>(string path) where T : class
 		{
-			var instantiated = instantiator.InstantiatePrefab(GetPrefabByType<T>(path));
+			var instantiated = Instantiator.InstantiatePrefab(GetPrefabByType<T>(path));
             
 			var instance = instantiated as GameObject;
             
@@ -67,7 +81,7 @@ namespace Framework.Core
 
 		public T Instantiate<T>(GameObject prefab, Vector3 at, Transform parent = null) where T : MonoBehaviour
 		{
-			var instantiated = instantiator.InstantiatePrefab(prefab);
+			var instantiated = Instantiator.InstantiatePrefab(prefab);
 			instantiated.transform.SetParent(parent, true);
 			instantiated.name = instantiated.name.Replace("(Clone)", string.Empty);
 			var transform = instantiated.transform;
