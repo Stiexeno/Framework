@@ -36,6 +36,14 @@ namespace Framework
 			nodes.Add(node);
 			return node;
 		}
+		
+		public GraphNode CreateNode(Type nodeType, GraphBehaviour behaviour)
+		{
+			var node = Activator.CreateInstance(nodeType, new object[] {behaviour}) as GraphNode;
+
+			nodes.Add(node);
+			return node;
+		}
 
 		private void UpdateNodeGUI()
 		{

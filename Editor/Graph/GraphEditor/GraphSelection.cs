@@ -78,12 +78,12 @@ namespace Framework
 		
 		public void SetReferenced(GraphBehaviour node)
 		{
-			referencedNodes.Clear();
-			List<GraphBehaviour> refs = node.GetReferencedNodes();
-			if (refs != null && refs.Count != 0)
-			{
-				referencedNodes.AddRange(refs);
-			}
+			//referencedNodes.Clear();
+			//List<GraphBehaviour> refs = node.GetReferencedNodes();
+			//if (refs != null && refs.Count != 0)
+			//{
+			//	referencedNodes.AddRange(refs);
+			//}
 		}
 	}
 }

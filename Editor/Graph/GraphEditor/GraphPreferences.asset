@@ -22,4 +22,4 @@ MonoBehaviour:
   portHeight: 25
   nodeSizePadding: {x: 0, y: 0}
   nodeWidthPadding: 0
-  snapThreshold: 10
+  snapThreshold: 5

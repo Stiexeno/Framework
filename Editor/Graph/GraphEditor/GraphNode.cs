@@ -21,6 +21,7 @@ namespace Framework
 		public Rect RectPosition => rectPosition;
 		public Rect ContentRect => contentRect;
 
+		public Vector2 DynamicSize { get; set; }
 		public Vector2 Position
 		{
 			get => rectPosition.position;
@@ -28,6 +29,9 @@ namespace Framework
 		}
 
 		public virtual Vector2 Size { get; protected set; } = new Vector2(100, 100);
+		public virtual Color Outline { get; protected set; } = Color.clear;
+
+		public virtual bool HasOutput { get; protected set; } = true;
 
 		public Vector2 Center
 		{
@@ -83,6 +87,7 @@ namespace Framework
 		public GraphNode()
 		{
 		}
+		
 		public GraphNode(GraphBehaviour behaviour)
 		{
 			this.behaviour = behaviour;
@@ -199,10 +204,10 @@ namespace Framework
 
 			float portHeights = 2f * prefs.portHeight;
 			Vector2 contentSize = MinimumRequiredContentSize();
-
+            
 			//rectPosition.size = contentSize + 2f * prefs.nodeSizePadding + Vector2.right * (2f * prefs.nodeWidthPadding) + Vector2.up * portHeights;
 
-			rectPosition.size = Size;
+			rectPosition.size = DynamicSize;
 			contentRect.width = rectPosition.width - 2f * prefs.nodeWidthPadding;
 			contentRect.height = rectPosition.height - portHeights;
 			contentRect.x = prefs.nodeWidthPadding;

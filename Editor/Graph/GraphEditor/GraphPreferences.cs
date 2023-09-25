@@ -42,7 +42,7 @@ namespace Framework
 
 		private static GraphPreferences LoadDefaultPreferences()
 		{
-			var prefs = AssetDatabase.LoadAssetAtPath("Assets/Editor/GraphEditor/GraphPreferences.asset", typeof(GraphPreferences)) as GraphPreferences;
+			var prefs = AssetDatabase.LoadAssetAtPath("Packages/com.framework.dependency-injection/Editor/Graph/GraphEditor/GraphPreferences.asset", typeof(GraphPreferences)) as GraphPreferences;
 
 			if (prefs == null)
 			{

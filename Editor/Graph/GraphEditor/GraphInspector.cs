@@ -51,7 +51,8 @@ namespace Framework
 
 		private void Resize(ref Rect rect)
 		{
-			rect = rect.Shrink(Padding);
+			rect.x += Padding.x;
+			rect.y += Padding.y;
 		}
 		
 		private void UpdateDragging(EditorWindow window, Rect rect)

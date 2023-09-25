@@ -11,8 +11,7 @@ namespace Framework
 		public Vector2 panOffset = Vector2.zero;
 		
 		public GraphCanvas Canvas { get; set; }
-
-
+        
 		public float ZoomScale => zoom.x;
 
 		public static float ZoomDelta => GraphPreferences.Instance.zoomDelta;
@@ -66,6 +65,10 @@ namespace Framework
 		private void DraweConnections(CanvasTransform canvasTransform)
 		{
 			var nodes = Canvas.Nodes;
+
+			if (Canvas.Nodes == null || Canvas.Nodes.Count == 0)
+				return;
+			
 			for (int i = 0; i < nodes.Count; i++)
 			{
 				GraphNode node = nodes[i];

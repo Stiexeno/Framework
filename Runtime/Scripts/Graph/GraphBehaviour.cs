@@ -5,7 +5,7 @@ namespace Framework
 {
 	public abstract class GraphBehaviour : ScriptableObject
 	{
-		public abstract List<GraphBehaviour> GetReferencedNodes();
+		//public abstract List<GraphBehaviour> GetReferencedNodes();
 
 		#if UNITY_EDITOR
 

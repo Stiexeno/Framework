@@ -46,6 +46,11 @@ namespace Framework
 		{
 			lastCreatedNode = Canvas.CreateNode(nodeType, behaviourType);
 		}
+		
+		public void CreateNode(Type nodeType, GraphBehaviour behavipur)
+		{
+			lastCreatedNode = Canvas.CreateNode(nodeType, behavipur);
+		}
 
 		public void PollInput(Event e, CanvasTransform canvas, Rect inputRect)
 		{
@@ -192,10 +197,16 @@ namespace Framework
 
 		private void StartConnection(GraphInputEvent startEvent)
 		{
+			//if (startEvent.node.HasOutput == false)
+			//	return;
+			
 			bool isOutputFocused = startEvent.isOutputFocused;
 
 			GraphNode parent = isOutputFocused ? startEvent.node : GraphConnection.StartConnection(startEvent.node);
 
+			if ((isOutputFocused && startEvent.node.HasOutput == false))
+				return;
+			
 			if (parent != null)
 			{
 				ApplyAction = (applyEvent) =>
@@ -206,7 +217,6 @@ namespace Framework
 					}
 					else if (isOutputFocused)
 					{
-						
 					}
 				};
 

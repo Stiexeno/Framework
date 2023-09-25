@@ -15,6 +15,7 @@ namespace Framework
 		public event EventHandler<GraphInputEvent> Click;
 		public event EventHandler<GraphInputEvent> MouseDown;
 		public event EventHandler<GraphInputEvent> MouseUp;
+
 		
 		public static event EventHandler<GraphInputEvent> DoubleClick;
 
@@ -22,10 +23,11 @@ namespace Framework
 		public event EventHandler CanvasContextClick;
 
 		public event EventHandler SaveRequest;
+		public event EventHandler OnKeySpace;
 		public event EventHandler CanvasLostFocus;
 
-		private readonly System.Timers.Timer doubleClickTimer = new System.Timers.Timer(400);
-		private readonly System.Timers.Timer clickTimer = new System.Timers.Timer(120);
+		private readonly Timer doubleClickTimer = new Timer(400);
+		private readonly Timer clickTimer = new Timer(120);
 
 		private int quickClicksCount = 0;
 		private Vector2 cachedMouseClickPosition;
@@ -118,6 +120,12 @@ namespace Framework
 			{
 				e.Use();
 				SaveRequest?.Invoke(this, EventArgs.Empty);
+			}
+			
+			if (e.type == EventType.KeyUp && e.keyCode == KeyCode.Space)
+			{
+				e.Use();
+				OnKeySpace?.Invoke(this, EventArgs.Empty);
 			}
 		}
 

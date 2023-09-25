@@ -1,3 +1,4 @@
+using Framework.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -41,8 +42,10 @@ namespace Framework
 			{
 				DrawSelectedOutline(screenRect, new Color(0.21f, 0.75f, 0.94f), t);
 			}
-
-			DrawOutline(screenRect, new Color(0.16f, 0.16f, 0.16f));
+			
+			//DrawOutline(screenRect.AddHeight(6f).AddY(-4f).AddWidth(2), new Color(0.16f, 0.16f, 0.16f));
+			DrawOutline(screenRect.AddHeight(2f).AddY(-1f).AddWidth(-2).AddX(1), node.Outline);
+            
 			DrawNodeBackground(screenRect, statusColor);
 			DrawPorts(t, node);
 
@@ -119,6 +122,8 @@ namespace Framework
 		{
 			var input = node.InputRect;
 			input.position = t.CanvasToScreenSpace(node.InputRect.position);
+			input.y -= 3;
+			input.height -= 3;
 			
 			if (input.Contains(Event.current.mousePosition) && node.IsParentless() == false)
 			{
@@ -127,28 +132,30 @@ namespace Framework
 					ScaleMode.StretchToFill,
 					true,
 					0,
-					new Color(0.22f, 0.22f, 0.22f),
+					new Color(0.4f, 0.4f, 0.4f),
 					0,
 					5f);
 				
-				GUI.Label(input, $"x", BattlepassStyle.middleH0Label);
+				GUI.Label(input, $"x");
 			}
 			
 			var output = node.OutputRect;
 			output.position = t.CanvasToScreenSpace(node.OutputRect.position);
-
-			if (output.Contains(Event.current.mousePosition))
+			output.y += 3;
+			output.height -= 3;
+			
+			if (output.Contains(Event.current.mousePosition) && node.HasOutput)
 			{
 				GUI.DrawTexture(
 					output, GraphPreferences.Instance.defaultNodeBackground,
 					ScaleMode.StretchToFill,
 					true,
 					0,
-					new Color(0.22f, 0.22f, 0.22f),
+					new Color(0.4f, 0.4f, 0.4f),
 					0,
 					5f);
 				
-				GUI.Label(output, $"+", BattlepassStyle.middleH0Label);
+				GUI.Label(output, $"+");
 			}
 		}
 
