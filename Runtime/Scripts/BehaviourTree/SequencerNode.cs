@@ -1,4 +1,5 @@
 ﻿using System;
+using Framework;
 
 public class SequencerNode : CompositeNode
 {
@@ -24,10 +25,25 @@ public class SequencerNode : CompositeNode
 				return State.Running;
 		}
 		
-		return currentChild == children.Count ? State.Success : State.Running;
+		return currentChild == children.Length ? State.Success : State.Running;
 	}
 
 	protected override void OnStop()
 	{
+	}
+
+	public override int MaxChildCount()
+	{
+		return int.MaxValue;
+	}
+
+	public override int ChildCount()
+	{
+		return children.Length;
+	}
+
+	public override GraphBehaviour GetChildAt(int index)
+	{
+		return children[index];
 	}
 }

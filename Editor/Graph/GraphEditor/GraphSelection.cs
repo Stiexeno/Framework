@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Framework
@@ -27,7 +28,7 @@ namespace Framework
 		{
 			ClearSelection();
 			selectedNodes.Add(selectedNode);
-
+            
 			selectedNode.Selected = true;
 
 			Selection.objects = null;
@@ -56,7 +57,7 @@ namespace Framework
 			}
 		}
 
-		private void ClearSelection()
+		public void ClearSelection()
 		{
 			foreach (var selectedNode in selectedNodes)
 			{
@@ -64,6 +65,8 @@ namespace Framework
 			}
 
 			selectedNodes.Clear();
+			Selection.objects = null;
+			Selection.activeObject = null;
 		}
 
 		public bool IsNodeSelected(GraphNode node)
@@ -84,6 +87,13 @@ namespace Framework
 			//{
 			//	referencedNodes.AddRange(refs);
 			//}
+		}
+
+		public void SetTreeSelection(GraphTree tree)
+		{
+			referencedNodes.Clear();
+			ClearSelection();
+			Selection.activeObject = tree;
 		}
 	}
 }

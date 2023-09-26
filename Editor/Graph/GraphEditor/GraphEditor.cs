@@ -10,46 +10,44 @@ namespace Framework
 	{
 		private GraphNode lastCreatedNode;
 		
+		private static Dictionary<Type, NodeProperties> nodeProperties;
+		
 		public GraphViewer Viewer { get; set; }
 		public GraphSelection NodeSelection { get; } = new GraphSelection();
 		public GraphInput Input { get; } = new GraphInput();
 		public GraphCanvas Canvas { get; private set; }
 		
 		public CanvasTransform CanvasTransform { get; set; }
-
+		
+		public static IEnumerable<KeyValuePair<Type, NodeProperties>> Behaviours
+		{
+			get { return nodeProperties; }
+		}
+		
 		public event Action OnCanvasChanged;
 		private Action<CanvasTransform> MotionAction;
 		private Action<GraphInputEvent> ApplyAction;
 
-		public GraphEditor(GenericMenu registerContextMenu)
+		public GraphEditor()
 		{
-			Input.ContextMenu = registerContextMenu;
-
 			Input.selection = NodeSelection;
 			Input.MouseDown += BeginOnMouseDown;
 			Input.Click += Clicked;
 			Input.MouseUp += MouseUp;
+			Input.CreateNodeRequest += CreateNodeFromType;
 		}
 
-		public void BuildCanvas(List<GraphNode> nodes)
+		public void SetGraphTree(GraphTree tree)
 		{
-			Canvas = new GraphCanvas(nodes);
-			Canvas.CanvasTransform = CanvasTransform;
+			NodeSelection.ClearSelection();
+			Canvas = new GraphCanvas(tree);
+			Viewer.Canvas = Canvas;
+			Viewer.zoom = new Vector2(1f, 1f);
 		}
 
 		public void UpdateView()
 		{
 			Canvas.OnGUI();
-		}
-
-		public void CreateNode(Type nodeType, Type behaviourType)
-		{
-			lastCreatedNode = Canvas.CreateNode(nodeType, behaviourType);
-		}
-		
-		public void CreateNode(Type nodeType, GraphBehaviour behavipur)
-		{
-			lastCreatedNode = Canvas.CreateNode(nodeType, behavipur);
 		}
 
 		public void PollInput(Event e, CanvasTransform canvas, Rect inputRect)
@@ -231,6 +229,36 @@ namespace Framework
 					OnCanvasChanged();
 				};
 			}
+		}
+		
+		private void CreateNodeFromType(object sender, Type type)
+		{
+			var node = Canvas.CreateNode(type);
+			NodeSelection.SetSingleSelection(node);
+			
+			lastCreatedNode = node;
+			
+		}
+
+		private void RemoveSelectedNodes()
+		{
+			Canvas.Remove(node => NodeSelection.IsNodeSelected(node));
+			NodeSelection.SetTreeSelection(Canvas.Tree);
+		}
+
+		public static void FetchGraphBehaviours(IGraphNodeRules graphNodeRules)
+		{
+			nodeProperties = graphNodeRules.FetchGraphBehaviours();
+		}
+		
+		public static NodeProperties GetNodeProperties(Type type)
+		{
+			if (nodeProperties.TryGetValue(type, out var properties))
+			{
+				return properties;
+			}
+
+			return null;
 		}
 	}
 }

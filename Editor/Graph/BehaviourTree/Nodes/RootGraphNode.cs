@@ -9,11 +9,6 @@ public class RootGraphNode : BTGraphNode
 	
 	public override Vector2 Size => new Vector2(100, 40);
 	public override Color Outline => new Color(0.73f, 0.73f, 0.75f);
-	
-	public RootGraphNode(GraphBehaviour behaviour) : base(behaviour)
-	{
-		rootNode = behaviour as RootNode;
-	}
 
 	public override void OnGUI(Rect rect)
 	{

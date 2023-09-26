@@ -31,7 +31,7 @@ namespace Framework
 		public virtual Vector2 Size { get; protected set; } = new Vector2(100, 100);
 		public virtual Color Outline { get; protected set; } = Color.clear;
 
-		public virtual bool HasOutput { get; protected set; } = true;
+		public bool HasOutput { get; set; }
 
 		public Vector2 Center
 		{
@@ -87,11 +87,6 @@ namespace Framework
 		public GraphNode()
 		{
 		}
-		
-		public GraphNode(GraphBehaviour behaviour)
-		{
-			this.behaviour = behaviour;
-		}
 
 		// Virtual methods
 
@@ -110,6 +105,28 @@ namespace Framework
 			
 		}
 
+		public virtual void Remove()
+		{
+			SetParent(null);
+			OrphanChildren();
+			Object.DestroyImmediate(behaviour, true);
+		}
+
+		private void OrphanChildren()
+		{
+			foreach (var child in children)
+			{
+				child.Parent = null;
+			}
+			
+			children.Clear();
+		}
+		
+		public void SortChildren()
+		{
+			children.Sort((left, right) => left.Center.x.CompareTo(right.Center.x));
+		}
+		
 		public void UpdateGUI()
 		{
 			HeaderContent.text = HeaderText();

@@ -33,6 +33,21 @@ public static class GraphStyle
             background = Texture2D.blackTexture
         },
     };
+    
+    public static readonly GUIStyle Header0Center = new GUIStyle
+    {
+        richText = true,
+        fontSize = 15,
+        fontStyle = FontStyle.Bold,
+        wordWrap = true,
+        padding = new RectOffset(10, 10, 10, 10),
+        alignment = TextAnchor.MiddleCenter,
+        normal = new GUIStyleState()
+        {
+            textColor = new Color(0.77f, 0.77f, 0.77f),
+            background = Texture2D.blackTexture
+        },
+    };
 
     public static void DrawHorizontalLine(Rect rect)
     {

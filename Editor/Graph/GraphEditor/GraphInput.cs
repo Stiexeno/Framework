@@ -25,6 +25,7 @@ namespace Framework
 		public event EventHandler SaveRequest;
 		public event EventHandler OnKeySpace;
 		public event EventHandler CanvasLostFocus;
+		public event EventHandler<Type> CreateNodeRequest;
 
 		private readonly Timer doubleClickTimer = new Timer(400);
 		private readonly Timer clickTimer = new Timer(120);
@@ -33,8 +34,19 @@ namespace Framework
 		private Vector2 cachedMouseClickPosition;
 
 		public IGraphSelection selection;
+		public GenericMenu nodeTypeSelectionMenu = new GenericMenu();
 		
 		public GenericMenu ContextMenu { get; set; }
+
+		
+		public GraphInput()
+		{
+			foreach (var behaviour in GraphEditor.Behaviours)
+			{
+				var nodeType = behaviour.Key;
+				nodeTypeSelectionMenu.AddItem(new GUIContent(nodeType.Name), false, OnCreateNodeRequest, nodeType);
+			}
+		}
 
 		public void HandleMouseEvents(
 			Event e,
@@ -160,9 +172,9 @@ namespace Framework
 
 		private void ShowCreateNodeMenu()
 		{
-			if (ContextMenu != null)
+			if (nodeTypeSelectionMenu != null)
 			{
-				ContextMenu.ShowAsContext();
+				nodeTypeSelectionMenu.ShowAsContext();
 			}
 		}
 
@@ -179,6 +191,11 @@ namespace Framework
 		private GenericMenu CreateMultiSelectionContextMenu()
 		{
 			return null;
+		}
+		
+		private void OnCreateNodeRequest(object o)
+		{
+			CreateNodeRequest?.Invoke(this, o as Type);
 		}
 
 		// Static

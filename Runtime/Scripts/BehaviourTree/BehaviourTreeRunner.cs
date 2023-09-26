@@ -1,18 +1,19 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class BehaviourTreeRunner : MonoBehaviour
 {
-	public BehaviourTree tree;
+	[FormerlySerializedAs("tree")] public BehaviourTree BehaviourTree;
 
 	public void Start()
 	{
-		tree = ScriptableObject.CreateInstance<BehaviourTree>();
-		tree.root = ScriptableObject.CreateInstance<DebugLogNode>();
+		BehaviourTree = ScriptableObject.CreateInstance<BehaviourTree>();
+		BehaviourTree.root = ScriptableObject.CreateInstance<DebugLogNode>();
 	}
 
 	private void Update()
 	{
-		tree.Update();
+		BehaviourTree.Update();
 	}
 }

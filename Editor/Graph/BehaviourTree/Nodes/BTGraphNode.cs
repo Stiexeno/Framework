@@ -10,7 +10,7 @@ public class BTGraphNode : GraphNode
 	private const string PREFS_PATH = "Packages/com.framework.dependency-injection/Editor/Graph/BehaviourTree/Preferences";
 	private const string PREFS_NAME = "BehaviourTreePreferences";
 	
-	public BTGraphNode(GraphBehaviour behaviour) : base(behaviour)
+	public BTGraphNode()
 	{
 		InitializePrefs();
 	}

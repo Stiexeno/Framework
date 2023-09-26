@@ -9,12 +9,14 @@ public class BehaviourTreeWindow : GraphWindow
 {
 	// Private fields
 	
+	private BehaviourTree behaviourTree;
+	
 	private static BehaviourTreeWindow window;
-	private static BehaviourTree behaviourTree;
 	
 	//BehaviourTreeWindow
 	
-	public override GraphBehaviour Root { get; set; }
+	public override GraphTree Tree { get; set; }
+	public override IGraphNodeRules Rules { get; } = new BehaviourTreeGraphNodeRules();
 
 	[MenuItem("Framework/Behaviour Tree")]
 	private static void Init()
@@ -28,10 +30,17 @@ public class BehaviourTreeWindow : GraphWindow
 	{
 	}
 
-	protected override void Initialize(GraphBehaviour behaviour)
+	protected override void Initialize(GraphTree behaviour)
 	{
 		behaviourTree = behaviour as BehaviourTree;
-		base.Initialize(behaviour);
+
+		if (behaviourTree.root == null)
+		{
+			var node = Editor.Canvas.CreateNode(typeof(RootNode));
+			behaviourTree.root = Editor.Canvas.Nodes[0].Behaviour as Node;
+			
+			Editor.Canvas.SetRoot(node);
+		}
 	}
 
 	protected override void OnEnable()
@@ -45,57 +54,34 @@ public class BehaviourTreeWindow : GraphWindow
 		Editor.Input.OnKeySpace -= OpenSearch;
 	}
 
-	protected override List<GraphNode> GatherBehaviours()
-	{
-		if (Root == null)
-			return new List<GraphNode>();
-
-		List<GraphNode> nodes = new List<GraphNode>
-		{
-			new RootGraphNode(behaviourTree.Root)
-		};
-
-		return nodes;
-	}
+	//protected override List<GraphNode> GatherBehaviours()
+	//{
+	//	if (Tree == null)
+	//		return new List<GraphNode>();
+//
+	//	List<GraphNode> nodes = new List<GraphNode>
+	//	{
+	//		new RootGraphNode(behaviourTree.Root)
+	//	};
+//
+	//	return nodes;
+	//}
 
 	protected override GenericMenu RegisterContextMenu()
 	{
 		var menu = new GenericMenu();
-		menu.AddItem(new GUIContent("Create/Sequencer"), false, () => CreateNode(typeof(SequencerNode)));
-		menu.AddItem(new GUIContent("Create/ActionNode"), false, () => CreateNode(typeof(ActionNode)));
-
 		return menu;
-	}
-
-	private void CreateNode(Type type)
-	{
-		var node = behaviourTree.CreateNode(type);
-
-		if (node is RootNode root)
-		{
-			Root = root;
-		}
-
-		if (node is SequencerNode sequencerNode)
-		{
-			Editor.CreateNode(typeof(SequencerGraphNode), sequencerNode);
-		}
-		
-		if (node is ActionNode actionNode)
-		{
-			Editor.CreateNode(typeof(ActionGraphNode), actionNode);
-		}
 	}
 	
 	private void OpenSearch(object sender, EventArgs eventArgs)
 	{
-		Debug.LogError("@!#?!@?#?!@#?");
+		
 	}
     
 	[OnOpenAsset]
 	public static bool OpenAsset(int instanceId, int line)
 	{
-		var root = EditorUtility.InstanceIDToObject(instanceId) as BehaviourTree;
+		var root = EditorUtility.InstanceIDToObject(instanceId) as GraphTree;
 
 		if (root == null)
 			return false;
@@ -104,7 +90,6 @@ public class BehaviourTreeWindow : GraphWindow
 			
 		if (behaviourWindow != null)
 		{
-			behaviourWindow.Initialize(root);
 			return true;
 		}
 

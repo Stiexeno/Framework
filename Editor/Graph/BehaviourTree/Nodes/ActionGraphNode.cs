@@ -9,11 +9,9 @@ public class ActionGraphNode : BTGraphNode
 	
 	public override Vector2 Size => new Vector2(200, 30);
 	public override Color Outline => new Color(0f, 0f, 0f);
-	public override bool HasOutput => false;
 	
-	public ActionGraphNode(GraphBehaviour behaviour) : base(behaviour)
+	public ActionGraphNode()
 	{
-		sequencerNode = behaviour as ActionNode;
 	}
 	
 	public override void OnGUI(Rect rect)

@@ -1,5 +1,4 @@
-﻿using Framework;
-using Framework.Editor;
+﻿using Framework.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,11 +8,7 @@ public class SequencerGraphNode : BTGraphNode
 	
 	public override Vector2 Size => new Vector2(200, 80);
 	public override Color Outline => new Color(0.22f, 0.79f, 0.23f);
-	
-	public SequencerGraphNode(GraphBehaviour behaviour) : base(behaviour)
-	{
-		sequencerNode = behaviour as SequencerNode;
-	}
+    
 	
 	public override void OnGUI(Rect rect)
 	{

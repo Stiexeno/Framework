@@ -30,4 +30,16 @@ public abstract class Node : GraphBehaviour
     protected abstract void OnStart();
     protected abstract State OnUpdate();
     protected abstract void OnStop();
+    
+    public abstract int MaxChildCount();
+    
+    public bool IsComposite()
+    {
+        return MaxChildCount() > 1;
+    }
+
+    public bool IsDecorator()
+    {
+        return MaxChildCount() == 1;
+    }
 }

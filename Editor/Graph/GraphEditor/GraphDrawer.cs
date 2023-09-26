@@ -132,11 +132,11 @@ namespace Framework
 					ScaleMode.StretchToFill,
 					true,
 					0,
-					new Color(0.4f, 0.4f, 0.4f),
+					new Color(0.4f, 0.4f, 0.4f, 0.56f),
 					0,
 					5f);
 				
-				GUI.Label(input, $"x");
+				GUI.Label(input, $"x", GraphStyle.Header0Center);
 			}
 			
 			var output = node.OutputRect;
@@ -151,11 +151,11 @@ namespace Framework
 					ScaleMode.StretchToFill,
 					true,
 					0,
-					new Color(0.4f, 0.4f, 0.4f),
+					new Color(0.4f, 0.4f, 0.4f, 0.56f),
 					0,
 					5f);
 				
-				GUI.Label(output, $"+");
+				GUI.Label(output, $"+", GraphStyle.Header0Center);
 			}
 		}
 
