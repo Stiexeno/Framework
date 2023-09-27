@@ -34,10 +34,7 @@ namespace Framework
 		private Vector2 cachedMouseClickPosition;
 
 		public IGraphSelection selection;
-		public GenericMenu nodeTypeSelectionMenu = new GenericMenu();
-		
-		public GenericMenu ContextMenu { get; set; }
-
+		public readonly GenericMenu nodeTypeSelectionMenu = new GenericMenu();
 		
 		public GraphInput()
 		{
