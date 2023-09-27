@@ -4,16 +4,20 @@ public class Wait : BTLeaf
 {
 	public float duration;
 
-	private float startTime;
+	private float timelpased;
 	
 	protected override void OnEnter(BTParams btParams)
 	{
-		startTime = Time.time;
+		timelpased = 0;
+		Debug.LogError("Start");
 	}
 
 	protected override BTStatus OnUpdate(BTParams btParams)
 	{
-		if (Time.time - startTime >= duration)
+		timelpased += Time.deltaTime;
+		
+		Debug.LogError(timelpased);
+		if (timelpased >= duration)
 		{
 			return BTStatus.Success;
 		}

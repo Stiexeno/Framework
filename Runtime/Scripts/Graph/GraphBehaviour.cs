@@ -18,7 +18,7 @@ namespace Framework
 		public abstract int ChildCount();
 		
 		#if UNITY_EDITOR
-		public Vector2 nodePosition;
+		[SerializeField, HideInInspector] public Vector2 nodePosition;
 		#endif
 	}
 }

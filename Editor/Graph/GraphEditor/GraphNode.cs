@@ -49,6 +49,8 @@ namespace Framework
 		public GUIStyle BodyStyle { get; } = CreateBodyStyle();
 		public GUIContent HeaderContent { get; } = new GUIContent();
 		public GUIContent BodyContent { get; } = new GUIContent();
+		
+		public string Name => behaviour.name;
 
 		public GraphBehaviour Behaviour
 		{

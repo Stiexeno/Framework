@@ -27,7 +27,7 @@ public class BTSelector : BTComposite
 	{
 		if (result == BTStatus.Failure)
 		{
-			SetCurrentChild(currentChildIndex + 1);
+			SetCurrentChild(GetCurrentChild() + 1);
 		}
 		else
 		{

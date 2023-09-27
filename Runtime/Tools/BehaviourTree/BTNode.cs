@@ -8,9 +8,7 @@ public enum NodeType { Composite, Decorator, Leaf, Root }
 
 public abstract class BTNode : GraphBehaviour
 {
-	public BTStatus status = BTStatus.Running;
-	
-	public string guid;
+	protected BTStatus status = BTStatus.Inactive;
 	
 	public abstract NodeType NodeType { get; }
 	public abstract int MaxChildCount { get; }
@@ -72,6 +70,7 @@ public abstract class BTNode : GraphBehaviour
 		if (status == BTStatus.Success || status == BTStatus.Failure)
 			return status;
 
+		Debug.LogError(status);
 		if (status == BTStatus.Inactive)
 		{
 			OnEnter(btParams);

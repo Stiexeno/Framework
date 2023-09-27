@@ -1,9 +1,12 @@
-﻿public class BTSequence : BTComposite
+﻿using UnityEngine;
+
+public class BTSequence : BTComposite
 {
 	protected override BTStatus OnUpdate(BTParams btParams)
 	{
 		var currentStatus = BTStatus.Success;
 
+		Debug.LogError(GetCurrentChild());
 		if (GetCurrentChild() < children.Length)
 		{
 			var child = children[GetCurrentChild()];
@@ -17,6 +20,8 @@
 			if (currentStatus == BTStatus.Success)
 			{
 				SetCurrentChild(GetCurrentChild() + 1);
+				
+				return BTStatus.Running;
 			}
 		}
 
@@ -32,7 +37,7 @@
 		}
 		else
 		{
-			SetCurrentChild(currentChildIndex + 1);
+			SetCurrentChild(GetCurrentChild() + 1);
 		}
 	}
 }

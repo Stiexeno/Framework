@@ -27,11 +27,13 @@ public abstract class GraphNodeRules<T> : IGraphNodeRules where T: GraphBehaviou
 
 public class NodeProperties
 {
+	public string name;
 	public Type nodeType;
 	public bool hasOutput;
 	
-	public NodeProperties(Type nodeType, bool hasOutput)
+	public NodeProperties(Type nodeType, bool hasOutput, string name = "")
 	{
+		this.name = name;
 		this.nodeType = nodeType;
 		this.hasOutput = hasOutput;
 	}

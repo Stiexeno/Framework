@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: BehaviourTreePreferences
   m_EditorClassIdentifier: Framework.Editor::GraphPreferences
-  sequencerIcon: {fileID: 2800000, guid: db079aae1f0f3924f8ec456b6fb92934, type: 3}
+  sequencerIcon: {fileID: 0}

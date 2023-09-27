@@ -11,7 +11,6 @@ public abstract class BTLeaf : BTNode
 	public override void OnReset(BTParams btParams)
 	{
 		base.OnReset(btParams);
-		
 		OnExit(btParams);
 	}
 }

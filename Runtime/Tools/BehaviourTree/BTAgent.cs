@@ -6,12 +6,6 @@ public class BTAgent : MonoBehaviour
 
 	private BTParams btParams = new BTParams();
 	
-	public void Start()
-	{
-		behaviourTree = ScriptableObject.CreateInstance<BehaviourTree>();
-		behaviourTree.root = ScriptableObject.CreateInstance<DebugLog>();
-	}
-	
 	private void Update()
 	{
 		var rootNode = behaviourTree.root;

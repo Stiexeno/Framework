@@ -12,6 +12,9 @@ public class BehaviourTreeGraphNodeRules : GraphNodeRules<BTNode>
 		
 		if (behaviour == typeof(BTSequence))
 			return new NodeProperties(typeof(SequenceGraphNode), true);
+		
+		if (behaviour == typeof(BTLeaf) || behaviour.IsSubclassOf(typeof(BTLeaf)))
+			return new NodeProperties(typeof(LeafGraphNode), false);
 
 		return null;
 	}
