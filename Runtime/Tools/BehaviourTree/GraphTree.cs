@@ -33,17 +33,17 @@ public abstract class GraphTree : ScriptableObject
 	
 	private void ClearChildrenStructure(GraphBehaviour behaviour)
 	{
-		var node = behaviour as Node;
+		var node = behaviour as BTNode;
 		
-		if (node.IsComposite())
+		if (node.NodeType == NodeType.Composite)
 		{
-			var composite = node as CompositeNode;
-			composite.SetChildren(Array.Empty<Node>());
+			var composite = node as BTComposite;
+			composite.SetChildren(Array.Empty<BTNode>());
 		}
 		
-		else if (node.IsDecorator())
+		else if (node.NodeType == NodeType.Decorator)
 		{
-			var decorator = node as DecoratorNode;
+			var decorator = node as BTDecorator;
 			decorator.SetChild(null);
 		}
 	}

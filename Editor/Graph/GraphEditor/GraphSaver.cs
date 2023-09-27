@@ -105,23 +105,23 @@ namespace Framework
 		
 		private void SetCompositeChildren(GraphCanvas canvas)
 		{
-			IEnumerable<GraphNode> compositeNodes = canvas.Nodes.Where(n => n.Behaviour is CompositeNode);
+			IEnumerable<GraphNode> compositeNodes = canvas.Nodes.Where(n => n.Behaviour is BTComposite);
 			foreach (GraphNode node in compositeNodes)
 			{
-				var compositeBehaviour = node.Behaviour as CompositeNode;
-				compositeBehaviour.SetChildren(node.Children.Select(ch => ch.Behaviour).Cast<Node>().ToArray());
+				var compositeBehaviour = node.Behaviour as BTComposite;
+				compositeBehaviour.SetChildren(node.Children.Select(ch => ch.Behaviour).Cast<BTNode>().ToArray());
 			}
 		}
 
 		private void SetDecoratorChildren(GraphCanvas canvas)
 		{
 			IEnumerable<GraphNode> decoratorNodes = canvas.Nodes
-				.Where(n => n.Behaviour is DecoratorNode && n.ChildCount() == 1);
+				.Where(n => n.Behaviour is BTDecorator && n.ChildCount() == 1);
 
 			foreach (GraphNode node in decoratorNodes)
 			{
-				var decoratorBehaviour = node.Behaviour as DecoratorNode;
-				decoratorBehaviour.SetChild(node.GetChildAt(0).Behaviour as Node);
+				var decoratorBehaviour = node.Behaviour as BTDecorator;
+				decoratorBehaviour.SetChild(node.GetChildAt(0).Behaviour as BTNode);
 			}
 		}
 		

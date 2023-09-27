@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SequencerGraphNode : BTGraphNode
 {
-	private SequencerNode sequencerNode;
+	private BTSequence btSequence;
 	
 	public override Vector2 Size => new Vector2(200, 80);
 	public override Color Outline => new Color(0.22f, 0.79f, 0.23f);

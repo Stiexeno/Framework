@@ -36,8 +36,8 @@ public class BehaviourTreeWindow : GraphWindow
 
 		if (behaviourTree.root == null)
 		{
-			var node = Editor.Canvas.CreateNode(typeof(RootNode));
-			behaviourTree.root = Editor.Canvas.Nodes[0].Behaviour as Node;
+			var node = Editor.Canvas.CreateNode(typeof(Root));
+			behaviourTree.root = Editor.Canvas.Nodes[0].Behaviour as BTNode;
 			
 			Editor.Canvas.SetRoot(node);
 		}
