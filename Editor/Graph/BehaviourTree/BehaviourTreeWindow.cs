@@ -28,7 +28,7 @@ public class BehaviourTreeWindow : GraphWindow
 	
 	protected override void Construct(HashSet<IGUIElement> graphElements)
 	{
-		graphElements.Add(new BehaviourTreeInspector());
+		graphElements.Add(new BehaviourTreeInspector(behaviourTree, Editor));
 	}
 
 	protected override void Initialize(GraphTree behaviour)
@@ -50,28 +50,10 @@ public class BehaviourTreeWindow : GraphWindow
 		Editor.Input.OnKeySpace += OpenSearch;
 	}
 
-	private void OnDisable()
+	protected override void OnDisable()
 	{
+		base.OnDisable();
 		Editor.Input.OnKeySpace -= OpenSearch;
-	}
-
-	//protected override List<GraphNode> GatherBehaviours()
-	//{
-	//	if (Tree == null)
-	//		return new List<GraphNode>();
-//
-	//	List<GraphNode> nodes = new List<GraphNode>
-	//	{
-	//		new RootGraphNode(behaviourTree.Root)
-	//	};
-//
-	//	return nodes;
-	//}
-
-	protected override GenericMenu RegisterContextMenu()
-	{
-		var menu = new GenericMenu();
-		return menu;
 	}
 	
 	private void OpenSearch(object sender, EventArgs eventArgs)
@@ -88,12 +70,13 @@ public class BehaviourTreeWindow : GraphWindow
 			return false;
 
 		BehaviourTreeWindow behaviourWindow = Open<BehaviourTreeWindow>(root);
-			
+		behaviourWindow.titleContent = new GUIContent("Behaviour Tree");
+		
 		if (behaviourWindow != null)
 		{
 			return true;
 		}
-
+//
 		return false;
 	}
 }

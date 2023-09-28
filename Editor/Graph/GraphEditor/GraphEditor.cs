@@ -234,7 +234,7 @@ namespace Framework
 			{
 				ApplyAction = (applyEvent) =>
 				{
-					if (applyEvent.node != null)
+					if (applyEvent.node != null && parent != applyEvent.node)
 					{
 						GraphConnection.FinishConnection(Canvas, parent, applyEvent.node);
 					}

@@ -43,16 +43,27 @@ namespace Framework
 
 		protected override void OnGUI()
 		{
-			Viewer.Draw(CanvasTransform);
-			Editor.PollInput(Event.current, CanvasTransform, CanvasInputRect);
-			Editor.UpdateView();
-
+			if (Tree == null)
+			{
+				Viewer.DrawStaticGrid(position.size);
+			}
+			else
+			{
+				if (Editor.Canvas == null)
+				{
+					BuildCanvas();
+				}
+				
+				Editor.PollInput(Event.current, CanvasTransform, CanvasInputRect);
+				Editor.UpdateView();
+				Viewer.Draw(CanvasTransform);
+			}
+            
 			base.OnGUI();
 			Repaint();
 		}
 
 		protected abstract void Construct(HashSet<IGUIElement> graphElements);
-		protected abstract GenericMenu RegisterContextMenu();
         
 		protected static T Open<T>(GraphTree behaviour) where T : GraphWindow
 		{
@@ -80,8 +91,6 @@ namespace Framework
 		protected override void OnEnable()
 		{
 			GraphEditor.FetchGraphBehaviours(Rules);
-			
-			Construct(graphElements);
 
 			Saver = new GraphSaver();
 			Editor = new GraphEditor();
@@ -97,6 +106,8 @@ namespace Framework
 			EditorApplication.playModeStateChanged += PlayModeStateChanged;
 			AssemblyReloadEvents.beforeAssemblyReload += BeforeAssemblyReload;
 			Selection.selectionChanged += SelectionChanged;
+			
+			Construct(graphElements);
 		}
 
 		protected virtual void OnDisable()
@@ -106,7 +117,7 @@ namespace Framework
 			Selection.selectionChanged -= SelectionChanged;
 		}
 		
-		void OnDestroy()
+		private void OnDestroy()
 		{
 			OnExit();
 		}
@@ -129,6 +140,7 @@ namespace Framework
 			BuildCanvas();
 			
 			Initialize(graphTree);
+			Construct(graphElements);
 		}
 		
 		private void BuildCanvas()

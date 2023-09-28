@@ -38,9 +38,9 @@ namespace Framework
 			UpdateDragging(window, rect);
 			//Resize(ref inspectorRect);
 			
-			GUILayout.BeginArea(inspectorRect);
+			//GUILayout.BeginArea(inspectorRect);
 			OnGUI(inspectorRect);
-			GUILayout.EndArea();
+			//GUILayout.EndArea();
 		}
 
 		protected abstract void OnGUI(Rect rect);

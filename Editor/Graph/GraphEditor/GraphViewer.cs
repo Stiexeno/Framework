@@ -50,6 +50,12 @@ namespace Framework
 			var canvasRect = new Rect(Vector2.zero, canvasTransform.size);
 			GraphDrawer.DrawGrid(canvasRect, GraphPreferences.Instance.gridTexture, canvasTransform.zoom, canvasTransform.pan);
 		}
+		
+		public void DrawStaticGrid(Vector2 size)
+		{
+			var canvasRect = new Rect(Vector2.zero, size);
+			GraphDrawer.DrawStaticGrid(canvasRect, GraphPreferences.Instance.gridTexture);
+		}
 
 		private void DrawNodes(CanvasTransform canvasTransform)
 		{

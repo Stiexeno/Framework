@@ -1,7 +1,7 @@
 using UnityEngine;
 using SF = UnityEngine.SerializeField;
 
-public class GraphPreferences : ScriptableObject
+public class BehaviourTreePreferences : ScriptableObject
 {
 	public Texture2D sequencerIcon;
 }

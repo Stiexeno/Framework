@@ -131,6 +131,13 @@ namespace Framework.Editor
             EditorGUI.DrawRect(r, color);
         }
         
+        public static void DrawHorizontalLine(Rect rect, int thickness = 1, Color color = default)
+        {
+            rect.height = thickness;
+            var targetColor = color == default ? new Color(0.15f, 0.15f, 0.16f) : color;
+            EditorGUI.DrawRect(rect, targetColor);
+        }
+        
         public static List<Object> LoadAllAssetsAtPath (string path, string assetType = "asset") 
         {
             var objects = new List<Object>();

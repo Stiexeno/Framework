@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class BTGraphNode : GraphNode
 {
-	protected GraphPreferences preferences;
+	protected BehaviourTreePreferences preferences;
 	
 	private const string PREFS_PATH = "Packages/com.framework.dependency-injection/Editor/Graph/BehaviourTree/Preferences";
-	private const string PREFS_NAME = "BehaviourTreePreferences";
+	private const string PREFS_NAME = "/BehaviourTreePreferences.asset";
 	
 	public BTGraphNode()
 	{
@@ -17,12 +17,12 @@ public class BTGraphNode : GraphNode
 
 	private void InitializePrefs()
 	{
-		preferences = AssetDatabase.LoadAssetAtPath(PREFS_PATH + "/BehaviourTreePreferences.asset", typeof(GraphPreferences)) as GraphPreferences;
+		preferences = AssetDatabase.LoadAssetAtPath(PREFS_PATH + PREFS_NAME, typeof(BehaviourTreePreferences)) as BehaviourTreePreferences;
 
 		if (preferences == null)
 		{
-			preferences = ScriptableObject.CreateInstance<GraphPreferences>();
-			AssetDatabase.CreateAsset(preferences, PREFS_PATH + "/" + PREFS_NAME + ".asset");
+			preferences = ScriptableObject.CreateInstance<BehaviourTreePreferences>();
+			AssetDatabase.CreateAsset(preferences, PREFS_PATH + PREFS_NAME);
 			AssetDatabase.SaveAssets();
 		}
 	}
