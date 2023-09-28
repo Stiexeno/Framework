@@ -12,8 +12,9 @@ public class RootGraphNode : BTGraphNode
 
 	public override void OnGUI(Rect rect)
 	{
+		DynamicSize = Size;
 		EditorGUI.LabelField(rect.SetHeight(20f), "Root", GraphStyle.Header0Middle);
 		
-		base.OnGUI(rect);
+		//base.OnGUI(rect);
 	}
 }

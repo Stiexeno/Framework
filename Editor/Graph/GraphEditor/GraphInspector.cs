@@ -36,7 +36,7 @@ namespace Framework
 			EditorGUI.DrawRect(inspectorRect, BackgroundColor);
 			
 			UpdateDragging(window, rect);
-			Resize(ref inspectorRect);
+			//Resize(ref inspectorRect);
 			
 			GUILayout.BeginArea(inspectorRect);
 			OnGUI(inspectorRect);

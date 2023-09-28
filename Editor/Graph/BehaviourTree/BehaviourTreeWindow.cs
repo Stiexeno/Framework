@@ -28,6 +28,7 @@ public class BehaviourTreeWindow : GraphWindow
 	
 	protected override void Construct(HashSet<IGUIElement> graphElements)
 	{
+		graphElements.Add(new BehaviourTreeInspector());
 	}
 
 	protected override void Initialize(GraphTree behaviour)
