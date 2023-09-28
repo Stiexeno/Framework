@@ -6,14 +6,13 @@ public abstract class BTComposite : BTNode
 {
 	public BTNode[] children = Array.Empty<BTNode>();
 	
-	private int currentChildIndex = 0;
+	[NonSerialized] private int currentChildIndex = 0;
 	
 	public override NodeType NodeType => NodeType.Composite;
 	public override int MaxChildCount => int.MaxValue;
 
 	protected override void OnEnter(BTParams btParams)
 	{
-		Debug.LogError(currentChildIndex);
 		SetCurrentChild(0);
 	}
 	

@@ -1,12 +1,9 @@
-﻿using UnityEngine;
-
-public class BTSequence : BTComposite
+﻿public class BTSequence : BTComposite
 {
 	protected override BTStatus OnUpdate(BTParams btParams)
 	{
 		var currentStatus = BTStatus.Success;
-
-		Debug.LogError(GetCurrentChild());
+		
 		if (GetCurrentChild() < children.Length)
 		{
 			var child = children[GetCurrentChild()];

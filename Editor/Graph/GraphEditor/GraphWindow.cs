@@ -93,6 +93,22 @@ namespace Framework
 			Editor.OnCanvasChanged += Repaint;
 			Editor.Input.SaveRequest += Save;
 			Saver.SaveMessage += (sender, message) => ShowNotification(new GUIContent(message), 0.5f);
+			
+			EditorApplication.playModeStateChanged += PlayModeStateChanged;
+			AssemblyReloadEvents.beforeAssemblyReload += BeforeAssemblyReload;
+			Selection.selectionChanged += SelectionChanged;
+		}
+
+		protected virtual void OnDisable()
+		{
+			EditorApplication.playModeStateChanged -= PlayModeStateChanged;
+			AssemblyReloadEvents.beforeAssemblyReload -= BeforeAssemblyReload;
+			Selection.selectionChanged -= SelectionChanged;
+		}
+		
+		void OnDestroy()
+		{
+			OnExit();
 		}
 		
 		public void Load()
@@ -139,7 +155,46 @@ namespace Framework
 				Saver.SaveCanvas(Editor.Canvas, TreeMetaData);
 			}
 		}
-
 		
+		private void SelectionChanged()
+		{
+		}
+
+		private void BeforeAssemblyReload()
+		{
+			if (!EditorApplication.isPlayingOrWillChangePlaymode)
+			{
+				OnExit();
+			}
+		}
+
+		private void PlayModeStateChanged(PlayModeStateChange state)
+		{
+			if (state == PlayModeStateChange.ExitingEditMode)
+			{
+				QuickSave();
+			}
+		}
+		
+		private void OnExit()
+		{
+			Editor.NodeSelection.ClearSelection();
+			QuickSave();
+		}
+		
+		private void NicifyTree()
+		{
+			if (Tree && Editor.Canvas != null)
+			{
+				if (Editor.Canvas.Root == null)
+				{
+					ShowNotification(new GUIContent("Set a root to nicely format the tree!"));
+				}
+				else
+				{
+					GraphFormatter.PositionNodesNicely(Editor.Canvas.Root, Vector2.zero);
+				}
+			}
+		}
 	}
 }

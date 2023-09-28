@@ -35,6 +35,7 @@ namespace Framework
 			Input.Click += Clicked;
 			Input.MouseUp += MouseUp;
 			Input.CreateNodeRequest += CreateNodeFromType;
+			Input.NodeActionRequest += SingleNodeAction;
 		}
 
 		public void SetGraphTree(GraphTree tree)
@@ -42,7 +43,8 @@ namespace Framework
 			NodeSelection.ClearSelection();
 			Canvas = new GraphCanvas(tree);
 			Viewer.Canvas = Canvas;
-			Viewer.zoom = new Vector2(1f, 1f);
+			Viewer.zoom = tree.zoomPosition;
+			Viewer.panOffset = tree.panPosition;
 		}
 
 		public void UpdateView()
@@ -161,7 +163,30 @@ namespace Framework
 			ApplyAction?.Invoke(e);
 			ClearActions();
 		}
+		
+		private void RemoveSelectedNodes()
+		{
+			Canvas.Remove(node => NodeSelection.IsNodeSelected(node));
+			NodeSelection.SetTreeSelection(Canvas.Tree);
+		}
+		
+		private void SingleNodeAction(object sender, NodeContext actionType)
+		{
+			switch (actionType)
+			{
+				case NodeContext.FormatTree:
+					GraphNode root = NodeSelection.SingleSelectedNode;
+					GraphFormatter.PositionNodesNicely(root, root.Center);
+					break;
 
+				case NodeContext.Delete:
+					RemoveSelectedNodes();
+					break;
+			}
+
+			//UpdateAbortableSelection();
+		}
+		
 		public void ClearActions()
 		{
 			ApplyAction = null;
@@ -238,12 +263,6 @@ namespace Framework
 			
 			lastCreatedNode = node;
 			
-		}
-
-		private void RemoveSelectedNodes()
-		{
-			Canvas.Remove(node => NodeSelection.IsNodeSelected(node));
-			NodeSelection.SetTreeSelection(Canvas.Tree);
 		}
 
 		public static void FetchGraphBehaviours(IGraphNodeRules graphNodeRules)

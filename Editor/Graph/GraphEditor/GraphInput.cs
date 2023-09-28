@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Framework
 {
-	public enum NodeContext { SetAsRoot, Duplicate, FormatTree, Delete, DuplicateSelection, DeleteSelection }
+	public enum NodeContext { FormatTree, Delete, DuplicateSelection, DeleteSelection }
 
 	public class GraphInput
 	{
@@ -21,6 +21,7 @@ namespace Framework
 
 		public event EventHandler<GraphNode> NodeContextClick;
 		public event EventHandler CanvasContextClick;
+		public event EventHandler<NodeContext> NodeActionRequest;
 
 		public event EventHandler SaveRequest;
 		public event EventHandler OnKeySpace;
@@ -177,7 +178,11 @@ namespace Framework
 
 		private GenericMenu CreateSingleSelectionContextMenu(GraphNode node)
 		{
-			return null;
+			var menu = new GenericMenu();
+			menu.AddItem(new GUIContent("Format Subtree"), false, OnNodeAction, NodeContext.FormatTree);
+			menu.AddSeparator("");
+			menu.AddItem(new GUIContent("Delete"), false, OnNodeAction, NodeContext.Delete);
+			return menu;
 		}
 
 		private void HandleMultiContext()
@@ -185,6 +190,11 @@ namespace Framework
 			CreateMultiSelectionContextMenu().ShowAsContext();
 		}
 
+		private void OnNodeAction(object o)
+		{
+			NodeActionRequest?.Invoke(this, (NodeContext)o);
+		}
+		
 		private GenericMenu CreateMultiSelectionContextMenu()
 		{
 			return null;

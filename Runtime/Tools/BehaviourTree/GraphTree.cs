@@ -22,7 +22,7 @@ public abstract class GraphTree : ScriptableObject
 		foreach (GraphBehaviour behaviour in nodes)
 		{
 			ClearChildrenStructure(behaviour);
-			//behaviour.preOrderIndex = BehaviourNode.kInvalidOrder;
+			behaviour.preOrderIndex = GraphBehaviour.kInvalidOrder;
 			behaviour.indexOrder = 0;
 			behaviour.Parent = null;
 			behaviour.treeOwner = null;
@@ -64,4 +64,11 @@ public abstract class GraphTree : ScriptableObject
 			node.preOrderIndex = preOrderIndex++;
 		}
 	}
+	
+	/// <summary>
+	/// Unused nodes are nodes that are not part of the root.
+	/// These are ignored when tree executes and excluded when cloning.
+	/// </summary>
+	[SerializeField]
+	public List<GraphBehaviour> unusedNodes = new List<GraphBehaviour>();
 }

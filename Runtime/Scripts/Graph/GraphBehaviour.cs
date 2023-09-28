@@ -4,14 +4,22 @@ namespace Framework
 {
 	public abstract class GraphBehaviour : ScriptableObject, IIterableNode<GraphBehaviour>
 	{
+		// Private fields
+		
 		internal GraphTree treeOwner = null;
 		protected internal int indexOrder = 0;
 		
 		[SerializeField, HideInInspector]
-		internal int preOrderIndex = 0;
+		internal int preOrderIndex = kInvalidOrder;
 		
+		public const int kInvalidOrder = -1;
+		
+		// Properties
+
 		public GraphBehaviour Parent { get; set; }
+		public abstract int MaxChildCount { get; }
 		
+		public int PreOrderIndex => preOrderIndex;
 		public GraphTree Tree => treeOwner;
 
 		public abstract GraphBehaviour GetChildAt(int index);

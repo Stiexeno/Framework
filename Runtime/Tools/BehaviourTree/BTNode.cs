@@ -8,10 +8,9 @@ public enum NodeType { Composite, Decorator, Leaf, Root }
 
 public abstract class BTNode : GraphBehaviour
 {
-	protected BTStatus status = BTStatus.Inactive;
+	[NonSerialized] protected BTStatus status = BTStatus.Inactive;
 	
 	public abstract NodeType NodeType { get; }
-	public abstract int MaxChildCount { get; }
 
 	/// <summary>
 	/// Called every tick while this Node is part of the current sub-tree.
@@ -69,8 +68,7 @@ public abstract class BTNode : GraphBehaviour
 	{
 		if (status == BTStatus.Success || status == BTStatus.Failure)
 			return status;
-
-		Debug.LogError(status);
+		
 		if (status == BTStatus.Inactive)
 		{
 			OnEnter(btParams);

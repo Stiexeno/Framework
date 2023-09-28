@@ -107,7 +107,7 @@ namespace Framework
 			
 		}
 
-		public virtual void Remove()
+		public void Remove()
 		{
 			SetParent(null);
 			OrphanChildren();
@@ -151,12 +151,11 @@ namespace Framework
 
 			if (newParent != null)
 			{
-				//foreach (GraphNode child in newParent.children)
-				//{
-				//	child.Parent = null;
-				//}
-//
-				//newParent.children.Clear();
+				if (newParent.Behaviour.MaxChildCount == 1)
+				{
+					newParent.OrphanChildren();
+				}
+				
 				newParent.children.Add(this);
 			}
 

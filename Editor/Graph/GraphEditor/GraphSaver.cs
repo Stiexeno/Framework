@@ -81,7 +81,7 @@ namespace Framework
 			AddBlackboardIfMissing(canvas.Tree);
 
 			var canvasBehaviours = canvas.Nodes.Select(node => node.Behaviour);
-			
+
 			AddNodeAsset(canvas.Tree, canvasBehaviours);
 
 			canvas.Tree.ClearStructure();
@@ -98,6 +98,8 @@ namespace Framework
 			{
 				canvas.Tree.SetNodes(canvas.Root.Behaviour);
 			}
+
+			canvas.Tree.unusedNodes = canvasBehaviours.Where(b => b.PreOrderIndex == GraphBehaviour.kInvalidOrder).ToList();
 			
 			SaveTreeMetaData(meta, canvas);
 			AssetDatabase.SaveAssets();
@@ -132,7 +134,7 @@ namespace Framework
 				if (!AssetDatabase.Contains(node))
 				{
 					node.name = node.GetType().Name;
-					node.hideFlags = HideFlags.HideInHierarchy;
+					//node.hideFlags = HideFlags.HideInHierarchy;
 					AssetDatabase.AddObjectToAsset(node, tree);
 				}
 			}
