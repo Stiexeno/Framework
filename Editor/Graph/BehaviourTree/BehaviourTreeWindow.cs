@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Framework;
+using Framework.Editor;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
@@ -12,7 +13,8 @@ public class BehaviourTreeWindow : GraphWindow
 	private BehaviourTree behaviourTree;
 	
 	private static BehaviourTreeWindow window;
-	
+
+
 	//BehaviourTreeWindow
 	
 	public override GraphTree Tree { get; set; }
@@ -44,23 +46,6 @@ public class BehaviourTreeWindow : GraphWindow
 		}
 	}
 
-	protected override void OnEnable()
-	{
-		base.OnEnable();
-		Editor.Input.OnKeySpace += OpenSearch;
-	}
-
-	protected override void OnDisable()
-	{
-		base.OnDisable();
-		Editor.Input.OnKeySpace -= OpenSearch;
-	}
-	
-	private void OpenSearch(object sender, EventArgs eventArgs)
-	{
-		
-	}
-    
 	[OnOpenAsset]
 	public static bool OpenAsset(int instanceId, int line)
 	{

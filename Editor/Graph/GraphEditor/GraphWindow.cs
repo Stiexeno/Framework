@@ -10,15 +10,18 @@ namespace Framework
 	{
 		// Private fields
 
+		private Rect searchRect;
+		
+		// Properties
+		
 		public GraphViewer Viewer { get; private set; }
 		public GraphEditor Editor { get; private set; }
 		public GraphSaver Saver { get; private set; }
+		public GraphSearch Search { get; private set; }
 		
 		public abstract GraphTree Tree { get; set; }
 		public abstract IGraphNodeRules Rules { get; }
-
-		// Properties
-
+		
 		private CanvasTransform CanvasTransform =>
 			new CanvasTransform
 			{
@@ -57,6 +60,7 @@ namespace Framework
 				Editor.PollInput(Event.current, CanvasTransform, CanvasInputRect);
 				Editor.UpdateView();
 				Viewer.Draw(CanvasTransform);
+				searchRect = Search.Draw();
 			}
             
 			base.OnGUI();
@@ -95,13 +99,16 @@ namespace Framework
 			Saver = new GraphSaver();
 			Editor = new GraphEditor();
 			Viewer = new GraphViewer();
+			Search = new GraphSearch(Editor);
 			
 			Editor.Viewer = Viewer;
+			Editor.Search = Search;
 			Editor.CanvasTransform = CanvasTransform;
 
 			Editor.OnCanvasChanged += Repaint;
 			Editor.Input.SaveRequest += Save;
 			Saver.SaveMessage += (sender, message) => ShowNotification(new GUIContent(message), 0.5f);
+			Editor.Input.OnKeySpace += OpenSearch;
 			
 			EditorApplication.playModeStateChanged += PlayModeStateChanged;
 			AssemblyReloadEvents.beforeAssemblyReload += BeforeAssemblyReload;
@@ -110,11 +117,18 @@ namespace Framework
 			Construct(graphElements);
 		}
 
+		private void OpenSearch(object sender, EventArgs e)
+		{
+			//Viewer.CustomOverlayDraw += DrawSearch;
+			Search.Show(Event.current.mousePosition);
+		}
+
 		protected virtual void OnDisable()
 		{
 			EditorApplication.playModeStateChanged -= PlayModeStateChanged;
 			AssemblyReloadEvents.beforeAssemblyReload -= BeforeAssemblyReload;
 			Selection.selectionChanged -= SelectionChanged;
+			Editor.Input.OnKeySpace -= OpenSearch;
 		}
 		
 		private void OnDestroy()
@@ -151,7 +165,7 @@ namespace Framework
 				Repaint();
 			}
 		}
-		
+
 		private void Save(object sender, EventArgs eventArgs)
 		{
 			if (Editor.Canvas != null)

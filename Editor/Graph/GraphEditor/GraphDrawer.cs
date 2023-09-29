@@ -208,7 +208,7 @@ namespace Framework
 				Handles.DrawAAPolyLine(GraphPreferences.Instance.defaultNodeBackground, 3, end, endTip);
 				Handles.DrawAAPolyLine(GraphPreferences.Instance.defaultNodeBackground, 3, startTip, endTip);
 			}
-
+			
 			Handles.color = originalColor;
 		}
 
@@ -246,6 +246,29 @@ namespace Framework
 			// The point where the parent connects to the anchor line.
 			var parentAnchorLineConnection = new Vector2(anchorX, anchorY);
 
+			//foreach (var child in node.Children)
+			//{
+			//	// Get the positions to draw a line between the node and the anchor line.
+			//	Vector2 center = child.InputRect.center;
+			//	center.y += GraphPreferences.Instance.portHeight;
+			//	var anchorLineConnection = new Vector2(center.x, anchorY);
+			//	
+			//	if (IsHovered(t, center, anchorLineConnection))
+			//	{
+			//		connectionColor = new Color(0.98f, 0f, 0.01f);
+			//	}
+			//}
+
+			//if (IsHovered(t, parentAnchorTip, parentAnchorLineConnection))
+			//{
+			//	connectionColor = new Color(0.98f, 0f, 0.01f);
+			//}
+			//
+			//if (IsHovered(t, anchorLineStart, anchorLineEnd))
+			//{
+			//	connectionColor = new Color(0.98f, 0f, 0.01f);
+			//}
+
 			// Draw the lines from the calculated positions.
 			DrawLineCanvasSpace(
 				t,
@@ -275,13 +298,55 @@ namespace Framework
 					center,
 					connectionColor,
 					connectionWidth);
+
+				if (IsHovered(t, 
+					    parentAnchorTip, 
+					    parentAnchorLineConnection,
+					    new Vector2(parentAnchorLineConnection.x, anchorLineStart.y),
+					    new Vector2(anchorLineConnection.x, anchorLineEnd.y),
+					    anchorLineConnection,
+					    center))
+				{
+					DrawHoveredConnections(t, 
+						parentAnchorTip, 
+						parentAnchorLineConnection,
+						new Vector2(parentAnchorLineConnection.x, anchorLineStart.y),
+						new Vector2(anchorLineConnection.x, anchorLineEnd.y),
+						anchorLineConnection,
+						center);
+				}
 			}
+		}
+
+		private static void DrawHoveredConnections(CanvasTransform t, params Vector2[] points)
+		{
+			for (int i = 0; i < points.Length - 1; i++)
+			{
+				DrawLineCanvasSpace(t, points[i], points[i + 1], new Color(0.33f, 0.74f, 0.93f), 4);
+			}
+		}
+		
+		private static bool IsHovered(CanvasTransform t, params Vector2[] points)
+		{
+			for (int i = 0; i < points.Length - 1; i++)
+			{
+				var start = t.CanvasToScreenSpace(points[i]);
+				var end = t.CanvasToScreenSpace(points[i + 1]);
+
+				if (HandleUtility.DistanceToLine(start, end) < 5f)
+				{
+					return true;
+				}
+			}
+
+			return false;
 		}
 
 		public static void DrawLineCanvasSpace(CanvasTransform t, Vector2 start, Vector2 end, Color color, float width)
 		{
 			start = t.CanvasToScreenSpace(start);
 			end = t.CanvasToScreenSpace(end);
+			
 			if (t.IsScreenAxisLineInView(start, end))
 			{
 				DrawLineScreenSpace(start, end, color, width);
@@ -302,6 +367,13 @@ namespace Framework
 			Handles.color = color;
 			Handles.DrawAAPolyLine(GraphPreferences.Instance.defaultNodeBackground, width, start, end);
 			Handles.color = originalColor;
+		}
+
+		private static bool IsHovered(CanvasTransform t, Vector2 start, Vector2 end)
+		{
+			start = t.CanvasToScreenSpace(start);
+			end = t.CanvasToScreenSpace(end);
+			return HandleUtility.DistanceToLine(start, end) < 5f;
 		}
 	}
 }

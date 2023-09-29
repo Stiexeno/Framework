@@ -13,6 +13,7 @@ namespace Framework
 		private static Dictionary<Type, NodeProperties> nodeProperties;
 		
 		public GraphViewer Viewer { get; set; }
+		public GraphSearch Search { get; set; }
 		public GraphSelection NodeSelection { get; } = new GraphSelection();
 		public GraphInput Input { get; } = new GraphInput();
 		public GraphCanvas Canvas { get; private set; }
@@ -54,6 +55,9 @@ namespace Framework
 
 		public void PollInput(Event e, CanvasTransform canvas, Rect inputRect)
 		{
+			if (Search.IsActive)
+				return;
+			
 			if (lastCreatedNode != null)
 			{
 				lastCreatedNode.Center = GraphInput.MousePosition(canvas);
@@ -94,6 +98,9 @@ namespace Framework
 
 		private void Zoom(float zoomDirection)
 		{
+			if (Search.IsActive)
+				return;
+			
 			float scale = (zoomDirection < 0f) ? (1f - GraphViewer.ZoomDelta) : (1f + GraphViewer.ZoomDelta);
 			Viewer.zoom *= scale;
 

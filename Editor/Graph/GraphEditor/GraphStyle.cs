@@ -56,6 +56,6 @@ public static class GraphStyle
         
         rect.y += 2;
         rect.height = 1;
-        EditorGUI.DrawRect(rect, new Color(0.69f, 0.69f, 0.69f));
+        EditorGUI.DrawRect(rect, new Color(0.5f, 0.5f, 0.5f));
     }
 }

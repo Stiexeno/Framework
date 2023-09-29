@@ -222,9 +222,14 @@ namespace Framework
 			return e.type == EventType.ScrollWheel;
 		}
 
-		private static bool IsClickAction(Event e)
+		public static bool IsClickAction(Event e)
 		{
 			return e.type == EventType.MouseDown && e.button == 0;
+		}
+		
+		public static bool IsExitAction(Event e)
+		{
+			return e.type == EventType.KeyUp && e.keyCode == KeyCode.Escape;
 		}
 
 		private static bool IsUnlickAction(Event e)
