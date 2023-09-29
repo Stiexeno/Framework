@@ -9,7 +9,7 @@ using SF = UnityEngine.SerializeField;
 public class GraphSearch
 {
 	private Rect rect;
-	private Vector2 mousePosition;
+	private Vector2 position;
 
 	private string searchQuerry = "";
 
@@ -27,9 +27,22 @@ public class GraphSearch
 		
 		editor.Input.MouseDown += OnMouseDown;
 		
-		Menu.AddItem("WaitNode", null);
-		Menu.AddItem("WaitNode2", null);
-		Menu.AddItem("WaitNode3", null);
+		Menu.AddHeader("Behaviour Tree");
+		Menu.AddItem("Sequencer", null);
+		Menu.AddItem("Selector", null);
+		Menu.AddItem("Wait", null);
+		Menu.AddItem("Debug Log", null);
+		Menu.AddHeader("Leaf");
+
+		foreach (var behaviour in GraphEditor.Behaviours)
+		{
+			var nodeType = behaviour.Key;
+
+			if (nodeType.IsSubclassOf(typeof(BTLeaf))) 
+			{
+				Menu.AddItem($"{behaviour.Key}", () => editor.CreateNodeFromType(nodeType));
+			}
+		}
 	}
 
 	private void OnMouseDown(object sender, GraphInputEvent e)
@@ -40,11 +53,13 @@ public class GraphSearch
 		}
 	}
 
-	public void Show(Vector2 mousePosition)
+	public void Show(Vector2 mousePosition, Rect rect)
 	{
-		this.mousePosition = mousePosition;
-		IsActive = true;
+		var clampedRect = new Rect(mousePosition, new Vector2(400, 420));
+		clampedRect = clampedRect.ClampToRect(rect, 5);
+		this.position = new Vector2(clampedRect.x, clampedRect.y);
 		
+		IsActive = true;
 		searchQuerry = "";
 	}
 	
@@ -55,7 +70,7 @@ public class GraphSearch
 
 		PollInput();
 
-		rect = new Rect(mousePosition, new Vector2(400, 420));
+		rect = new Rect(position, new Vector2(400, 420));
 		EditorGUI.DrawRect(rect, new Color(0.1f, 0.1f, 0.1f));
 		EditorHelper.DrawBorderRect(rect, new Color(0.5f, 0.5f, 0.5f), 1f);
 
@@ -86,12 +101,19 @@ public class GraphSearch
 		for (var i = 0; i < Menu.menuItems.Count; i++)
 		{
 			var menuItem = Menu.menuItems[i];
-			
-			if (GUI.Button(buttonRect, menuItem.name, EditorStyles.label))
+
+			if (menuItem.isHeader)
 			{
-				menuItem.action?.Invoke();
+				EditorGUI.LabelField(buttonRect, menuItem.name, GraphStyle.SearchHeader);
 			}
-			
+			else
+			{
+				if (GUI.Button(buttonRect, menuItem.name, GraphStyle.SearchItem))
+				{
+					menuItem.action?.Invoke();
+				}	
+			}
+
 			buttonRect.y += 15;
 		}
 	}

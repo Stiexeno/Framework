@@ -120,7 +120,7 @@ namespace Framework
 		private void OpenSearch(object sender, EventArgs e)
 		{
 			//Viewer.CustomOverlayDraw += DrawSearch;
-			Search.Show(Event.current.mousePosition);
+			Search.Show(Event.current.mousePosition, position);
 		}
 
 		protected virtual void OnDisable()

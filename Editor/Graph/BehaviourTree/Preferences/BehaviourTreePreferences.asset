@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c108915c779306419a91932bf8f8ce0, type: 3}
   m_Name: BehaviourTreePreferences
   m_EditorClassIdentifier: 
-  sequencerIcon: {fileID: 2800000, guid: db079aae1f0f3924f8ec456b6fb92934, type: 3}
+  sequencerIcon: {fileID: 2800000, guid: 6fc775cdbaed64340918dcbf66a93f47, type: 3}
+  selectorIcon: {fileID: 2800000, guid: 7a3d446be9b00c347a521b07624a696d, type: 3}

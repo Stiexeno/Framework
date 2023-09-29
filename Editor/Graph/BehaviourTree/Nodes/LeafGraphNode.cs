@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class LeafGraphNode : BTGraphNode
 {
-	public override Vector2 Size => new Vector2(200, 30);
+	public override Vector2 Size => new Vector2(175, 30);
 	public override Color Outline => new Color(0f, 0f, 0f);
     
 	public override void OnGUI(Rect rect)

@@ -59,14 +59,18 @@ namespace Framework
 
 			Color originalColor = GUI.color;
 
-			if (screenRect.Contains(Event.current.mousePosition) || node.Selected)
+			DrawNodeGradient(screenRect.AddHeight(6f).AddWidth(6f).AddX(-3f), new Color(0f, 0f, 0f, 0.28f));
+			if (node.Selected)
 			{
-				DrawSelectedOutline(screenRect, new Color(0.21f, 0.75f, 0.94f), t);
+				DrawSelectedOutline(screenRect.AddHeight(4f).AddY(-2f), new Color(0.27f, 0.85f, 1f), t);
+			}
+			else if (screenRect.Contains(Event.current.mousePosition))
+			{
+				DrawSelectedOutline(screenRect.AddHeight(4f).AddY(-2f), new Color(0.21f, 0.75f, 0.94f, 0.69f), t);
 			}
 			
 			//DrawOutline(screenRect.AddHeight(6f).AddY(-4f).AddWidth(2), new Color(0.16f, 0.16f, 0.16f));
 			DrawOutline(screenRect.AddHeight(2f).AddY(-1f).AddWidth(-2).AddX(1), node.Outline);
-            
 			DrawNodeBackground(screenRect, statusColor);
 			DrawPorts(t, node);
 
@@ -96,6 +100,18 @@ namespace Framework
 				0,
 				5f);
 		}
+		
+		public static void DrawNodeGradient(Rect screenRect, Color color)
+		{
+			GUI.DrawTexture(
+				screenRect, GraphPreferences.Instance.defaultNodeGadient,
+				ScaleMode.StretchToFill,
+				true,
+				0,
+				color,
+				0,
+				5f);
+		}
 
 		public static void DrawOutline(Rect screenRect, Color color)
 		{
@@ -116,7 +132,7 @@ namespace Framework
 
 		public static void DrawSelectedOutline(Rect screenRect, Color color, CanvasTransform canvasTransform)
 		{
-			var size = Mathf.Clamp(3 * Mathf.Clamp(canvasTransform.zoom, 1f, 2f), 1, float.MaxValue);
+			var size = Mathf.Clamp(2 * Mathf.Clamp(canvasTransform.zoom, 1f, 2f), 1, float.MaxValue);
 			var offset = size * 2;
 			screenRect.x -= size;
 			screenRect.y -= size;
@@ -131,12 +147,6 @@ namespace Framework
 				color,
 				0,
 				8f);
-		}
-
-		private static void DrawNodeContent(GraphNode node)
-		{
-			GUILayout.Box(node.HeaderContent, node.HeaderStyle);
-			GUILayout.Box(node.BodyContent, node.BodyStyle);
 		}
 
 		public static void DrawPorts(CanvasTransform t, GraphNode node)
@@ -298,6 +308,8 @@ namespace Framework
 					center,
 					connectionColor,
 					connectionWidth);
+				
+				DrawEdgeArrow(t, center);
 
 				if (IsHovered(t, 
 					    parentAnchorTip, 
@@ -316,6 +328,22 @@ namespace Framework
 						center);
 				}
 			}
+		}
+
+		private static void DrawEdgeArrow(CanvasTransform t, Vector2 position) 
+		{
+			position = t.CanvasToScreenSpace(position);
+
+			position.y -= 37;
+			position.x -= 16;
+			GUI.DrawTexture(
+				position.ToRect(16, 16), GraphPreferences.Instance.edgeArrow,
+				ScaleMode.StretchToFill,
+				true,
+				0,
+				new Color(0.98f, 0.78f, 0.05f),
+				0,
+				0f);
 		}
 
 		private static void DrawHoveredConnections(CanvasTransform t, params Vector2[] points)
@@ -367,13 +395,6 @@ namespace Framework
 			Handles.color = color;
 			Handles.DrawAAPolyLine(GraphPreferences.Instance.defaultNodeBackground, width, start, end);
 			Handles.color = originalColor;
-		}
-
-		private static bool IsHovered(CanvasTransform t, Vector2 start, Vector2 end)
-		{
-			start = t.CanvasToScreenSpace(start);
-			end = t.CanvasToScreenSpace(end);
-			return HandleUtility.DistanceToLine(start, end) < 5f;
 		}
 	}
 }

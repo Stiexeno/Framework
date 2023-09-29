@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridTexture: {fileID: 2800000, guid: c6477b4e02a970d4db6367a3a5f0b158, type: 3}
   defaultNodeBackground: {fileID: 2800000, guid: 07ce2f6d67b92fb4ea8ce63a4351786a, type: 3}
-  zoomDelta: 0.2
+  defaultNodeGadient: {fileID: 2800000, guid: b98e230ffde80834993526fa1f5900af, type: 3}
+  edgeArrow: {fileID: 2800000, guid: 0934ea91e963db84982ad4428ee511ed, type: 3}
+  zoomDelta: 0.15
   minZoom: 1
   maxZoom: 3
   panSpeed: 1

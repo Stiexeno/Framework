@@ -14,7 +14,7 @@ public static class GraphStyle
         alignment = TextAnchor.MiddleCenter,
         normal = new GUIStyleState()
         {
-            textColor = new Color(0.77f, 0.77f, 0.77f),
+            textColor = new Color(0.67f, 0.67f, 0.67f),
             background = Texture2D.blackTexture
         },
     };
@@ -29,7 +29,7 @@ public static class GraphStyle
         alignment = TextAnchor.MiddleCenter,
         normal = new GUIStyleState()
         {
-            textColor = new Color(0.77f, 0.77f, 0.77f),
+            textColor = new Color(0.67f, 0.67f, 0.67f),
             background = Texture2D.blackTexture
         },
     };
@@ -44,9 +44,44 @@ public static class GraphStyle
         alignment = TextAnchor.MiddleCenter,
         normal = new GUIStyleState()
         {
+            textColor = new Color(0.67f, 0.67f, 0.67f),
+            background = Texture2D.blackTexture
+        },
+    };
+    
+    public static readonly GUIStyle SearchHeader = new GUIStyle
+    {
+        richText = true,
+        fontSize = 11,
+        fontStyle = FontStyle.Bold,
+        wordWrap = true,
+        padding = new RectOffset(3, 0, 0, 0),
+        alignment = TextAnchor.MiddleLeft,
+        normal = new GUIStyleState()
+        {
+            textColor = new Color(1f, 0.79f, 0.05f),
+            background = Texture2D.blackTexture
+        },
+    };
+    
+    public static readonly GUIStyle SearchItem = new GUIStyle
+    {
+        richText = true,
+        fontSize = 11,
+        fontStyle = FontStyle.Normal,
+        wordWrap = true,
+        padding = new RectOffset(15, 0, 0, 0),
+        alignment = TextAnchor.MiddleLeft,
+        normal = new GUIStyleState()
+        {
             textColor = new Color(0.77f, 0.77f, 0.77f),
             background = Texture2D.blackTexture
         },
+        hover = new GUIStyleState()
+        {
+            textColor = new Color(1f, 0.79f, 0.05f),
+            background = Texture2D.blackTexture
+        }
     };
 
     public static void DrawHorizontalLine(Rect rect)

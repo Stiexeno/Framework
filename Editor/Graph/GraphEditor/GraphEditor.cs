@@ -262,16 +262,20 @@ namespace Framework
 				};
 			}
 		}
-		
-		private void CreateNodeFromType(object sender, Type type)
+
+		public void CreateNodeFromType(Type type)
 		{
 			var node = Canvas.CreateNode(type);
 			NodeSelection.SetSingleSelection(node);
 			
 			lastCreatedNode = node;
-			
 		}
-
+		
+		private void CreateNodeFromType(object sender, Type type)
+		{
+			CreateNodeFromType(type);
+		}
+		
 		public static void FetchGraphBehaviours(IGraphNodeRules graphNodeRules)
 		{
 			nodeProperties = graphNodeRules.FetchGraphBehaviours();

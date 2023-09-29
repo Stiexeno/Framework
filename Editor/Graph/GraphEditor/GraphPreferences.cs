@@ -9,6 +9,8 @@ namespace Framework
 	{
 		public Texture2D gridTexture;
 		public Texture2D defaultNodeBackground;
+		public Texture2D defaultNodeGadient;
+		public Texture2D edgeArrow;
 		
 		private static GraphPreferences instance;
 		

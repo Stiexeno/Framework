@@ -63,7 +63,7 @@ namespace Framework
 			
 			for (int i = 0; i < nodes.Count; i++)
 			{
-				GraphDrawer.DrawNode(canvasTransform, nodes[i], new Color(0.29f, 0.29f, 0.29f));
+				GraphDrawer.DrawNode(canvasTransform, nodes[i], new Color(0.24f, 0.25f, 0.26f));
 			}
 		}
 

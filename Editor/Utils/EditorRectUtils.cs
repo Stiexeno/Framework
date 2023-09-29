@@ -152,7 +152,29 @@ namespace Framework.Editor
 			return new Vector2(r.width, r.height);
 		}
 
-#if UNITY_EDITOR
+		public static Rect ClampToRect(this Rect rect, Rect targetRect, float padding)
+		{
+			// Calculate the clamped position for the smallerRect.
+			//float clampedX = Mathf.Clamp(rect.x, targetRect.x, targetRect.x + targetRect.width - rect.width);
+			//float clampedY = Mathf.Clamp(rect.y, targetRect.y, targetRect.y + targetRect.height - rect.height);
+
+			float clampedX = Mathf.Clamp(rect.x, 0, targetRect.width - rect.width - padding);
+			float clampedY = Mathf.Clamp(rect.y, 0, targetRect.height - rect.height - padding);
+			
+			return new Rect(clampedX, clampedY, rect.width, rect.height);
+		}
+
+		public static Rect Expand(this Rect rect, float value)
+		{
+			return new Rect(rect.x - value, rect.y - value, rect.width + value * 2, rect.height + value * 2);
+		}
+		
+		public static Rect Expand(this Rect rect, float x, float y)
+		{
+			return new Rect(rect.x - x, rect.y - y, rect.width + x * 2, rect.height + y * 2);
+		}
+
+		#if UNITY_EDITOR
 		public static Rect AddLine(this Rect r, int count = 1)
 		{
 			return AddY(r, count * (UnityEditor.EditorGUIUtility.singleLineHeight + UnityEditor.EditorGUIUtility.standardVerticalSpacing));
