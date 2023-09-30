@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Framework
 {
-	public class GraphCanvas
+	public class GraphCanvas : IGraphCanvas
 	{
 		private readonly List<GraphNode> nodes = new List<GraphNode>();
 		public IReadOnlyList<GraphNode> Nodes => nodes;

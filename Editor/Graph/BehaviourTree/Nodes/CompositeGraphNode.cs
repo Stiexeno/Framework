@@ -11,7 +11,7 @@ public abstract class CompositeGraphNode : BTGraphNode
 	public override Color Outline => Color.green;
 	
 	public virtual string Header { get; } = "Composite";
-	public virtual Texture2D Icon { get; } = null;
+	public virtual Texture2D Icon { get; } = BehaviourTreePreferences.Instance.sequencerIcon;
 
 	public override void OnGUI(Rect rect)
 	{

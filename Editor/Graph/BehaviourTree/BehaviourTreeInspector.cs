@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Framework;
 using Framework.Editor;
 using UnityEditor;
@@ -7,7 +8,6 @@ using SF = UnityEngine.SerializeField;
 public class BehaviourTreeInspector : IGUIView
 {
 	private BTNode node;
-	private BehaviourTree tree;
 
 	private float inspectorWidth = 200f;
 	private bool isResizing;
@@ -18,14 +18,21 @@ public class BehaviourTreeInspector : IGUIView
 	private Vector2 mouseDragStartPosition;
     
 	private Rect rect;
-	private GraphEditor editor;
+	private GraphWindow window;
+	
+	private List<string> savedGraphs;
 
+	private GUIContent loadIcon = new GUIContent("", BehaviourTreePreferences.Instance.loadIcon);
+	private GUIContent saveIcon = new GUIContent("", BehaviourTreePreferences.Instance.saveIcon);
+	private GUIContent formatIcon = new GUIContent("", BehaviourTreePreferences.Instance.formatIcon);
+	
 	protected Color BackgroundColor { get; } = new Color(0.2f, 0.2f, 0.2f);
 
-	public BehaviourTreeInspector(BehaviourTree tree, GraphEditor editor)
+	public BehaviourTreeInspector(GraphWindow graphWindow)
 	{
-		this.editor = editor;
-		this.tree = tree;
+		this.window = graphWindow;
+		
+		savedGraphs = BehaviourTreePreferences.Instance.GetSavedGraphs();
 	}
 
 	public void OnEnable()
@@ -60,7 +67,9 @@ public class BehaviourTreeInspector : IGUIView
 
 		//UpdateDragging(window, rect);
 		//DrawContent(inspectorRect);
-		DrawToolbar();
+		DrawTabs();
+		DrawNavigation();
+		DrawLayers();
 		DrawZoom();
 	}
 
@@ -69,7 +78,7 @@ public class BehaviourTreeInspector : IGUIView
 		var header = new Rect(rect.x, rect.y, rect.width - 1f, 30);
 
 		EditorGUI.DrawRect(header, new Color(0.24f, 0.24f, 0.24f));
-		EditorGUI.LabelField(header, $"{tree.name}");
+		//EditorGUI.LabelField(header, $"{tree.name}");
 
 		EditorHelper.DrawHorizontalLine(header.SetY(30));
 
@@ -83,38 +92,69 @@ public class BehaviourTreeInspector : IGUIView
 		}
 	}
 
-	private void DrawToolbar()
+	private void DrawTabs()
 	{
-		var toolbarRect = rect.SetHeight(20f);
+		var toolbarRect = rect.SetHeight(23f);
 		EditorGUI.DrawRect(toolbarRect, new Color(0.1f, 0.1f, 0.1f));
+		
+		GUILayout.BeginArea(toolbarRect.AddX(5));
+		GUILayout.BeginHorizontal();
 
-		DrawButtons();
+		for (int i = 0; i < savedGraphs.Count; i++)
+		{
+			var graphNames = savedGraphs[i].Split("/");
+			var graphName = $"{graphNames[^1].Replace(".asset", "")}";
+			var style = window.Tree != null && graphName == window.Tree.name ? GraphStyle.ToolbarTabActive : GraphStyle.ToolbarTab;
+			if (GUILayout.Button(graphName, style, GUILayout.Height(23f)))
+			{
+				var graph = AssetDatabase.LoadAssetAtPath<BehaviourTree>(savedGraphs[i]);
+				if (graph != null)
+				{
+					window.SetTree(graph);
+				}
+			}
+            
+			if (GUILayout.Button(new GUIContent("", BehaviourTreePreferences.Instance.closeIcon), GraphStyle.IconCenter, GUILayout.Width(15), GUILayout.Height(23)))
+			{
+				BehaviourTreePreferences.Instance.RemoveSavedGraph(savedGraphs[i]);
+			}
+			
+			GUILayout.Space(5);
+		}
+		
+		GUILayout.FlexibleSpace();
+		
+		GUILayout.EndHorizontal();
+		GUILayout.EndArea();
 	}
 
-	private void DrawButtons()
+	private void DrawNavigation()
 	{
-		var toolbarRect = rect.SetHeight(35f).AddY(20f);
+		const float buttonWidth = 30f;
+		
+		var toolbarRect = rect.SetHeight(35f).AddY(23f);
 		EditorHelper.DrawHorizontalLine(toolbarRect, color: new Color(0.25f, 0.25f, 0.25f));
 
 		toolbarRect = toolbarRect.AddY(1f);
 		EditorGUI.DrawRect(toolbarRect, new Color(0.1f, 0.1f, 0.1f));
 
-		GUILayout.BeginArea(toolbarRect.AddY(2.5f));
+		GUILayout.BeginArea(toolbarRect.AddY(2.5f).AddX(5));
 
 		GUILayout.BeginHorizontal();
-		if (GUILayout.Button("+", GUILayout.Width(30f), GUILayout.Height(30f)))
+		if (GUILayout.Button(loadIcon, GUILayout.Width(30f), GUILayout.Height(buttonWidth)))
 		{
 		}
-
-		if (GUILayout.Button("+", GUILayout.Width(30f), GUILayout.Height(30f)))
+        
+		if (GUILayout.Button(saveIcon, GUILayout.Width(30f), GUILayout.Height(buttonWidth)))
 		{
 		}
-
-		if (GUILayout.Button("+", GUILayout.Width(30f), GUILayout.Height(30f)))
+        
+		if (GUILayout.Button(formatIcon, GUILayout.Width(30f), GUILayout.Height(buttonWidth)))
 		{
+			window.NicifyTree();
 		}
 
-		if (GUILayout.Button("+", GUILayout.Width(30f), GUILayout.Height(30f)))
+		if (GUILayout.Button("+", GUILayout.Width(30f), GUILayout.Height(buttonWidth)))
 		{
 		}
 
@@ -122,12 +162,21 @@ public class BehaviourTreeInspector : IGUIView
 		GUILayout.EndArea();
 	}
 
+	private void DrawLayers()
+	{
+		var toolbarRect = rect.SetHeight(20f).AddY(58f);
+		EditorHelper.DrawHorizontalLine(toolbarRect, color: new Color(0.25f, 0.25f, 0.25f));
+		
+		toolbarRect = toolbarRect.AddY(1f);
+		EditorGUI.DrawRect(toolbarRect, new Color(0.1f, 0.1f, 0.1f));
+	}
+
 	private void DrawZoom()
 	{
 		var zoomRect = rect;
 		zoomRect = zoomRect.SetWidth(100f).SetHeight(20f).AddX(rect.width - 80f).SetY(rect.height - 30f);
 
-		var zoom = 100 - (editor.Viewer.zoom.x - GraphPreferences.Instance.minZoom) /
+		var zoom = 100 - (window.Viewer.zoom.x - GraphPreferences.Instance.minZoom) /
 			(GraphPreferences.Instance.maxZoom - GraphPreferences.Instance.minZoom) * 100;
 
 		EditorGUI.LabelField(zoomRect, $"Zoom: {Mathf.Round(zoom)}%");

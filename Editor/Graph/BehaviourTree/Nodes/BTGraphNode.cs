@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Framework;
 using Framework.Editor;
 using UnityEditor;
@@ -5,31 +6,37 @@ using UnityEngine;
 
 public class BTGraphNode : GraphNode
 {
-	protected BehaviourTreePreferences preferences;
-	
-	private const string PREFS_PATH = "Packages/com.framework.dependency-injection/Editor/Graph/BehaviourTree/Preferences";
-	private const string PREFS_NAME = "/BehaviourTreePreferences.asset";
-	
-	public BTGraphNode()
-	{
-		InitializePrefs();
-	}
-
-	private void InitializePrefs()
-	{
-		preferences = AssetDatabase.LoadAssetAtPath(PREFS_PATH + PREFS_NAME, typeof(BehaviourTreePreferences)) as BehaviourTreePreferences;
-
-		if (preferences == null)
-		{
-			preferences = ScriptableObject.CreateInstance<BehaviourTreePreferences>();
-			AssetDatabase.CreateAsset(preferences, PREFS_PATH + PREFS_NAME);
-			AssetDatabase.SaveAssets();
-		}
-	}
-
 	public override void OnGUI(Rect rect)
 	{
-		DrawDecorators(rect);
+		DynamicSize = Size;
+		var position = Size;
+		GraphStyle.DrawHorizontalLine(rect.AddY(position.y));
+		//EditorGUI.LabelField(rect.SetHeight(20f).AddY(position.y), "- Decorators -", GraphStyle.Header1Middle);
+
+		position.y += 20;
+		DynamicSize = position;
+		//DrawDecorators(rect);
+	}
+
+	protected void DrawDecorators(Rect rect, List<string> decorators)
+	{
+		//if (decorators.Count <= 0)
+		//	return;
+
+		var position = Size;
+		EditorGUI.LabelField(rect.SetHeight(20f).AddY(position.y), "- Decorators -", GraphStyle.Header1Middle);
+		position.y += 20;
+		
+		for (int i = 0; i < 5; i++)
+		{
+			EditorGUI.LabelField(rect.SetHeight(20f).AddY(position.y), "Check for type", GraphStyle.Header1Left);
+			position.y += 18;
+		}
+		
+		position.y += 10;
+		GraphStyle.DrawHorizontalLine(rect.AddY(position.y));
+		position.y += 20;
+		DynamicSize = position;
 	}
 
 	private void DrawDecorators(Rect rect)

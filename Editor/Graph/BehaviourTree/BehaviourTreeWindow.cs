@@ -28,9 +28,12 @@ public class BehaviourTreeWindow : GraphWindow
 		window.Show();
 	}
 	
-	protected override void Construct(HashSet<IGUIElement> graphElements)
+	protected override void OnEnable()
 	{
-		graphElements.Add(new BehaviourTreeInspector(behaviourTree, Editor));
+		base.OnEnable();
+		
+		graphElements.Add(new BehaviourTreeInspector(this));
+		PopulateSearch();
 	}
 
 	protected override void Initialize(GraphTree behaviour)
@@ -44,6 +47,40 @@ public class BehaviourTreeWindow : GraphWindow
 			
 			Editor.Canvas.SetRoot(node);
 		}
+        
+		BehaviourTreePreferences.Instance.SaveGraph(AssetDatabase.GetAssetPath(behaviourTree));
+		
+		
+	}
+
+	private void PopulateSearch()
+	{
+		var menu = Editor.Search.Menu;
+		menu.AddHeader("Behaviour Tree");
+		menu.AddItem("Sequencer", () => RequestCreateNode(typeof(BTSequence)));
+		menu.AddItem("Selector", () => RequestCreateNode(typeof(BTSelector)));
+		menu.AddItem("Wait", () => RequestCreateNode(typeof(BTWait)));
+		menu.AddHeader("Leaf");
+
+		foreach (var behaviour in GraphEditor.Behaviours)
+		{
+			var nodeType = behaviour.Key;
+
+			if (nodeType.IsSubclassOf(typeof(BTLeaf)))
+			{
+				if (behaviour.Key == typeof(BTWait) ||
+				behaviour.Key == typeof(BTLog))
+					continue;
+				
+				menu.AddItem($"{behaviour.Key}", () => RequestCreateNode(nodeType));
+			}
+		}
+	}
+	
+	private void RequestCreateNode(Type nodeType)
+	{
+		Editor.CreateNodeFromType(nodeType);
+		Editor.Search.Close();
 	}
 
 	[OnOpenAsset]

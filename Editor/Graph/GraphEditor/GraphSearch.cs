@@ -26,23 +26,6 @@ public class GraphSearch
 		this.editor = editor;
 		
 		editor.Input.MouseDown += OnMouseDown;
-		
-		Menu.AddHeader("Behaviour Tree");
-		Menu.AddItem("Sequencer", null);
-		Menu.AddItem("Selector", null);
-		Menu.AddItem("Wait", null);
-		Menu.AddItem("Debug Log", null);
-		Menu.AddHeader("Leaf");
-
-		foreach (var behaviour in GraphEditor.Behaviours)
-		{
-			var nodeType = behaviour.Key;
-
-			if (nodeType.IsSubclassOf(typeof(BTLeaf))) 
-			{
-				Menu.AddItem($"{behaviour.Key}", () => editor.CreateNodeFromType(nodeType));
-			}
-		}
 	}
 
 	private void OnMouseDown(object sender, GraphInputEvent e)
@@ -53,7 +36,7 @@ public class GraphSearch
 		}
 	}
 
-	public void Show(Vector2 mousePosition, Rect rect)
+	public void Open(Vector2 mousePosition, Rect rect)
 	{
 		var clampedRect = new Rect(mousePosition, new Vector2(400, 420));
 		clampedRect = clampedRect.ClampToRect(rect, 5);
@@ -61,6 +44,11 @@ public class GraphSearch
 		
 		IsActive = true;
 		searchQuerry = "";
+	}
+
+	public void Close()
+	{
+		IsActive = false;
 	}
 	
 	public Rect Draw()
@@ -76,8 +64,10 @@ public class GraphSearch
 
 		var fieldRect = new Rect(rect.x + 5, rect.y + 5, rect.width - 10, 25);
 		
+		GUI.SetNextControlName("SearchField");
 		searchQuerry = EditorGUI.TextField(fieldRect, searchQuerry);
-
+		EditorGUI.FocusTextInControl("SearchField");
+		
 		DrawContent(rect);
 		return rect;
 	}
@@ -117,15 +107,6 @@ public class GraphSearch
 			buttonRect.y += 15;
 		}
 	}
-	
-	//private GenericMenu CreateSingleSelectionContextMenu(GraphNode node)
-	//{
-	//	var menu = new GenericMenu();
-	//	menu.AddItem(new GUIContent("Format Subtree"), false, OnNodeAction, NodeContext.FormatTree);
-	//	menu.AddSeparator("");
-	//	menu.AddItem(new GUIContent("Delete"), false, OnNodeAction, NodeContext.Delete);
-	//	return menu;
-	//}
 }
 
 public class GraphSearchMenu

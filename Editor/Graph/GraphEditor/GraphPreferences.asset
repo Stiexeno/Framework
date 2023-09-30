@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acb14dcb4dbef0744a0cc35fda9ad6ef, type: 3}
   m_Name: GraphPreferences
   m_EditorClassIdentifier: 
-  gridTexture: {fileID: 2800000, guid: c6477b4e02a970d4db6367a3a5f0b158, type: 3}
+  gridTexture: {fileID: 2800000, guid: 7dc67ed3f47e61f48b94d3d81223ef6a, type: 3}
   defaultNodeBackground: {fileID: 2800000, guid: 07ce2f6d67b92fb4ea8ce63a4351786a, type: 3}
   defaultNodeGadient: {fileID: 2800000, guid: b98e230ffde80834993526fa1f5900af, type: 3}
   edgeArrow: {fileID: 2800000, guid: 0934ea91e963db84982ad4428ee511ed, type: 3}

@@ -37,6 +37,7 @@ namespace Framework
 			Input.MouseUp += MouseUp;
 			Input.CreateNodeRequest += CreateNodeFromType;
 			Input.NodeActionRequest += SingleNodeAction;
+			Input.NodeContextClick += NodeContextClick;
 		}
 
 		public void SetGraphTree(GraphTree tree)
@@ -55,14 +56,14 @@ namespace Framework
 
 		public void PollInput(Event e, CanvasTransform canvas, Rect inputRect)
 		{
-			if (Search.IsActive)
-				return;
-			
 			if (lastCreatedNode != null)
 			{
 				lastCreatedNode.Center = GraphInput.MousePosition(canvas);
 				lastCreatedNode = null;
 			}
+			
+			if (Search.IsActive)
+				return;
 			
 			if (e.type == EventType.MouseDrag)
 			{
@@ -169,6 +170,11 @@ namespace Framework
 		{
 			ApplyAction?.Invoke(e);
 			ClearActions();
+		}
+		
+		private void NodeContextClick(object sender, GraphNode e)
+		{
+			NodeSelection.SetSingleSelection(e);
 		}
 		
 		private void RemoveSelectedNodes()

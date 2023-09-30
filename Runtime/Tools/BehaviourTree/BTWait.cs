@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class Wait : BTLeaf
+public class BTWait : BTLeaf
 {
 	public float duration;
 

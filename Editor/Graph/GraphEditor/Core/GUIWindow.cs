@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using SF = UnityEngine.SerializeField;
@@ -24,9 +25,9 @@ namespace Framework
 
 		protected virtual void OnGUI()
 		{
-			foreach (var graphElement in graphElements)
+			for (int i = 0; i < graphElements.Count; i++)
 			{
-				if (graphElement is IGUIView guiView)
+				if (graphElements.ElementAt(i) is IGUIView guiView)
 				{
 					guiView.OnGUI(this, CanvasInputRect);
 				}

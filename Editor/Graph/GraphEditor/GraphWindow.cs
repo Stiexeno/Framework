@@ -66,8 +66,6 @@ namespace Framework
 			base.OnGUI();
 			Repaint();
 		}
-
-		protected abstract void Construct(HashSet<IGUIElement> graphElements);
         
 		protected static T Open<T>(GraphTree behaviour) where T : GraphWindow
 		{
@@ -109,18 +107,17 @@ namespace Framework
 			Editor.Input.SaveRequest += Save;
 			Saver.SaveMessage += (sender, message) => ShowNotification(new GUIContent(message), 0.5f);
 			Editor.Input.OnKeySpace += OpenSearch;
+			Editor.Input.CanvasContextClick += OpenSearch;
 			
 			EditorApplication.playModeStateChanged += PlayModeStateChanged;
 			AssemblyReloadEvents.beforeAssemblyReload += BeforeAssemblyReload;
 			Selection.selectionChanged += SelectionChanged;
-			
-			Construct(graphElements);
 		}
 
 		private void OpenSearch(object sender, EventArgs e)
 		{
 			//Viewer.CustomOverlayDraw += DrawSearch;
-			Search.Show(Event.current.mousePosition, position);
+			Search.Open(Event.current.mousePosition, position);
 		}
 
 		protected virtual void OnDisable()
@@ -150,11 +147,11 @@ namespace Framework
 		
 		public void SetTree(GraphTree graphTree)
 		{
+			QuickSave();
+			
 			Tree = graphTree;
 			BuildCanvas();
-			
 			Initialize(graphTree);
-			Construct(graphElements);
 		}
 		
 		private void BuildCanvas()
@@ -208,7 +205,7 @@ namespace Framework
 			QuickSave();
 		}
 		
-		private void NicifyTree()
+		public void NicifyTree()
 		{
 			if (Tree && Editor.Canvas != null)
 			{

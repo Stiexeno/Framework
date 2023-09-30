@@ -114,7 +114,7 @@ public static class GraphFormatter
 		/// <summary>
 		/// Horizontal separation between leaf nodes.
 		/// </summary>
-		public const float xLeafSeparation = 100f;
+		public const float xLeafSeparation = 30f;
 
 		/// <summary>
 		/// Vertical separation between nodes.

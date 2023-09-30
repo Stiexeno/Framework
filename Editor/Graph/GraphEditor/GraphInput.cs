@@ -25,6 +25,7 @@ namespace Framework
 
 		public event EventHandler SaveRequest;
 		public event EventHandler OnKeySpace;
+		public event EventHandler OnKeyDelete;
 		public event EventHandler CanvasLostFocus;
 		public event EventHandler<Type> CreateNodeRequest;
 
@@ -39,11 +40,11 @@ namespace Framework
 		
 		public GraphInput()
 		{
-			foreach (var behaviour in GraphEditor.Behaviours)
-			{
-				var nodeType = behaviour.Key;
-				nodeTypeSelectionMenu.AddItem(new GUIContent(nodeType.Name), false, OnCreateNodeRequest, nodeType);
-			}
+			//foreach (var behaviour in GraphEditor.Behaviours)
+			//{
+			//	var nodeType = behaviour.Key;
+			//	nodeTypeSelectionMenu.AddItem(new GUIContent(nodeType.Name), false, OnCreateNodeRequest, nodeType);
+			//}
 		}
 
 		public void HandleMouseEvents(
@@ -137,6 +138,12 @@ namespace Framework
 				e.Use();
 				OnKeySpace?.Invoke(this, EventArgs.Empty);
 			}
+			
+			if (e.type == EventType.KeyUp && e.keyCode == KeyCode.Delete)
+			{
+				e.Use();
+				OnNodeAction(NodeContext.Delete);
+			}
 		}
 
 		private void HandleContextInput(CanvasTransform t, IReadOnlyList<GraphNode> nodes)
@@ -164,7 +171,7 @@ namespace Framework
 			else
 			{
 				CanvasContextClick?.Invoke(this, EventArgs.Empty);
-				ShowCreateNodeMenu();
+				//ShowCreateNodeMenu();
 			}
 		}
 
@@ -187,7 +194,7 @@ namespace Framework
 
 		private void HandleMultiContext()
 		{
-			CreateMultiSelectionContextMenu().ShowAsContext();
+			//CreateMultiSelectionContextMenu().ShowAsContext();
 		}
 
 		private void OnNodeAction(object o)
@@ -229,7 +236,12 @@ namespace Framework
 		
 		public static bool IsExitAction(Event e)
 		{
-			return e.type == EventType.KeyUp && e.keyCode == KeyCode.Escape;
+			return e.type == EventType.KeyDown && e.keyCode == KeyCode.Escape;
+		}
+		
+		public static bool IsEnterAction(Event e)
+		{
+			return e.type == EventType.KeyDown && e.keyCode == KeyCode.Return;
 		}
 
 		private static bool IsUnlickAction(Event e)
@@ -251,7 +263,6 @@ namespace Framework
 		{
 			var cachedRect = r;
 			cachedRect.position = transform.CanvasToScreenSpace(r.position);
-
 			return cachedRect.Contains(Event.current.mousePosition);
 		}
 

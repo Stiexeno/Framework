@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class DebugLog : BTLeaf
+public class BTLog : BTLeaf
 {
 	public string message;
 

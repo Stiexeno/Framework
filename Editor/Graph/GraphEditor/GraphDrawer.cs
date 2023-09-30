@@ -298,7 +298,7 @@ namespace Framework
 			{
 				// Get the positions to draw a line between the node and the anchor line.
 				Vector2 center = child.InputRect.center;
-				center.y += GraphPreferences.Instance.portHeight;
+
 				var anchorLineConnection = new Vector2(center.x, anchorY);
 
 				// The node is not running, draw a default connection.
@@ -309,7 +309,7 @@ namespace Framework
 					connectionColor,
 					connectionWidth);
 				
-				DrawEdgeArrow(t, center);
+				DrawEdgeArrow(t, center, connectionColor);
 
 				if (IsHovered(t, 
 					    parentAnchorTip, 
@@ -326,22 +326,24 @@ namespace Framework
 						new Vector2(anchorLineConnection.x, anchorLineEnd.y),
 						anchorLineConnection,
 						center);
+					
+					DrawEdgeArrow(t, center, new Color(0.33f, 0.74f, 0.93f));
 				}
 			}
 		}
 
-		private static void DrawEdgeArrow(CanvasTransform t, Vector2 position) 
+		private static void DrawEdgeArrow(CanvasTransform t, Vector2 position, Color color) 
 		{
 			position = t.CanvasToScreenSpace(position);
 
-			position.y -= 37;
-			position.x -= 16;
+			position.y -= 6;
+			position.x -= 10;
 			GUI.DrawTexture(
-				position.ToRect(16, 16), GraphPreferences.Instance.edgeArrow,
+				position.ToRect(20, 20), GraphPreferences.Instance.edgeArrow,
 				ScaleMode.StretchToFill,
 				true,
 				0,
-				new Color(0.98f, 0.78f, 0.05f),
+				color,
 				0,
 				0f);
 		}
