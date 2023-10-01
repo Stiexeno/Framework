@@ -10,13 +10,12 @@ public class BTSelector : BTComposite
 			currentStatus = child.RunUpdate(btParams);
 
 			if (currentStatus == BTStatus.Success)
-			{
 				return BTStatus.Success;
-			}
 			
 			if (currentStatus == BTStatus.Failure)
 			{
 				SetCurrentChild(GetCurrentChild() + 1);
+				return BTStatus.Running;
 			}
 		}
 		else

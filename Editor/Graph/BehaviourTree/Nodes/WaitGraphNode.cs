@@ -59,5 +59,15 @@ public class WaitGraphNode : BTGraphNode
 				editMode = true;
 			}
 		}
+		
+		DynamicSize += new Vector2(0, 20);
+		
+		var loadingRect = rect.SetHeight(18f).AddY(22f);
+		
+		EditorGUI.DrawRect(loadingRect, new Color(0.18f, 0.18f, 0.19f));
+		
+		var progress = waitBehaviour.Timelasped / waitBehaviour.duration;
+		
+		EditorGUI.DrawRect(loadingRect.SetWidth(loadingRect.width * progress), new Color(0.4f, 0.4f, 0.4f));
 	}
 }

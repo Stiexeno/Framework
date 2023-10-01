@@ -15,6 +15,7 @@ MonoBehaviour:
   sequencerIcon: {fileID: 2800000, guid: 6fc775cdbaed64340918dcbf66a93f47, type: 3}
   selectorIcon: {fileID: 2800000, guid: 7a3d446be9b00c347a521b07624a696d, type: 3}
   waitIcon: {fileID: 2800000, guid: 0b0baa0e48a3bcf49b639656ecf31fca, type: 3}
+  parallelcon: {fileID: 2800000, guid: 0c36c6e088bf44d4293d2da75cc0d05b, type: 3}
   closeIcon: {fileID: 2800000, guid: d6e05094d1daf2740a1c5c6d9f5fb733, type: 3}
   dotIcon: {fileID: 2800000, guid: e44ee98354ee8ec4b851bd7ca3dc3818, type: 3}
   saveIcon: {fileID: 2800000, guid: 6dfdac5b604268343ab637416cc765a7, type: 3}

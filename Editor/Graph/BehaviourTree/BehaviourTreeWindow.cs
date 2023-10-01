@@ -58,6 +58,7 @@ public class BehaviourTreeWindow : GraphWindow
 		menu.AddHeader("Behaviour Tree");
 		menu.AddItem("Sequencer", () => RequestCreateNode(typeof(BTSequence)));
 		menu.AddItem("Selector", () => RequestCreateNode(typeof(BTSelector)));
+		menu.AddItem("Parallel", () => RequestCreateNode(typeof(BTParallel)));
 		menu.AddItem("Wait", () => RequestCreateNode(typeof(BTWait)));
 		
 		menu.AddHeader("Decorators");

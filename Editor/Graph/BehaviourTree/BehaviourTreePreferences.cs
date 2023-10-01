@@ -8,6 +8,7 @@ public class BehaviourTreePreferences : ScriptableObject
 	public Texture2D sequencerIcon;
 	public Texture2D selectorIcon;
 	public Texture2D waitIcon;
+	public Texture2D parallelcon;
 	
 	public Texture2D closeIcon;
 	public Texture2D dotIcon;

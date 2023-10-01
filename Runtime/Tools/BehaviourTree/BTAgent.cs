@@ -31,20 +31,26 @@ public class BTAgent : MonoBehaviour
 	private void UpdateSubtree(BTParams btParams, BTNode node)
 	{
 		var result = node.RunUpdate(btParams);
-
-		if (result != BTStatus.Running)
+		node.EditorStatus = (BTNode.BTEditorStatus) result;
+		
+		if (result == BTStatus.Success || result == BTStatus.Failure)
 		{
-			node.OnExit(btParams);
-
-			node = node;
-
-			if (node.NodeType == NodeType.Composite)
-			{
-				((BTComposite)node).ChildCompletedRunning(btParams, result);
-				result = node.RunUpdate(btParams);
-			}
-            
 			node.OnReset(btParams);
 		}
+
+		//if (result != BTStatus.Running)
+		//{
+		//	node.OnExit(btParams);
+//
+		//	node = node;
+//
+		//	if (node.NodeType == NodeType.Composite)
+		//	{
+		//		((BTComposite)node).ChildCompletedRunning(btParams, result);
+		//		result = node.RunUpdate(btParams);
+		//	}
+        //    
+		//	node.OnReset(btParams);
+		//}
 	}
 }

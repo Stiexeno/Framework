@@ -62,7 +62,6 @@ namespace Framework
 			DrawNodeGradient(screenRect.AddHeight(6f).AddWidth(6f).AddX(-3f), new Color(0f, 0f, 0f, 0.28f));
 			
 			DrawNodeStatus(screenRect, node);
-			
 			if (node.Selected)
 			{
 				DrawSelectedOutline(screenRect.AddHeight(4f).AddY(-2f), new Color(0.27f, 0.85f, 1f), t);
@@ -155,22 +154,25 @@ namespace Framework
 		public static void DrawNodeStatus(Rect rect, GraphNode node)
 		{
 			var btNode = (BTNode)node.Behaviour;
-			var status = btNode.Status;
-			
-			rect = rect.Expand(3f);
-			if (status == BTStatus.Success)
+			var status = btNode.EditorStatus;
+
+			if (status == BTNode.BTEditorStatus.Inactive)
+				return;
+
+			rect = rect.Expand(2f, 4f);
+			if (status == BTNode.BTEditorStatus.Success)
 			{
-				DrawNodeBackground(rect, Color.green);
+				DrawNodeBackground(rect, new Color(0.35f, 0.8f, 0.35f));
 			}
 			
-			if (status == BTStatus.Running)
+			if (status == BTNode.BTEditorStatus.Running)
 			{
-				DrawNodeBackground(rect, Color.blue);
+				DrawNodeBackground(rect, new Color(0.28f, 0.26f, 1f));
 			}
 			
-			if (status == BTStatus.Failure)
+			if (status == BTNode.BTEditorStatus.Failure)
 			{
-				DrawNodeBackground(rect, Color.red);
+				DrawNodeBackground(rect, new Color(1f, 0.22f, 0.25f));
 			}
 		}
 		
@@ -257,6 +259,11 @@ namespace Framework
 			var prefs = GraphPreferences.Instance;
 
 			Color connectionColor = new Color(0.98f, 0.78f, 0.05f);
+
+			if (Application.isPlaying)
+			{
+				connectionColor = new Color(0.3f, 0.3f, 0.31f);
+			}
 			float connectionWidth = 3;
 
 			// Start the Y anchor coord at the tip of the Output port.
@@ -336,7 +343,7 @@ namespace Framework
 				
 				DrawEdgeArrow(t, center, connectionColor);
 
-				if (child.Behaviour is BTNode btNode && btNode.Status != BTStatus.Inactive)
+				if (child.Behaviour is BTNode btNode && btNode.EditorStatus != BTNode.BTEditorStatus.Inactive)
 				{
 					DrawStatusConnections(btNode, t,
 						parentAnchorTip, 
@@ -385,21 +392,21 @@ namespace Framework
 
 		private static void DrawStatusConnections(BTNode node, CanvasTransform t, params Vector2[] points)
 		{
-			var status = node.Status;
+			var status = node.EditorStatus;
             
-			if (status == BTStatus.Success)
+			if (status == BTNode.BTEditorStatus.Success)
 			{
-				DrawHoveredConnections(t, Color.green, points);
+				DrawHoveredConnections(t, new Color(0.35f, 0.8f, 0.35f), points);
 			}
 			
-			if (status == BTStatus.Running)
+			if (status == BTNode.BTEditorStatus.Running)
 			{
-				DrawHoveredConnections(t, Color.blue, points);
+				DrawHoveredConnections(t, new Color(0.28f, 0.26f, 1f), points);
 			}
 			
-			if (status == BTStatus.Failure)
+			if (status == BTNode.BTEditorStatus.Failure)
 			{
-				DrawHoveredConnections(t, Color.red, points);
+				DrawHoveredConnections(t, new Color(1f, 0.22f, 0.25f), points);
 			}
 		}
 

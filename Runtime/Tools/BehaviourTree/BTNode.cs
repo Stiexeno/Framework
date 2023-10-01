@@ -46,6 +46,10 @@ public abstract class BTNode : GraphBehaviour
 	/// <param name="btParams"></param>
 	public virtual void OnExit(BTParams btParams)
 	{
+		if (status != BTStatus.Failure)
+		{
+			EditorStatus = BTEditorStatus.Inactive;
+		}
 	}
 	
 	/// <summary>
@@ -69,9 +73,9 @@ public abstract class BTNode : GraphBehaviour
 
 	public BTStatus RunUpdate(BTParams btParams)
 	{
-		if (status == BTStatus.Success || status == BTStatus.Failure)
-			return status;
-		
+		//if (status == BTStatus.Success || status == BTStatus.Failure)
+		//	return status;
+        
 		if (status == BTStatus.Inactive)
 		{
 			OnEnter(btParams);
@@ -89,7 +93,17 @@ public abstract class BTNode : GraphBehaviour
 		}
 		
 		status = newStatus;
+		
+		EditorStatus = (BTEditorStatus) newStatus;
 
 		return newStatus;
 	}
+	
+	#if UNITY_EDITOR
+	
+	public enum BTEditorStatus { Inactive, Success, Failure, Running}
+	
+	public BTEditorStatus EditorStatus  = BTEditorStatus.Inactive;
+	
+	#endif
 }

@@ -1,14 +1,21 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BTWait : BTLeaf
 {
 	public float duration;
 
-	public float timelpased;
+	private float timelpased;
+	
+	public float Timelasped => timelpased;
 	
 	protected override void OnEnter(BTParams btParams)
 	{
+		timelpased = 0;
+	}
+	
+	public override void OnExit(BTParams btParams)
+	{
+		base.OnExit(btParams);
 		timelpased = 0;
 	}
 
@@ -18,11 +25,9 @@ public class BTWait : BTLeaf
 		
 		if (timelpased >= duration)
 		{
-			Debug.LogError("Success");
 			return BTStatus.Success;
 		}
-
-		Debug.LogError("Running");
+        
 		return BTStatus.Running;
 	}
 }

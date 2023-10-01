@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class BTSequence : BTComposite
+﻿public class BTSequence : BTComposite
 {
 	protected override BTStatus OnUpdate(BTParams btParams)
 	{
@@ -10,12 +8,9 @@ public class BTSequence : BTComposite
 		{
 			var child = children[GetCurrentChild()];
 			currentStatus = child.RunUpdate(btParams);
-			Debug.LogError(child.name + " " + currentStatus);
 
 			if (currentStatus == BTStatus.Failure)
-			{
 				return BTStatus.Failure;
-			}
 			
 			if (currentStatus == BTStatus.Success)
 			{
@@ -23,8 +18,6 @@ public class BTSequence : BTComposite
 				return BTStatus.Running;
 			}
 		}
-
-		Debug.LogError( currentStatus);
 		
 		return currentStatus;
 	}

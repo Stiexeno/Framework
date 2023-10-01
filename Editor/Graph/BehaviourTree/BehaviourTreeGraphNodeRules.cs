@@ -10,6 +10,9 @@ public class BehaviourTreeGraphNodeRules : GraphNodeRules<BTNode>
 		if (behaviour == typeof(BTSelector))
 			return new NodeProperties(typeof(SelectorGraphNode), true);
 		
+		if (behaviour == typeof(BTParallel))
+			return new NodeProperties(typeof(ParallelGraphNode), true);
+		
 		if (behaviour == typeof(BTSequence))
 			return new NodeProperties(typeof(SequenceGraphNode), true);
 		
