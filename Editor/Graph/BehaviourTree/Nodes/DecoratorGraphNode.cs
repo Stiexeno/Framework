@@ -11,7 +11,7 @@ public class DecoratorGraphNode : BTGraphNode
 	public override void OnGUI(Rect rect)
 	{
 		DynamicSize = Size;
-		EditorGUI.LabelField(rect.SetHeight(20f), $"{Behaviour.GetType()}", GraphStyle.Header0Middle);
+		EditorGUI.LabelField(rect.SetHeight(20f), $"{Behaviour.GetType().Name}", GraphStyle.Header0Middle);
 		GraphStyle.DrawHorizontalLine(rect.AddY(30));
 
 		GUI.color = new Color(0.97f, 0.02f, 0f);

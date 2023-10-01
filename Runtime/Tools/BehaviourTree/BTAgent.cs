@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BTAgent : MonoBehaviour
 {
@@ -14,6 +13,13 @@ public class BTAgent : MonoBehaviour
 	private void Awake()
 	{
 		treeInstance = BehaviourTree.Clone(behaviourTree);
+		
+		Initialize();
+	}
+
+	protected virtual void Initialize()
+	{
+		btParams.agent = this;
 		
 		foreach (var graphBehaviour in treeInstance.nodes)
 		{

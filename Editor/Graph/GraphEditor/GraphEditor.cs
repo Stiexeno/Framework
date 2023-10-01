@@ -17,6 +17,7 @@ namespace Framework
 		public GraphSelection NodeSelection { get; } = new GraphSelection();
 		public GraphInput Input { get; } = new GraphInput();
 		public GraphCanvas Canvas { get; private set; }
+		public GraphWindow Window { get;  set; }
 		
 		public CanvasTransform CanvasTransform { get; set; }
 		
@@ -202,6 +203,9 @@ namespace Framework
 		
 		public void ClearActions()
 		{
+			if (Search.IsActive)
+				return;
+			
 			ApplyAction = null;
 			MotionAction = null;
 			Viewer.CustomDraw = null;
@@ -247,12 +251,16 @@ namespace Framework
 			{
 				ApplyAction = (applyEvent) =>
 				{
-					if (applyEvent.node != null && parent != applyEvent.node)
+					if (applyEvent.node != null)
 					{
-						GraphConnection.FinishConnection(Canvas, parent, applyEvent.node);
+						if (parent != applyEvent.node)
+						{
+							GraphConnection.FinishConnection(Canvas, parent, applyEvent.node);
+						}
 					}
-					else if (isOutputFocused)
+					else
 					{
+						Search.Open(Event.current.mousePosition, Window.position);
 					}
 				};
 

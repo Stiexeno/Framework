@@ -101,6 +101,7 @@ namespace Framework
 			
 			Editor.Viewer = Viewer;
 			Editor.Search = Search;
+			Editor.Window = this;
 			Editor.CanvasTransform = CanvasTransform;
 
 			Editor.OnCanvasChanged += Repaint;

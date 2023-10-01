@@ -72,7 +72,7 @@ public class BehaviourTreeWindow : GraphWindow
 			    
 			if (nodeType.IsSubclassOf(typeof(BTDecorator)))
 			{
-				menu.AddItem($"{behaviour.Key}", () => RequestCreateNode(nodeType));
+				menu.AddItem($"{behaviour.Key.Name}", () => RequestCreateNode(nodeType));
 			}
 		}
 		
@@ -88,7 +88,7 @@ public class BehaviourTreeWindow : GraphWindow
 				behaviour.Key == typeof(BTLog))
 					continue;
 				
-				menu.AddItem($"{behaviour.Key}", () => RequestCreateNode(nodeType));
+				menu.AddItem($"{behaviour.Key.Name}", () => RequestCreateNode(nodeType));
 			}
 		}
 	}

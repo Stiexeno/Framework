@@ -6,6 +6,22 @@ public abstract class BTDecorator : BTNode
 	
 	public override NodeType NodeType => NodeType.Decorator;
 	public override int MaxChildCount => 1;
+
+	protected override BTStatus OnUpdate(BTParams btParams)
+	{
+		if (DryRun(btParams))
+		{
+			if (child == null)
+				return BTStatus.Success;
+			
+			var childStatus = child.RunUpdate(btParams);
+			return childStatus;
+		}
+
+		return BTStatus.Failure;
+	}
+
+	public abstract bool DryRun(BTParams btParams);
 	
 	public override void OnReset(BTParams btParams)
 	{

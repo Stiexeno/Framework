@@ -12,7 +12,7 @@ public class LeafGraphNode : BTGraphNode
 	public override void OnGUI(Rect rect)
 	{
 		DynamicSize = Size;
-		EditorGUI.LabelField(rect.SetHeight(20f), $"{Behaviour.GetType()}", GraphStyle.Header0Middle);
+		EditorGUI.LabelField(rect.SetHeight(20f), $"{Behaviour.GetType().Name}", GraphStyle.Header0Middle);
 		base.OnGUI(rect);
 		
 		//DrawDecorators(rect, new List<string>());
