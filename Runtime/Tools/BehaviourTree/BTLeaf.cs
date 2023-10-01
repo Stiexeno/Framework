@@ -8,9 +8,9 @@ public abstract class BTLeaf : BTNode
 	public override int ChildCount() => 0;
 	public override GraphBehaviour GetChildAt(int index) => null;
 	
-	public override void OnReset(BTParams btParams)
+	public override void OnReset()
 	{
-		base.OnReset(btParams);
-		OnExit(btParams);
+		base.OnReset();
+		OnExit();
 	}
 }

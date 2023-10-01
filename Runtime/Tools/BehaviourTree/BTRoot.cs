@@ -2,7 +2,7 @@
 {
 	public override NodeType NodeType => NodeType.Root;
     
-	public override bool DryRun(BTParams btParams)
+	protected override bool DryRun()
 	{
 		return true;
 	}

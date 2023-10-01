@@ -1,13 +1,13 @@
 public class BTSelector : BTComposite
 {
-	protected override BTStatus OnUpdate(BTParams btParams)
+	protected override BTStatus OnUpdate()
 	{
 		BTStatus currentStatus;
         
 		if (GetCurrentChild() < children.Length)
 		{
 			var child = children[GetCurrentChild()];
-			currentStatus = child.RunUpdate(btParams);
+			currentStatus = child.RunUpdate();
 
 			if (currentStatus == BTStatus.Success)
 				return BTStatus.Success;

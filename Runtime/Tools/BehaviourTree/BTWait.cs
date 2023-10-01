@@ -8,18 +8,18 @@ public class BTWait : BTLeaf
 	
 	public float Timelasped => timelpased;
 	
-	protected override void OnEnter(BTParams btParams)
+	protected override void OnEnter()
 	{
 		timelpased = 0;
 	}
 	
-	public override void OnExit(BTParams btParams)
+	public override void OnExit()
 	{
-		base.OnExit(btParams);
+		base.OnExit();
 		timelpased = 0;
 	}
 
-	protected override BTStatus OnUpdate(BTParams btParams)
+	protected override BTStatus OnUpdate()
 	{
 		timelpased += Time.deltaTime;
 		

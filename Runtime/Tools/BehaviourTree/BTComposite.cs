@@ -11,20 +11,20 @@ public abstract class BTComposite : BTNode
 	public override NodeType NodeType => NodeType.Composite;
 	public override int MaxChildCount => int.MaxValue;
 
-	protected override void OnEnter(BTParams btParams)
+	protected override void OnEnter()
 	{
 		SetCurrentChild(0);
 	}
 	
-	public override void OnReset(BTParams btParams)
+	public override void OnReset()
 	{
-		base.OnReset(btParams);
+		base.OnReset();
 		
-		OnExit(btParams);
+		OnExit();
 
 		for (int i = 0; i < children.Length; i++)
 		{
-			children[i].OnReset(btParams);
+			children[i].OnReset();
 		}
 	}
 

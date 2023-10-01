@@ -31,17 +31,17 @@ public class BTAgent : MonoBehaviour
 	private void Update()
 	{
 		var rootNode = treeInstance.root;
-		UpdateSubtree(btParams, rootNode);
+		UpdateSubtree(rootNode);
 	}
 
-	private void UpdateSubtree(BTParams btParams, BTNode node)
+	private void UpdateSubtree(BTNode node)
 	{
-		var result = node.RunUpdate(btParams);
+		var result = node.RunUpdate();
 		node.EditorStatus = (BTNode.BTEditorStatus) result;
 		
 		if (result == BTStatus.Success || result == BTStatus.Failure)
 		{
-			node.OnReset(btParams);
+			node.OnReset();
 		}
 
 		//if (result != BTStatus.Running)

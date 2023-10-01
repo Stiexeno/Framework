@@ -1,13 +1,13 @@
 ﻿public class BTSequence : BTComposite
 {
-	protected override BTStatus OnUpdate(BTParams btParams)
+	protected override BTStatus OnUpdate()
 	{
 		var currentStatus = BTStatus.Success;
 		
 		if (GetCurrentChild() < children.Length)
 		{
 			var child = children[GetCurrentChild()];
-			currentStatus = child.RunUpdate(btParams);
+			currentStatus = child.RunUpdate();
 
 			if (currentStatus == BTStatus.Failure)
 				return BTStatus.Failure;

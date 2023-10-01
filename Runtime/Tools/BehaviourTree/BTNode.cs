@@ -18,9 +18,8 @@ public abstract class BTNode : GraphBehaviour
 	/// <summary>
 	/// Called every tick while this Node is part of the current sub-tree.
 	/// </summary>
-	/// <param name="btParams"></param>
 	/// <returns></returns>
-	protected abstract BTStatus OnUpdate(BTParams btParams);
+	protected abstract BTStatus OnUpdate();
 
 	/// <summary>
 	/// Called once, for every node, when the tree is first created.
@@ -35,16 +34,14 @@ public abstract class BTNode : GraphBehaviour
 	/// <summary>
 	/// Called whenever the execution of this Node is interrupted
 	/// </summary>
-	/// <param name="btParams"></param>
-	protected virtual void OnEnter(BTParams btParams)
+	protected virtual void OnEnter()
 	{
 	}
 	
 	/// <summary>
 	/// Called when traversing up the tree after node is already finished with its job.
 	/// </summary>
-	/// <param name="btParams"></param>
-	public virtual void OnExit(BTParams btParams)
+	public virtual void OnExit()
 	{
 		if (status != BTStatus.Failure)
 		{
@@ -55,8 +52,7 @@ public abstract class BTNode : GraphBehaviour
 	/// <summary>
 	/// Called when getting out of a sub-branch and this node is being discarded
 	/// </summary>
-	/// <param name="btParams"></param>
-	public virtual void OnReset(BTParams btParams)
+	public virtual void OnReset()
 	{
 		status = BTStatus.Inactive;
 	}
@@ -64,28 +60,27 @@ public abstract class BTNode : GraphBehaviour
 	/// <summary>
 	/// Used by Decorators to evaluate if a condition succeeds or not.
 	/// </summary>
-	/// <param name="btParams"></param>
 	/// <returns></returns>
-	public virtual bool DryRun(BTParams btParams)
+	public virtual bool DryRun()
 	{
 		return false;
 	}
 
-	public BTStatus RunUpdate(BTParams btParams)
+	public BTStatus RunUpdate()
 	{
 		//if (status == BTStatus.Success || status == BTStatus.Failure)
 		//	return status;
         
 		if (status == BTStatus.Inactive)
 		{
-			OnEnter(btParams);
+			OnEnter();
 		}
 
 		BTStatus newStatus;
 
 		try
 		{
-			newStatus = OnUpdate(btParams);
+			newStatus = OnUpdate();
 		}
 		catch (Exception e)
 		{
