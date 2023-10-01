@@ -15,6 +15,7 @@ public class BehaviourTreePreferences : ScriptableObject
 	public Texture2D saveIcon;
 	public Texture2D loadIcon;
 	public Texture2D formatIcon;
+	public Texture2D createIcon;
 	
 	public List<string> savedGraphs = new List<string>();
 	

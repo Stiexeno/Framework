@@ -6,7 +6,7 @@ public abstract class BTComposite : BTNode
 {
 	public BTNode[] children = Array.Empty<BTNode>();
 	
-	[NonSerialized] private int currentChildIndex = 0;
+	public int currentChildIndex = 0;
 	
 	public override NodeType NodeType => NodeType.Composite;
 	public override int MaxChildCount => int.MaxValue;

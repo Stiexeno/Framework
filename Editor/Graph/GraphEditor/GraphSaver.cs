@@ -236,5 +236,12 @@ namespace Framework
 		{
 			SaveMessage?.Invoke(this, "Tree saved");
 		}
+
+		public T CreateNewGraphTree<T>() where T: GraphTree
+		{
+			var bt = ScriptableObject.CreateInstance<T>();
+			bt.blackboard = CreateBlackboard();
+			return bt;
+		}
 	}
 }

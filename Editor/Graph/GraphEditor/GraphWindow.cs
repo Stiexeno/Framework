@@ -112,6 +112,8 @@ namespace Framework
 			EditorApplication.playModeStateChanged += PlayModeStateChanged;
 			AssemblyReloadEvents.beforeAssemblyReload += BeforeAssemblyReload;
 			Selection.selectionChanged += SelectionChanged;
+			
+			SwitchToRuntimeMode();
 		}
 
 		private void OpenSearch(object sender, EventArgs e)
@@ -144,6 +146,13 @@ namespace Framework
 				SetTree(tree);
 			}
 		}
+
+		public void CreateNew<T>() where T : GraphTree
+		{
+			QuickSave();
+			SetTree(Saver.CreateNewGraphTree<T>());
+			ShowNotification(new GUIContent("New Tree Created"));
+		}
 		
 		public void SetTree(GraphTree graphTree)
 		{
@@ -171,7 +180,7 @@ namespace Framework
 			}
 		}
 		
-		private void QuickSave()
+		public void QuickSave()
 		{
 			if (Saver.CanSaveTree(Tree))
 			{
@@ -181,6 +190,7 @@ namespace Framework
 		
 		private void SelectionChanged()
 		{
+			SwitchToRuntimeMode();
 		}
 
 		private void BeforeAssemblyReload()
@@ -191,11 +201,16 @@ namespace Framework
 			}
 		}
 
-		private void PlayModeStateChanged(PlayModeStateChange state)
+		protected void PlayModeStateChanged(PlayModeStateChange state)
 		{
 			if (state == PlayModeStateChange.ExitingEditMode)
 			{
 				QuickSave();
+			}
+
+			if (state == PlayModeStateChange.EnteredPlayMode)
+			{
+				SwitchToRuntimeMode();
 			}
 		}
 		
@@ -217,6 +232,41 @@ namespace Framework
 				{
 					GraphFormatter.PositionNodesNicely(Editor.Canvas.Root, Vector2.zero);
 				}
+			}
+		}
+		
+		public void SwitchToRuntimeMode()
+		{
+			if (EditorApplication.isPlaying == false || Selection.activeGameObject == null)
+				return;
+		
+			var btAgent = Selection.activeGameObject.GetComponent<BTAgent>();
+			var btTree = btAgent ? btAgent.Tree : null;
+
+			if (btTree && Tree != btTree)
+			{
+				var windows = Resources.FindObjectsOfTypeAll<BehaviourTreeWindow>();
+
+				bool alreadyInView = windows.Any(w => w.Tree == btTree);
+
+				if (alreadyInView)
+				{
+					return;
+				}
+
+				BehaviourTreeWindow window = windows.FirstOrDefault(w => !w.Tree);
+
+				// Have the window without a set tree to view the tree selected.
+				if (window)
+				{
+					window.SetTree(btTree);
+				}
+				else
+				{
+					// View tree in this window.
+					SetTree(btTree);
+				}
+
 			}
 		}
 	}

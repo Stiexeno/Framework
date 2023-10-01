@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Framework;
 using Framework.Editor;
 using UnityEditor;
@@ -42,15 +43,13 @@ public class BehaviourTreeWindow : GraphWindow
 
 		if (behaviourTree.root == null)
 		{
-			var node = Editor.Canvas.CreateNode(typeof(Root));
+			var node = Editor.Canvas.CreateNode(typeof(BTRoot));
 			behaviourTree.root = Editor.Canvas.Nodes[0].Behaviour as BTNode;
 			
 			Editor.Canvas.SetRoot(node);
 		}
         
 		BehaviourTreePreferences.Instance.SaveGraph(AssetDatabase.GetAssetPath(behaviourTree));
-		
-		
 	}
 
 	private void PopulateSearch()
@@ -60,6 +59,22 @@ public class BehaviourTreeWindow : GraphWindow
 		menu.AddItem("Sequencer", () => RequestCreateNode(typeof(BTSequence)));
 		menu.AddItem("Selector", () => RequestCreateNode(typeof(BTSelector)));
 		menu.AddItem("Wait", () => RequestCreateNode(typeof(BTWait)));
+		
+		menu.AddHeader("Decorators");
+		
+		foreach (var behaviour in GraphEditor.Behaviours)
+		{
+			var nodeType = behaviour.Key;
+
+			if (behaviour.Key == typeof(BTRoot))
+			    continue;
+			    
+			if (nodeType.IsSubclassOf(typeof(BTDecorator)))
+			{
+				menu.AddItem($"{behaviour.Key}", () => RequestCreateNode(nodeType));
+			}
+		}
+		
 		menu.AddHeader("Leaf");
 
 		foreach (var behaviour in GraphEditor.Behaviours)
@@ -96,6 +111,7 @@ public class BehaviourTreeWindow : GraphWindow
 		
 		if (behaviourWindow != null)
 		{
+			behaviourWindow.SwitchToRuntimeMode();
 			return true;
 		}
 //

@@ -25,6 +25,7 @@ public class BehaviourTreeInspector : IGUIView
 	private GUIContent loadIcon = new GUIContent("", BehaviourTreePreferences.Instance.loadIcon);
 	private GUIContent saveIcon = new GUIContent("", BehaviourTreePreferences.Instance.saveIcon);
 	private GUIContent formatIcon = new GUIContent("", BehaviourTreePreferences.Instance.formatIcon);
+	private GUIContent createIcon = new GUIContent("", BehaviourTreePreferences.Instance.createIcon);
 	
 	protected Color BackgroundColor { get; } = new Color(0.2f, 0.2f, 0.2f);
 
@@ -143,10 +144,12 @@ public class BehaviourTreeInspector : IGUIView
 		GUILayout.BeginHorizontal();
 		if (GUILayout.Button(loadIcon, GUILayout.Width(30f), GUILayout.Height(buttonWidth)))
 		{
+			window.Load();
 		}
         
 		if (GUILayout.Button(saveIcon, GUILayout.Width(30f), GUILayout.Height(buttonWidth)))
 		{
+			window.QuickSave();
 		}
         
 		if (GUILayout.Button(formatIcon, GUILayout.Width(30f), GUILayout.Height(buttonWidth)))
@@ -154,8 +157,9 @@ public class BehaviourTreeInspector : IGUIView
 			window.NicifyTree();
 		}
 
-		if (GUILayout.Button("+", GUILayout.Width(30f), GUILayout.Height(buttonWidth)))
+		if (GUILayout.Button(createIcon, GUILayout.Width(30f), GUILayout.Height(buttonWidth)))
 		{
+			window.CreateNew<BehaviourTree>();
 		}
 
 		GUILayout.EndHorizontal();

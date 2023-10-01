@@ -225,8 +225,8 @@ namespace Framework
 				// Construct and display the rect.
 				Vector2 endScreenSpace = Event.current.mousePosition;
 				Rect selectionRect = GraphAreaSelect.SelectionArea(startScreenSpace, endScreenSpace);
-				Color selectionColor = new Color(0f, 0.42f, 0.89f, 0.1f);
-				Handles.DrawSolidRectangleWithOutline(selectionRect, selectionColor, new Color(0f, 0f, 1f, 0.61f));
+				Color selectionColor = new Color(0f, 0.69f, 0.89f, 0.1f);
+				Handles.DrawSolidRectangleWithOutline(selectionRect, selectionColor, new Color(0f, 0.95f, 1f, 0.6f));
 				OnCanvasChanged();
 			};
 		}

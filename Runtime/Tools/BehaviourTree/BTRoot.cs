@@ -1,4 +1,4 @@
-﻿public class Root : BTDecorator
+﻿public class BTRoot : BTDecorator
 {
 	public override NodeType NodeType => NodeType.Root;
 	

@@ -8,9 +8,12 @@ public enum NodeType { Composite, Decorator, Leaf, Root }
 
 public abstract class BTNode : GraphBehaviour
 {
-	[NonSerialized] protected BTStatus status = BTStatus.Inactive;
-	
+	public BTStatus status = BTStatus.Inactive;
+	private BTAgent agent;
+
 	public abstract NodeType NodeType { get; }
+	public BTStatus Status => status;
+	public BTAgent Agent => agent;
 
 	/// <summary>
 	/// Called every tick while this Node is part of the current sub-tree.
@@ -26,7 +29,7 @@ public abstract class BTNode : GraphBehaviour
 	/// <param name="blackboard"></param>
 	public virtual void Init(BTAgent agent, Blackboard blackboard)
 	{
-		
+		this.agent = agent;
 	}
 
 	/// <summary>
@@ -82,7 +85,7 @@ public abstract class BTNode : GraphBehaviour
 		}
 		catch (Exception e)
 		{
-			throw new Exception($"{"<b>[BT]</b>".SetColor(new Color(0.36f, 0.64f, 0.87f))} {e.Message} \n{e.StackTrace.SetColor(new Color(0.98f, 0.69f, 0.16f))}");
+			throw new Exception($"{e.Message} \n{e.StackTrace.SetColor(new Color(0.98f, 0.69f, 0.16f))}");
 		}
 		
 		status = newStatus;

@@ -8,7 +8,7 @@ public class WaitGraphNode : BTGraphNode
 {
 	private bool editMode;
 	
-	public override Vector2 Size => new Vector2(175, 110);
+	public override Vector2 Size => new Vector2(175, 105);
 	public override Color Outline => new Color(0f, 0f, 0f);
 
 	public override void OnGUI(Rect rect)
@@ -54,7 +54,7 @@ public class WaitGraphNode : BTGraphNode
 			GUI.color = new Color(0.97f, 0.59f, 0f);
 			EditorGUI.LabelField(rect.SetWidth(20).SetHeight(20).AddX(-2), new GUIContent("", BehaviourTreePreferences.Instance.dotIcon));
 			GUI.color = Color.white;
-			if (GUI.Button(rect.AddX(15f), $"{waitBehaviour.duration} Duration", EditorStyles.label))
+			if (GUI.Button(rect.AddX(15f), $"{waitBehaviour.duration} Seconds", EditorStyles.label))
 			{
 				editMode = true;
 			}

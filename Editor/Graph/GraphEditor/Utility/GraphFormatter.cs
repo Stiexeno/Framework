@@ -119,6 +119,6 @@ public static class GraphFormatter
 		/// <summary>
 		/// Vertical separation between nodes.
 		/// </summary>
-		public const float yLevelSeparation = 150f;
+		public const float yLevelSeparation = 120f;
 	}
 }

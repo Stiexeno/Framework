@@ -2,22 +2,26 @@ public class BTSelector : BTComposite
 {
 	protected override BTStatus OnUpdate(BTParams btParams)
 	{
-		var currentStatus = BTStatus.Success;
-
+		BTStatus currentStatus;
+        
 		if (GetCurrentChild() < children.Length)
 		{
 			var child = children[GetCurrentChild()];
 			currentStatus = child.RunUpdate(btParams);
 
-			if (currentStatus == BTStatus.Failure)
+			if (currentStatus == BTStatus.Success)
 			{
-				return BTStatus.Failure;
+				return BTStatus.Success;
 			}
 			
-			if (currentStatus == BTStatus.Success)
+			if (currentStatus == BTStatus.Failure)
 			{
 				SetCurrentChild(GetCurrentChild() + 1);
 			}
+		}
+		else
+		{
+			return BTStatus.Failure;
 		}
 
 		return currentStatus;
@@ -25,7 +29,7 @@ public class BTSelector : BTComposite
 	
 	public override void ChildCompletedRunning(BTParams btParams, BTStatus result)
 	{
-		if (result == BTStatus.Failure)
+		if (result == BTStatus.Failure || result == BTStatus.Success)
 		{
 			SetCurrentChild(GetCurrentChild() + 1);
 		}

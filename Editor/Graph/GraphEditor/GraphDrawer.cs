@@ -60,6 +60,9 @@ namespace Framework
 			Color originalColor = GUI.color;
 
 			DrawNodeGradient(screenRect.AddHeight(6f).AddWidth(6f).AddX(-3f), new Color(0f, 0f, 0f, 0.28f));
+			
+			DrawNodeStatus(screenRect, node);
+			
 			if (node.Selected)
 			{
 				DrawSelectedOutline(screenRect.AddHeight(4f).AddY(-2f), new Color(0.27f, 0.85f, 1f), t);
@@ -149,6 +152,30 @@ namespace Framework
 				8f);
 		}
 
+		public static void DrawNodeStatus(Rect rect, GraphNode node)
+		{
+			var btNode = (BTNode)node.Behaviour;
+			var status = btNode.Status;
+			
+			rect = rect.Expand(3f);
+			if (status == BTStatus.Success)
+			{
+				DrawNodeBackground(rect, Color.green);
+			}
+			
+			if (status == BTStatus.Running)
+			{
+				DrawNodeBackground(rect, Color.blue);
+			}
+			
+			if (status == BTStatus.Failure)
+			{
+				DrawNodeBackground(rect, Color.red);
+			}
+		}
+		
+		// Ports
+		
 		public static void DrawPorts(CanvasTransform t, GraphNode node)
 		{
 			var input = node.InputRect;
@@ -189,8 +216,6 @@ namespace Framework
 				GUI.Label(output, $"+", GraphStyle.Header0Center);
 			}
 		}
-
-		// Ports
 
 		public static void DrawRectConnectionScreenSpace(Vector2 start, Vector2 end, Color color)
 		{
@@ -311,6 +336,17 @@ namespace Framework
 				
 				DrawEdgeArrow(t, center, connectionColor);
 
+				if (child.Behaviour is BTNode btNode && btNode.Status != BTStatus.Inactive)
+				{
+					DrawStatusConnections(btNode, t,
+						parentAnchorTip, 
+						parentAnchorLineConnection,
+						new Vector2(parentAnchorLineConnection.x, anchorLineStart.y),
+						new Vector2(anchorLineConnection.x, anchorLineEnd.y),
+						anchorLineConnection,
+						center);
+				}
+				
 				if (IsHovered(t, 
 					    parentAnchorTip, 
 					    parentAnchorLineConnection,
@@ -319,15 +355,14 @@ namespace Framework
 					    anchorLineConnection,
 					    center))
 				{
-					DrawHoveredConnections(t, 
+					DrawHoveredConnections(t, new Color(0.33f, 0.74f, 0.93f),
 						parentAnchorTip, 
 						parentAnchorLineConnection,
 						new Vector2(parentAnchorLineConnection.x, anchorLineStart.y),
 						new Vector2(anchorLineConnection.x, anchorLineEnd.y),
 						anchorLineConnection,
 						center);
-					
-					DrawEdgeArrow(t, center, new Color(0.33f, 0.74f, 0.93f));
+                    
 				}
 			}
 		}
@@ -348,12 +383,34 @@ namespace Framework
 				0f);
 		}
 
-		private static void DrawHoveredConnections(CanvasTransform t, params Vector2[] points)
+		private static void DrawStatusConnections(BTNode node, CanvasTransform t, params Vector2[] points)
+		{
+			var status = node.Status;
+            
+			if (status == BTStatus.Success)
+			{
+				DrawHoveredConnections(t, Color.green, points);
+			}
+			
+			if (status == BTStatus.Running)
+			{
+				DrawHoveredConnections(t, Color.blue, points);
+			}
+			
+			if (status == BTStatus.Failure)
+			{
+				DrawHoveredConnections(t, Color.red, points);
+			}
+		}
+
+		private static void DrawHoveredConnections(CanvasTransform t, Color color, params Vector2[] points)
 		{
 			for (int i = 0; i < points.Length - 1; i++)
 			{
-				DrawLineCanvasSpace(t, points[i], points[i + 1], new Color(0.33f, 0.74f, 0.93f), 4);
+				DrawLineCanvasSpace(t, points[i], points[i + 1], color, 4);
 			}
+			
+			DrawEdgeArrow(t, points[^1], color);
 		}
 		
 		private static bool IsHovered(CanvasTransform t, params Vector2[] points)

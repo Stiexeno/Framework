@@ -20,7 +20,9 @@ MonoBehaviour:
   saveIcon: {fileID: 2800000, guid: 6dfdac5b604268343ab637416cc765a7, type: 3}
   loadIcon: {fileID: 2800000, guid: 1084e609f9b0bc6449e29194b3879174, type: 3}
   formatIcon: {fileID: 2800000, guid: 0c5e7a3c8ac443647b3ded190fb48bfe, type: 3}
+  createIcon: {fileID: 2800000, guid: 8ab07460d6fa4474fa4896b461f243f4, type: 3}
   savedGraphs:
   - Assets/Configs/PlayerBT.asset
   - Assets/Configs/TankAI_BT.asset
   - Assets/Configs/AbilityAI_BT.asset
+  - 

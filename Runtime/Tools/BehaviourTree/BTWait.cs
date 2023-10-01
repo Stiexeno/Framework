@@ -5,7 +5,7 @@ public class BTWait : BTLeaf
 {
 	public float duration;
 
-	[NonSerialized] private float timelpased;
+	public float timelpased;
 	
 	protected override void OnEnter(BTParams btParams)
 	{
@@ -18,9 +18,11 @@ public class BTWait : BTLeaf
 		
 		if (timelpased >= duration)
 		{
+			Debug.LogError("Success");
 			return BTStatus.Success;
 		}
 
+		Debug.LogError("Running");
 		return BTStatus.Running;
 	}
 }
