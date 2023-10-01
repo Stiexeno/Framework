@@ -4,8 +4,6 @@ public class BTAgent : MonoBehaviour
 {
 	public BehaviourTree behaviourTree;
 
-	private BTParams btParams = new BTParams();
-
 	public BehaviourTree treeInstance;
 	
 	public BehaviourTree Tree => treeInstance;
@@ -13,14 +11,11 @@ public class BTAgent : MonoBehaviour
 	private void Awake()
 	{
 		treeInstance = BehaviourTree.Clone(behaviourTree);
-		
 		Initialize();
 	}
 
 	protected virtual void Initialize()
 	{
-		btParams.agent = this;
-		
 		foreach (var graphBehaviour in treeInstance.nodes)
 		{
 			var node = (BTNode)graphBehaviour;
@@ -37,7 +32,10 @@ public class BTAgent : MonoBehaviour
 	private void UpdateSubtree(BTNode node)
 	{
 		var result = node.RunUpdate();
+		
+		#if UNITY_EDITOR
 		node.EditorStatus = (BTNode.BTEditorStatus) result;
+		#endif
 		
 		if (result == BTStatus.Success || result == BTStatus.Failure)
 		{

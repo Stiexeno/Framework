@@ -43,10 +43,12 @@ public abstract class BTNode : GraphBehaviour
 	/// </summary>
 	public virtual void OnExit()
 	{
+		#if UNITY_EDITOR
 		if (status != BTStatus.Failure)
 		{
 			EditorStatus = BTEditorStatus.Inactive;
 		}
+		#endif
 	}
 	
 	/// <summary>
@@ -89,8 +91,10 @@ public abstract class BTNode : GraphBehaviour
 		
 		status = newStatus;
 		
+		#if UNITY_EDITOR
 		EditorStatus = (BTEditorStatus) newStatus;
-
+		#endif
+		
 		return newStatus;
 	}
 	
