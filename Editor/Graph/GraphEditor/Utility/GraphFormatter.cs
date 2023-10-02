@@ -2,7 +2,9 @@ using Framework;
 using UnityEngine;
 using SF = UnityEngine.SerializeField;
 
-public static class GraphFormatter
+namespace Framework.Editor.Graph
+{
+	public static class GraphFormatter
 {
 	/// <summary>
 	/// Formats the tree to look nicely.
@@ -121,4 +123,5 @@ public static class GraphFormatter
 		/// </summary>
 		public const float yLevelSeparation = 120f;
 	}
+}
 }

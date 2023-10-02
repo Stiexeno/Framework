@@ -1,40 +1,43 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Framework;
+using Framework.Graph;
 
-public abstract class GraphNodeRules<T> : IGraphNodeRules where T: GraphBehaviour
+namespace Framework.Editor.Graph
 {
-	protected abstract NodeProperties GatherNodeRules(Type behaviour);
-
-	public Dictionary<Type, NodeProperties> FetchGraphBehaviours()
+	public abstract class GraphNodeRules<T> : IGraphNodeRules where T: GraphBehaviour
 	{
-		var behaviourNodes = new Dictionary<Type, NodeProperties>();
-		
-		var behaviourTypes = AppDomain.CurrentDomain.GetAssemblies()
-			.Where(assembly => !assembly.FullName.StartsWith("Unity") && !assembly.FullName.StartsWith("Editor"))
-			.SelectMany(assembly => assembly.GetTypes())
-			.Where(t => t.IsSubclassOf(typeof(T)) && !t.IsAbstract);
+		protected abstract NodeProperties GatherNodeRules(Type behaviour);
 
-		foreach (var behaviourType in behaviourTypes)
+		public Dictionary<Type, NodeProperties> FetchGraphBehaviours()
 		{
-			behaviourNodes.Add(behaviourType, GatherNodeRules(behaviourType));
-		}
-        
-		return behaviourNodes;
-	}
-}
+			var behaviourNodes = new Dictionary<Type, NodeProperties>();
+		
+			var behaviourTypes = AppDomain.CurrentDomain.GetAssemblies()
+				.Where(assembly => !assembly.FullName.StartsWith("Unity") && !assembly.FullName.StartsWith("Editor"))
+				.SelectMany(assembly => assembly.GetTypes())
+				.Where(t => t.IsSubclassOf(typeof(T)) && !t.IsAbstract);
 
-public class NodeProperties
-{
-	public string name;
-	public Type nodeType;
-	public bool hasOutput;
-	
-	public NodeProperties(Type nodeType, bool hasOutput, string name = "")
+			foreach (var behaviourType in behaviourTypes)
+			{
+				behaviourNodes.Add(behaviourType, GatherNodeRules(behaviourType));
+			}
+        
+			return behaviourNodes;
+		}
+	}
+
+	public class NodeProperties
 	{
-		this.name = name;
-		this.nodeType = nodeType;
-		this.hasOutput = hasOutput;
+		public string name;
+		public Type nodeType;
+		public bool hasOutput;
+	
+		public NodeProperties(Type nodeType, bool hasOutput, string name = "")
+		{
+			this.name = name;
+			this.nodeType = nodeType;
+			this.hasOutput = hasOutput;
+		}
 	}
 }

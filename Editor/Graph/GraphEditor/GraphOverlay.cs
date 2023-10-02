@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using SF = UnityEngine.SerializeField;
 
-namespace Framework
+namespace Framework.Editor.Graph
 {
 	public class GraphOverlay : IGUIView
 	{

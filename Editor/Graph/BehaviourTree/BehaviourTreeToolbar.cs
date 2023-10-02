@@ -1,15 +1,19 @@
-using Framework;
+using Framework.Graph.BT;
 
-public class BehaviourTreeToolbar : GraphToolbar
+namespace Framework.Editor.Graph.BT
 {
-	private BehaviourTree behaviourTree;
-
-	public BehaviourTreeToolbar(BehaviourTree behaviourTree)
+	public class BehaviourTreeToolbar : GraphToolbar
 	{
-		this.behaviourTree = behaviourTree;
-	}
+		private BehaviourTree behaviourTree;
 
-	protected override void OnGUI()
-	{
+		public BehaviourTreeToolbar(BehaviourTree behaviourTree)
+		{
+			this.behaviourTree = behaviourTree;
+		}
+
+		protected override void OnGUI()
+		{
+		}
 	}
 }
+

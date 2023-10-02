@@ -1,13 +1,13 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using Framework;
-using Framework.Editor;
+using Framework.Graph;
+using Framework.Graph.BT;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
 
-public class BehaviourTreeWindow : GraphWindow
+namespace Framework.Editor.Graph.BT
+{
+	public class BehaviourTreeWindow : GraphWindow
 {
 	// Private fields
 	
@@ -118,4 +118,6 @@ public class BehaviourTreeWindow : GraphWindow
 //
 		return false;
 	}
+}
+
 }

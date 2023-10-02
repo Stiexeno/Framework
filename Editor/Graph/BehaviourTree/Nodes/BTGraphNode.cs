@@ -4,49 +4,52 @@ using Framework.Editor;
 using UnityEditor;
 using UnityEngine;
 
-public class BTGraphNode : GraphNode
+namespace Framework.Editor.Graph.BT
 {
-	public override void OnGUI(Rect rect)
+	public class BTGraphNode : GraphNode
 	{
-		DynamicSize = Size;
-		var position = Size;
-		GraphStyle.DrawHorizontalLine(rect.AddY(position.y));
-		//EditorGUI.LabelField(rect.SetHeight(20f).AddY(position.y), "- Decorators -", GraphStyle.Header1Middle);
-
-		position.y += 20;
-		DynamicSize = position;
-		//DrawDecorators(rect);
-	}
-
-	protected void DrawDecorators(Rect rect, List<string> decorators)
-	{
-		//if (decorators.Count <= 0)
-		//	return;
-
-		var position = Size;
-		EditorGUI.LabelField(rect.SetHeight(20f).AddY(position.y), "- Decorators -", GraphStyle.Header1Middle);
-		position.y += 20;
-		
-		for (int i = 0; i < 5; i++)
+		public override void OnGUI(Rect rect)
 		{
-			EditorGUI.LabelField(rect.SetHeight(20f).AddY(position.y), "Check for type", GraphStyle.Header1Left);
-			position.y += 18;
+			DynamicSize = Size;
+			var position = Size;
+			GraphStyle.DrawHorizontalLine(rect.AddY(position.y));
+			//EditorGUI.LabelField(rect.SetHeight(20f).AddY(position.y), "- Decorators -", GraphStyle.Header1Middle);
+
+			position.y += 20;
+			DynamicSize = position;
+			//DrawDecorators(rect);
 		}
-		
-		position.y += 10;
-		GraphStyle.DrawHorizontalLine(rect.AddY(position.y));
-		position.y += 20;
-		DynamicSize = position;
-	}
 
-	private void DrawDecorators(Rect rect)
-	{
-		DynamicSize = Size;
-		var position = Size;
-		GraphStyle.DrawHorizontalLine(rect.AddY(position.y));
-		EditorGUI.LabelField(rect.SetHeight(20f).AddY(position.y), "- Decorators -", GraphStyle.Header1Middle);
+		protected void DrawDecorators(Rect rect, List<string> decorators)
+		{
+			//if (decorators.Count <= 0)
+			//	return;
 
-		position.y += 40;
-		DynamicSize = position;
+			var position = Size;
+			EditorGUI.LabelField(rect.SetHeight(20f).AddY(position.y), "- Decorators -", GraphStyle.Header1Middle);
+			position.y += 20;
+
+			for (int i = 0; i < 5; i++)
+			{
+				EditorGUI.LabelField(rect.SetHeight(20f).AddY(position.y), "Check for type", GraphStyle.Header1Left);
+				position.y += 18;
+			}
+
+			position.y += 10;
+			GraphStyle.DrawHorizontalLine(rect.AddY(position.y));
+			position.y += 20;
+			DynamicSize = position;
+		}
+
+		private void DrawDecorators(Rect rect)
+		{
+			DynamicSize = Size;
+			var position = Size;
+			GraphStyle.DrawHorizontalLine(rect.AddY(position.y));
+			EditorGUI.LabelField(rect.SetHeight(20f).AddY(position.y), "- Decorators -", GraphStyle.Header1Middle);
+
+			position.y += 40;
+			DynamicSize = position;
+		}
 	}
 }

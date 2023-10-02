@@ -1,30 +1,31 @@
-using UnityEngine;
-
-public class BTParallel : BTComposite
+namespace Framework.Graph.BT
 {
-	private BTStatus parallelStatus = BTStatus.Success;
-	
-	protected override BTStatus OnUpdate()
+	public class BTParallel : BTComposite
 	{
-		if (GetCurrentChild() < children.Length)
+		private BTStatus parallelStatus = BTStatus.Success;
+
+		protected override BTStatus OnUpdate()
 		{
-			var child = children[GetCurrentChild()];
-			var currentStatus = child.RunUpdate();
-            
-			if (currentStatus == BTStatus.Failure)
+			if (GetCurrentChild() < children.Length)
 			{
-				parallelStatus = BTStatus.Failure;
-			}
-            
-			if (currentStatus == BTStatus.Success || currentStatus == BTStatus.Failure)
-			{
-				SetCurrentChild(GetCurrentChild() + 1);
+				var child = children[GetCurrentChild()];
+				var currentStatus = child.RunUpdate();
+
+				if (currentStatus == BTStatus.Failure)
+				{
+					parallelStatus = BTStatus.Failure;
+				}
+
+				if (currentStatus == BTStatus.Success || currentStatus == BTStatus.Failure)
+				{
+					SetCurrentChild(GetCurrentChild() + 1);
+					return BTStatus.Running;
+				}
+
 				return BTStatus.Running;
 			}
 
-			return BTStatus.Running;
+			return parallelStatus;
 		}
-		
-		return parallelStatus;
 	}
 }

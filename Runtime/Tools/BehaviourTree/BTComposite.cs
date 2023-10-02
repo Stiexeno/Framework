@@ -1,69 +1,70 @@
 using System;
-using Framework;
-using UnityEngine;
 
-public abstract class BTComposite : BTNode
+namespace Framework.Graph.BT
 {
-	public BTNode[] children = Array.Empty<BTNode>();
-	
-	public int currentChildIndex = 0;
-	
-	public override NodeType NodeType => NodeType.Composite;
-	public override int MaxChildCount => int.MaxValue;
-
-	protected override void OnEnter()
+	public abstract class BTComposite : BTNode
 	{
-		SetCurrentChild(0);
-	}
-	
-	public override void OnReset()
-	{
-		base.OnReset();
-		
-		OnExit();
+		public BTNode[] children = Array.Empty<BTNode>();
 
-		for (int i = 0; i < children.Length; i++)
+		public int currentChildIndex = 0;
+
+		public override NodeType NodeType => NodeType.Composite;
+		public override int MaxChildCount => int.MaxValue;
+
+		protected override void OnEnter()
 		{
-			children[i].OnReset();
-		}
-	}
-
-	public void SetChildren(BTNode[] nodes)
-	{
-		children = nodes;
-
-		for (int i = 0; i < children.Length; i++)
-		{
-			children[i].indexOrder = i;
+			SetCurrentChild(0);
 		}
 
-		foreach (BTNode child in children)
+		public override void OnReset()
 		{
-			child.Parent = this;
+			base.OnReset();
+
+			OnExit();
+
+			for (int i = 0; i < children.Length; i++)
+			{
+				children[i].OnReset();
+			}
 		}
-	}
 
-	protected int GetCurrentChild()
-	{
-		return currentChildIndex;	
-	}
+		public void SetChildren(BTNode[] nodes)
+		{
+			children = nodes;
 
-	protected void SetCurrentChild(int index)
-	{
-		currentChildIndex = index;
-	}
-	
-	public override int ChildCount()
-	{
-		return children.Length;
-	}
+			for (int i = 0; i < children.Length; i++)
+			{
+				children[i].indexOrder = i;
+			}
 
-	public override GraphBehaviour GetChildAt(int index)
-	{
-		return children[index];
-	}
+			foreach (BTNode child in children)
+			{
+				child.Parent = this;
+			}
+		}
 
-	public virtual void ChildCompletedRunning(BTParams btParams, BTStatus result)
-	{
+		protected int GetCurrentChild()
+		{
+			return currentChildIndex;
+		}
+
+		protected void SetCurrentChild(int index)
+		{
+			currentChildIndex = index;
+		}
+
+		public override int ChildCount()
+		{
+			return children.Length;
+		}
+
+		public override GraphBehaviour GetChildAt(int index)
+		{
+			return children[index];
+		}
+
+		public virtual void ChildCompletedRunning(BTParams btParams, BTStatus result)
+		{
+		}
 	}
 }

@@ -1,9 +1,12 @@
-﻿public class BTRoot : BTDecorator
+﻿namespace Framework.Graph.BT
 {
-	public override NodeType NodeType => NodeType.Root;
-    
-	protected override bool DryRun()
+	public class BTRoot : BTDecorator
 	{
-		return true;
+		public override NodeType NodeType => NodeType.Root;
+
+		protected override bool DryRun()
+		{
+			return true;
+		}
 	}
 }

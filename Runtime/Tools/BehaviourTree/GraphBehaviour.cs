@@ -1,6 +1,7 @@
+using Framework.Graph.BT;
 using UnityEngine;
 
-namespace Framework
+namespace Framework.Graph
 {
 	public abstract class GraphBehaviour : ScriptableObject, IIterableNode<GraphBehaviour>
 	{

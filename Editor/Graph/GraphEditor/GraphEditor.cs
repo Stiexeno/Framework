@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Framework.Graph;
 using UnityEditor;
 using UnityEngine;
 
-namespace Framework
+namespace Framework.Editor.Graph
 {
 	public class GraphEditor
 	{

@@ -2,7 +2,7 @@ using Framework.Editor;
 using UnityEditor;
 using UnityEngine;
 
-namespace Framework
+namespace Framework.Editor.Graph
 {
 	public abstract class GraphInspector : IGUIView
 	{

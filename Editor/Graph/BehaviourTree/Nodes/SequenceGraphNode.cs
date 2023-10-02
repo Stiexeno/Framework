@@ -1,9 +1,13 @@
-﻿using UnityEngine;
+﻿using Framework.Graph.BT;
+using UnityEngine;
 
-public class SequenceGraphNode : CompositeGraphNode
+namespace Framework.Editor.Graph.BT
 {
-	private BTSequence btSequence;
+	public class SequenceGraphNode : CompositeGraphNode
+	{
+		private BTSequence btSequence;
 
-	public override string Header => "Sequencer";
-	public override Texture2D Icon => BehaviourTreePreferences.Instance.sequencerIcon;
+		public override string Header => "Sequencer";
+		public override Texture2D Icon => BehaviourTreePreferences.Instance.sequencerIcon;
+	}
 }

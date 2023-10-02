@@ -1,7 +1,10 @@
 using UnityEngine;
 
-public class ParallelGraphNode : CompositeGraphNode
+namespace Framework.Editor.Graph.BT
 {
-	public override string Header => "Parallel";
-	public override Texture2D Icon => BehaviourTreePreferences.Instance.parallelcon;
+	public class ParallelGraphNode : CompositeGraphNode
+	{
+		public override string Header => "Parallel";
+		public override Texture2D Icon => BehaviourTreePreferences.Instance.parallelcon;
+	}
 }

@@ -1,37 +1,40 @@
-﻿public class BTSequence : BTComposite
+﻿namespace Framework.Graph.BT
 {
-	protected override BTStatus OnUpdate()
+	public class BTSequence : BTComposite
 	{
-		var currentStatus = BTStatus.Success;
-		
-		if (GetCurrentChild() < children.Length)
+		protected override BTStatus OnUpdate()
 		{
-			var child = children[GetCurrentChild()];
-			currentStatus = child.RunUpdate();
+			var currentStatus = BTStatus.Success;
 
-			if (currentStatus == BTStatus.Failure)
-				return BTStatus.Failure;
-			
-			if (currentStatus == BTStatus.Success)
+			if (GetCurrentChild() < children.Length)
+			{
+				var child = children[GetCurrentChild()];
+				currentStatus = child.RunUpdate();
+
+				if (currentStatus == BTStatus.Failure)
+					return BTStatus.Failure;
+
+				if (currentStatus == BTStatus.Success)
+				{
+					SetCurrentChild(GetCurrentChild() + 1);
+					return BTStatus.Running;
+				}
+			}
+
+			return currentStatus;
+		}
+
+		public override void ChildCompletedRunning(BTParams btParams, BTStatus result)
+		{
+			if (result == BTStatus.Failure)
+			{
+				SetCurrentChild(children.Length);
+				status = BTStatus.Failure;
+			}
+			else
 			{
 				SetCurrentChild(GetCurrentChild() + 1);
-				return BTStatus.Running;
 			}
-		}
-		
-		return currentStatus;
-	}
-
-	public override void ChildCompletedRunning(BTParams btParams, BTStatus result)
-	{
-		if (result == BTStatus.Failure)
-		{
-			SetCurrentChild(children.Length);
-			status = BTStatus.Failure;
-		}
-		else
-		{
-			SetCurrentChild(GetCurrentChild() + 1);
 		}
 	}
 }

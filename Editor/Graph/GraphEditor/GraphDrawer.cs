@@ -1,8 +1,9 @@
 using Framework.Editor;
+using Framework.Graph.BT;
 using UnityEditor;
 using UnityEngine;
 
-namespace Framework
+namespace Framework.Editor.Graph
 {
 	public static class GraphDrawer
 	{
@@ -162,7 +163,7 @@ namespace Framework
 			rect = rect.Expand(2f, 4f);
 			if (status == BTNode.BTEditorStatus.Success)
 			{
-				DrawNodeBackground(rect, new Color(0.35f, 0.8f, 0.35f));
+				DrawNodeBackground(rect, Color.green);
 			}
 			
 			if (status == BTNode.BTEditorStatus.Running)
@@ -172,7 +173,7 @@ namespace Framework
 			
 			if (status == BTNode.BTEditorStatus.Failure)
 			{
-				DrawNodeBackground(rect, new Color(1f, 0.22f, 0.25f));
+				DrawNodeBackground(rect, Color.red);
 			}
 		}
 		
@@ -389,14 +390,14 @@ namespace Framework
 				0,
 				0f);
 		}
-
+		
 		private static void DrawStatusConnections(BTNode node, CanvasTransform t, params Vector2[] points)
 		{
 			var status = node.EditorStatus;
             
 			if (status == BTNode.BTEditorStatus.Success)
 			{
-				DrawHoveredConnections(t, new Color(0.35f, 0.8f, 0.35f), points);
+				DrawHoveredConnections(t, Color.green, points);
 			}
 			
 			if (status == BTNode.BTEditorStatus.Running)
@@ -406,7 +407,7 @@ namespace Framework
 			
 			if (status == BTNode.BTEditorStatus.Failure)
 			{
-				DrawHoveredConnections(t, new Color(1f, 0.22f, 0.25f), points);
+				DrawHoveredConnections(t, Color.red, points);
 			}
 		}
 

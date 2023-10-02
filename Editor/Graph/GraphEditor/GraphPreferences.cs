@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using SF = UnityEngine.SerializeField;
 
-namespace Framework
+namespace Framework.Editor.Graph
 {
 	[CreateAssetMenu(fileName = "GraphPreferences", menuName = "GraphView/Preferences")]
 	public class GraphPreferences : ScriptableObject

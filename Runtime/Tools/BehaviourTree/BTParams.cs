@@ -1,4 +1,7 @@
-public struct BTParams
+namespace Framework.Graph.BT
 {
-	public BTAgent agent;
+	public struct BTParams
+	{
+		public BTAgent agent;
+	}
 }

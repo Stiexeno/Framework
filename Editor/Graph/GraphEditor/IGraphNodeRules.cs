@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
 
-public interface IGraphNodeRules
+namespace Framework.Editor.Graph
 {
-	Dictionary<Type, NodeProperties> FetchGraphBehaviours();
+	public interface IGraphNodeRules
+	{
+		Dictionary<Type, NodeProperties> FetchGraphBehaviours();
+	}
 }

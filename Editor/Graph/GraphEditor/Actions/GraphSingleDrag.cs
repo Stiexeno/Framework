@@ -2,7 +2,7 @@ using System.Linq;
 using UnityEngine;
 using SF = UnityEngine.SerializeField;
 
-namespace Framework
+namespace Framework.Editor.Graph
 {
 	public static class GraphSingleDrag
 	{

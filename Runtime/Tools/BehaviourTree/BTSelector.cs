@@ -1,41 +1,44 @@
-public class BTSelector : BTComposite
+namespace Framework.Graph.BT
 {
-	protected override BTStatus OnUpdate()
+	public class BTSelector : BTComposite
 	{
-		BTStatus currentStatus;
-        
-		if (GetCurrentChild() < children.Length)
+		protected override BTStatus OnUpdate()
 		{
-			var child = children[GetCurrentChild()];
-			currentStatus = child.RunUpdate();
+			BTStatus currentStatus;
 
-			if (currentStatus == BTStatus.Success)
-				return BTStatus.Success;
-			
-			if (currentStatus == BTStatus.Failure)
+			if (GetCurrentChild() < children.Length)
+			{
+				var child = children[GetCurrentChild()];
+				currentStatus = child.RunUpdate();
+
+				if (currentStatus == BTStatus.Success)
+					return BTStatus.Success;
+
+				if (currentStatus == BTStatus.Failure)
+				{
+					SetCurrentChild(GetCurrentChild() + 1);
+					return BTStatus.Running;
+				}
+			}
+			else
+			{
+				return BTStatus.Failure;
+			}
+
+			return currentStatus;
+		}
+
+		public override void ChildCompletedRunning(BTParams btParams, BTStatus result)
+		{
+			if (result == BTStatus.Failure || result == BTStatus.Success)
 			{
 				SetCurrentChild(GetCurrentChild() + 1);
-				return BTStatus.Running;
 			}
-		}
-		else
-		{
-			return BTStatus.Failure;
-		}
-
-		return currentStatus;
-	}
-	
-	public override void ChildCompletedRunning(BTParams btParams, BTStatus result)
-	{
-		if (result == BTStatus.Failure || result == BTStatus.Success)
-		{
-			SetCurrentChild(GetCurrentChild() + 1);
-		}
-		else
-		{
-			SetCurrentChild(children.Length);
-			status = BTStatus.Success;
+			else
+			{
+				SetCurrentChild(children.Length);
+				status = BTStatus.Success;
+			}
 		}
 	}
 }

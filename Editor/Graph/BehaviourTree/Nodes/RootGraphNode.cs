@@ -1,20 +1,23 @@
-﻿using Framework;
-using Framework.Editor;
+﻿using Framework.Editor;
+using Framework.Graph.BT;
 using UnityEditor;
 using UnityEngine;
 
-public class RootGraphNode : BTGraphNode
+namespace Framework.Editor.Graph.BT
 {
-	private BTRoot btRoot;
-	
-	public override Vector2 Size => new Vector2(100, 40);
-	public override Color Outline => new Color(0.73f, 0.73f, 0.75f);
-
-	public override void OnGUI(Rect rect)
+	public class RootGraphNode : BTGraphNode
 	{
-		DynamicSize = Size;
-		EditorGUI.LabelField(rect.SetHeight(20f), "Root", GraphStyle.Header0Middle);
+		private BTRoot btRoot;
+	
+		public override Vector2 Size => new Vector2(100, 40);
+		public override Color Outline => new Color(0.73f, 0.73f, 0.75f);
+
+		public override void OnGUI(Rect rect)
+		{
+			DynamicSize = Size;
+			EditorGUI.LabelField(rect.SetHeight(20f), "Root", GraphStyle.Header0Middle);
 		
-		//base.OnGUI(rect);
+			//base.OnGUI(rect);
+		}
 	}
 }

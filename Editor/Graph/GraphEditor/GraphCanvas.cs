@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Framework.Graph;
 using UnityEngine;
 
-namespace Framework
+namespace Framework.Editor.Graph
 {
 	public class GraphCanvas
 	{

@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Framework.Graph;
+using Framework.Graph.BT;
 using UnityEditor;
 using UnityEngine;
 
-namespace Framework
+namespace Framework.Editor.Graph
 {
-	using FilePanelResult = Framework.Graph.Result<FilePanelError, string>;
+	using FilePanelResult = Result<FilePanelError, string>;
 	public enum FilePanelError { Cancel, InvalidPath }
 
 	public class GraphSaver

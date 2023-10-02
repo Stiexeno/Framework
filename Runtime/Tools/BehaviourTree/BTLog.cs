@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 
-public class BTLog : BTLeaf
+namespace Framework.Graph.BT
 {
-	public string message;
-    
-	protected override BTStatus OnUpdate()
+	public class BTLog : BTLeaf
 	{
-		Debug.LogError("DebugLogNode.OnUpdatet()	" + message);
-		return BTStatus.Success;
+		public string message;
+
+		protected override BTStatus OnUpdate()
+		{
+			Debug.LogError("DebugLogNode.OnUpdatet()	" + message);
+			return BTStatus.Success;
+		}
 	}
 }

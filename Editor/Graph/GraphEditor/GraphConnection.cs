@@ -1,4 +1,4 @@
-namespace Framework
+namespace Framework.Editor.Graph
 {
 	public static class GraphConnection
 	{

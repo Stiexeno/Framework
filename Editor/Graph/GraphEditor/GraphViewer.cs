@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using SF = UnityEngine.SerializeField;
 
-namespace Framework
+namespace Framework.Editor.Graph
 {
 	public class GraphViewer
 	{
