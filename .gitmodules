@@ -1,0 +1,3 @@
+[submodule "Bot"]
+	path = Bot
+	url = https://github.com/Stiexeno/Behaviour-Tree
