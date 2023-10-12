@@ -53,13 +53,13 @@ namespace Framework
 		{
 			var constructors = objectType.GetConstructors();
 			
-			if (constructors[0].GetParameters().Length <= 0)
-			{
-				var instance = FormatterServices.GetUninitializedObject(objectType);
-				diContainer.Inject(new List<object> { instance });
-				
-				return instance;
-			}
+			//if (constructors[0].GetParameters().Length <= 0)
+			//{
+			//	var instance = FormatterServices.GetUninitializedObject(objectType);
+			//	diContainer.Inject(new List<object> { instance });
+            //    
+			//	return instance;
+			//}
 
 			var args = constructors[0].GetParameters();
 			var argsToInject = new object[args.Length];
