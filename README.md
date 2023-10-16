@@ -12,7 +12,7 @@ Framework is a lightweight and flexible framework for Unity, designed to simplif
 
 ## Installation
 
-You can install MyFramework via the Unity Package Manager by following these steps:
+You can install Framework via the Unity Package Manager by following these steps:
 
 1. In Unity, open your project.
 2. Open the Unity Package Manager from the "Window" menu.
@@ -90,7 +90,7 @@ The above code binds the `LocalClock` class to its corresponding interface or ba
 In some cases, you may want to find a reference to a service that already exists in the scene. To do this, you can use the `FindInScene<T>` method:
 
 ```csharp
-diContainer.Bind<UIManager>().FindInScene<UIManager>();
+diContainer.Bind<UIManager>().FromScene<UIManager>();
 ```
 
 The above code binds the `UIManager` class to its corresponding interface or base class and finds a reference to an existing `UIManager` component in the scene.
