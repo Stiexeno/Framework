@@ -198,8 +198,11 @@ namespace Framework.Editor
 		internal void GenerateAssetsScript(Action callback = null)
 		{
 			string scriptContent = GenerateScriptContent();
-
-			string outputPath = "Assets/Scripts/Generated/Assets.cs";
+            
+			string outputPath = SystemSettings.Settings.defaultGeneratedAssetFolder != null ? 
+				AssetDatabase.GetAssetPath(SystemSettings.Settings.defaultGeneratedAssetFolder) + "/Assets.cs" : 
+				"Assets/Scripts/Generated/Assets.cs";
+			
 			EnsureOutputFolderExists(outputPath);
 			File.WriteAllText(outputPath, scriptContent);
 			EditorUtility.SetDirty(this);

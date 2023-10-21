@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using TMPro;
 using UnityEngine;
@@ -267,8 +268,8 @@ namespace Framework.Utils
 
         public static Vector3 GetRandomPointAround(this Transform transform, float maxDist, float minDist = 0f)
         {
-            var randomRadius = Random.Range(minDist, maxDist);
-            var randomAngle = Random.Range(0f, 2f * Mathf.PI);
+            var randomRadius = UnityRandom.Range(minDist, maxDist);
+            var randomAngle = UnityRandom.Range(0f, 2f * Mathf.PI);
 
             var x = transform.position.x + randomRadius * Mathf.Cos(randomAngle);
             var z = transform.position.z + randomRadius * Mathf.Sin(randomAngle);
@@ -340,6 +341,22 @@ namespace Framework.Utils
         {
             var color = text.color;
             text.color = color.SetAlpha(alpha);
+        }
+        
+        // Functional
+        
+        public static T With<T>(this T self, Action<T> set)
+        {
+            set.Invoke(self);
+            return self;
+        }
+        
+        public static T Do<T>(this T @self, Action<T> @this, bool @when)
+        {
+            if (when)
+                @this?.Invoke(self);
+
+            return self;
         }
     }
 }

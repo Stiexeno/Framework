@@ -94,7 +94,7 @@ namespace Framework
 						$"Try to refresh Configs or check if you have added {args[i].ParameterType.Name} to the Container");
 				}
 			}
-
+            
 			return Activator.CreateInstance(objectType, argsToInject);
 		}
 
@@ -125,9 +125,12 @@ namespace Framework
 		
 		public T InstantiatePrefab<T>(T original) where T : class
 		{
-			var type = original as GameObject;
-			GameObject clone = Object.Instantiate(type);
-			var components = clone.GetComponentsInChildren<MonoBehaviour>();
+			var type = original as Object;
+			Object clone = Object.Instantiate(type);
+
+			var components = new List<MonoBehaviour>();
+			var cloneGameobject = ConvertToGameObject(clone);
+			InjectExtensions.GetInjectableMonoBehavioursUnderGameObjectInternal(cloneGameobject, ref components);
 
 			diContainer.Inject(components);
 
@@ -136,7 +139,31 @@ namespace Framework
 				return clone as T;
 			}
 
-			return clone.GetComponent<T>();
+			Debug.LogError($"{cloneGameobject.GetType()} ==> {typeof(T)}");
+			return cloneGameobject.GetComponent<T>();
+		}
+		
+		public GameObject InstantiatePrefab(Object prefab)
+		{
+			Object clone = Object.Instantiate(prefab);
+
+			var components = new List<MonoBehaviour>();
+			var cloneGameobject = ConvertToGameObject(clone);
+			InjectExtensions.GetInjectableMonoBehavioursUnderGameObjectInternal(cloneGameobject, ref components);
+
+			diContainer.Inject(components);
+
+			return cloneGameobject;
+		}
+        
+		private GameObject ConvertToGameObject(Object prefab)
+		{
+			if (prefab is GameObject)
+			{
+				return (GameObject)prefab;
+			}
+            
+			return ((Component)prefab).gameObject;
 		}
 	}
 }

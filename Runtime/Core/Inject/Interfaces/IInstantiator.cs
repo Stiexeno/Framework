@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Framework
 {
@@ -9,7 +10,7 @@ namespace Framework
         object Instantiate(Type objectType);
         internal object Instantiate(Binding binding);
         GameObject InstantiatePrefab(GameObject original);
-        T InstantiatePrefab<T>(T original) where T : class;
+        public GameObject InstantiatePrefab(Object prefab);
         T Instantiate<T>(params object[] args);
     }
 }

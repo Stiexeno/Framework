@@ -34,7 +34,7 @@ namespace Framework.Core
             return Array.FindAll(methods, HasInjectMethods);
         }
         
-        private static void GetInjectableMonoBehavioursUnderGameObjectInternal(GameObject gameObject, ref List<MonoBehaviour> monoBehaviours)
+        public static void GetInjectableMonoBehavioursUnderGameObjectInternal(GameObject gameObject, ref List<MonoBehaviour> monoBehaviours)
         {
             if (gameObject == null)
                 return;

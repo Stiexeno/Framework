@@ -37,5 +37,10 @@ namespace Framework.Core
                 
             return FromInstance((TContract)targetObject);
         }
+
+        public ResourceBinder FromResources(string path)
+        {
+            return new ResourceBinder(binding, path, typeof(TContract), instantiator);
+        }
     }
 }

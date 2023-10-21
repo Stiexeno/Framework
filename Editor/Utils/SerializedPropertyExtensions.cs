@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEditor;
+using UnityEngine;
 
 namespace Framework.Editor
 {
@@ -183,7 +184,7 @@ namespace Framework.Editor
         {
             var allProperties = new List<SerializedProperty>();
 
-            var sObject = new SerializedObject(serializedObject.targetObject);
+            var sObject = serializedObject;
             var objectIterator = sObject.GetIterator().Copy();
 
             while (objectIterator.NextVisible(true))

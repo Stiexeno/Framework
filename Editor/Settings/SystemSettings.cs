@@ -12,6 +12,7 @@ namespace Framework.Editor
 		[Header("Default folders")]
 		[CanBeNull] public Object defaultInstallerFolder;
 		[CanBeNull] public Object defaultConfigsFolder;
+		[CanBeNull] public Object defaultGeneratedAssetFolder;
 		
 		private const string ASSET_NAME = "SystemSettings";
 		private const string OBJECT_NAME = "com.framework.system-settings";

@@ -47,7 +47,8 @@ namespace Framework.Core
 
 		public T InstantiateType<T>(string path) where T : class
 		{
-			var instantiated = Instantiator.InstantiatePrefab(GetPrefabByType<T>(path));
+			var prefab = GetPrefabByType<T>(path);
+			var instantiated = Instantiator.InstantiatePrefab(prefab as Object);
             
 			var instance = instantiated as GameObject;
             
